@@ -1,0 +1,87 @@
+<!--pages/index/index.wxml-->
+<view class="page">
+
+  <!-- ===== Banner ===== -->
+  <view class="banner">
+    <image
+      class="banner-img"
+      src="/images/banner-image.png"
+      mode="aspectFill"
+    />
+    <view class="banner-gradient"></view>
+
+    <view class="banner-inner">
+      <!-- 状态栏占位 -->
+      <view style="height: {{statusBarHeight}}px"></view>
+      <!-- 导航栏占位 -->
+      <view style="height: {{navBarHeight}}px"></view>
+
+      <!-- 主标题区 -->
+      <view class="banner-main">
+        <view class="banner-title">{{settings.homeTitle || '五台山导游服务'}}</view>
+        <view class="banner-subtitle">{{settings.homeSubtitle || '寺庙讲解 · 朝台陪同 · 接站包车'}}</view>
+        <view class="banner-badges">
+          <view class="banner-badge">
+            <text class="badge-icon badge-icon-check">✓</text>
+            <text>本地持证导游</text>
+          </view>
+          <view class="banner-badge">
+            <text class="badge-icon">📍</text>
+            <text>五台山本地</text>
+          </view>
+          <view class="banner-badge">
+            <text class="badge-icon">⭐</text>
+            <text>已服务{{settings.serviceTotal || '12000'}}+游客</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ===== 内容区 ===== -->
+  <view class="content-sheet">
+
+    <!-- 导游列表 -->
+    <view class="list-section">
+      <view class="list-wrap">
+
+        <view wx:if="{{loading}}" class="skeleton-list">
+          <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+            <view class="sk-avatar"></view>
+            <view class="sk-info">
+              <view class="sk-line sk-short"></view>
+              <view class="sk-line sk-mid"></view>
+              <view class="sk-line sk-long"></view>
+            </view>
+          </view>
+        </view>
+
+        <view wx:else>
+          <view
+            wx:for="{{guideList}}"
+            wx:key="_id"
+            class="card-wrap"
+            bindtap="onGuideTap"
+            data-id="{{item._id}}"
+          >
+            <guide-card guide="{{item}}" />
+          </view>
+
+          <view wx:if="{{!guideList.length}}" class="empty">
+            <text class="empty-icon">🏔</text>
+            <text class="empty-text">暂无导游信息</text>
+          </view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>
+
+<bottom-contact-bar
+  phone="{{settings.contactPhone}}"
+  show-consult="{{settings.wechatServiceEnabled}}"
+  consult-label="咨询行程"
+  phone-label="电话沟通"
+/>

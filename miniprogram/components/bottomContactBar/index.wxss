@@ -1,0 +1,94 @@
+/* components/bottomContactBar/index.wxss */
+
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, rgba(242, 244, 247, 0) 0%, rgba(242, 244, 247, 0.96) 20%, #F2F4F7 100%);
+  padding: 20rpx 24rpx env(safe-area-inset-bottom);
+  box-sizing: border-box;
+}
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14rpx;
+  min-height: 100rpx;
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.btn::after {
+  border: none;
+}
+
+.btn-consult {
+  background: rgba(255, 255, 255, 0.88);
+  border: 2rpx solid rgba(0, 134, 246, 0.18);
+  box-shadow: 0 6rpx 18rpx rgba(25, 53, 89, 0.08);
+  color: #0070E8;
+}
+
+.btn-phone,
+.btn-primary-solo {
+  background: linear-gradient(90deg, #00A7FA 0%, #0076F5 100%);
+  box-shadow: 0 10rpx 24rpx rgba(0, 134, 246, 0.30);
+  color: #FFFFFF;
+}
+
+.btn-hover {
+  opacity: 0.92;
+}
+
+.btn-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-icon-wrap-light {
+  background: rgba(0, 134, 246, 0.12);
+}
+
+.btn-icon-wrap-solid {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.btn-icon-img {
+  width: 36rpx;
+  height: 36rpx;
+  display: block;
+}
+
+.btn-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.btn-label {
+  font-size: 28rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+.btn-sub {
+  font-size: 20rpx;
+  opacity: 0.78;
+}

@@ -1,0 +1,120 @@
+<!--pages/guideDetail/index.wxml-->
+<view class="page">
+
+  <view class="hero">
+    <image
+      class="hero-img"
+      src="/images/banner-image.png"
+      mode="aspectFill"
+    />
+    <view class="hero-gradient"></view>
+
+    <view class="hero-inner">
+      <view style="height: {{statusBarHeight}}px"></view>
+
+      <view class="hero-nav" style="height: {{navBarHeight}}px">
+        <view class="nav-back" bindtap="onBack">
+          <text class="nav-back-icon">‹</text>
+        </view>
+        <view class="nav-title">{{guide ? guide.name + ' 导游' : '导游详情'}}</view>
+        <view class="nav-placeholder"></view>
+      </view>
+
+      <block wx:if="{{guide}}">
+        <view class="hero-main">
+          <view class="hero-name">{{guide.name}}</view>
+          <view class="hero-subtitle">{{heroSubtitle || (guide.licenseText || '本地持证导游')}}</view>
+          <view class="hero-badges">
+            <view class="hero-badge">
+              <text class="badge-icon badge-icon-check">✓</text>
+              <text>正规持证服务</text>
+            </view>
+            <view class="hero-badge">
+              <text class="badge-icon">📅</text>
+              <text>按日期和行程协调安排</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <view wx:elif="{{loading}}" class="hero-skeleton">
+        <view class="sk-hero-line sk-hero-short"></view>
+        <view class="sk-hero-line sk-hero-title"></view>
+        <view class="sk-hero-line sk-hero-mid"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-sheet">
+    <view wx:if="{{loading}}" class="skeleton-wrap">
+      <view class="sk-profile-card">
+        <view class="sk-avatar"></view>
+        <view class="sk-info">
+          <view class="sk-line sk-short"></view>
+          <view class="sk-line sk-mid"></view>
+          <view class="sk-line sk-long"></view>
+        </view>
+      </view>
+      <view class="sk-block"></view>
+      <view class="sk-block sk-block-sm"></view>
+    </view>
+
+    <block wx:elif="{{guide}}">
+
+      <view class="summary-strip">
+        <view class="summary-avatar-wrap">
+          <image
+            wx:if="{{guide.avatar}}"
+            class="summary-avatar"
+            src="{{guide.avatar}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="summary-avatar summary-avatar-fallback">
+            <text class="summary-avatar-char">{{guide.name[0]}}</text>
+          </view>
+        </view>
+
+        <view class="summary-metrics">
+          <view class="summary-item" wx:for="{{trustPoints}}" wx:key="label">
+            <view class="summary-label">{{item.label}}</view>
+            <view class="summary-value">{{item.value}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section" wx:if="{{serviceScope.length}}">
+        <view class="section-head">
+          <view class="section-title">服务说明</view>
+        </view>
+        <view class="bullet-list">
+          <view class="bullet-item" wx:for="{{serviceScope}}" wx:key="*this">
+            <text class="bullet-dot"></text>
+            <text class="bullet-text">{{item}}</text>
+          </view>
+        </view>
+        <text wx:if="{{serviceDescription}}" class="desc-text service-desc">{{serviceDescription}}</text>
+      </view>
+
+      <view class="section" wx:if="{{bookingArrangement.length}}">
+        <view class="section-head">
+          <view class="section-title">预订与安排</view>
+        </view>
+        <view class="bullet-list">
+          <view class="bullet-item" wx:for="{{bookingArrangement}}" wx:key="*this">
+            <text class="bullet-dot"></text>
+            <text class="bullet-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+</view>
+
+<bottom-contact-bar
+  wx:if="{{guide}}"
+  phone="{{guide.phone}}"
+  show-consult="{{guide.wechatServiceEnabled}}"
+  consult-label="咨询行程"
+  phone-label="电话沟通"
+/>

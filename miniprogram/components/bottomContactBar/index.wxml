@@ -1,0 +1,35 @@
+<!--components/bottomContactBar/index.wxml-->
+<view class="bar">
+  <view class="btn-group">
+    <!-- 在线咨询 -->
+    <button
+      wx:if="{{showConsult}}"
+      class="btn btn-consult"
+      open-type="contact"
+      hover-class="btn-hover"
+    >
+      <view class="btn-icon-wrap btn-icon-wrap-light">
+        <image class="btn-icon-img" src="/images/icons/consult-blue.svg" mode="aspectFit" />
+      </view>
+      <view class="btn-copy">
+        <text class="btn-label">{{consultLabel}}</text>
+        <text class="btn-sub">优先文字沟通</text>
+      </view>
+    </button>
+
+    <!-- 电话联系 -->
+    <view
+      class="btn btn-phone {{showConsult ? '' : 'btn-full btn-primary-solo'}}"
+      bindtap="onPhoneCall"
+      hover-class="btn-hover"
+    >
+      <view class="btn-icon-wrap btn-icon-wrap-solid">
+        <image class="btn-icon-img" src="/images/icons/phone-white.svg" mode="aspectFit" />
+      </view>
+      <view class="btn-copy">
+        <text class="btn-label">{{phoneLabel}}</text>
+        <text class="btn-sub">直接快速确认</text>
+      </view>
+    </view>
+  </view>
+</view>

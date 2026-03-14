@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/guideDetail/index"
+  ],
+  "window": {
+    "backgroundColor": "#F2F4F7",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#A52826",
+    "navigationBarTitleText": "五台山导游",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json",
+  "useExtendedLib": {
+    "weui": true
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

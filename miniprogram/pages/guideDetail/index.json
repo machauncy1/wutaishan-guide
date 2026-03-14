@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "bottom-contact-bar": "/components/bottomContactBar/index"
+  }
+}

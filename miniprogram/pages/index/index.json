@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "guide-card": "/components/guideCard/index",
+    "bottom-contact-bar": "/components/bottomContactBar/index"
+  }
+}

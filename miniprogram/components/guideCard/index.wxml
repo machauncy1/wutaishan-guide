@@ -1,0 +1,36 @@
+<!--components/guideCard/index.wxml-->
+<view class="card">
+  <!-- 头像 -->
+  <view class="avatar-wrap">
+    <image
+      wx:if="{{guide.avatar}}"
+      class="avatar"
+      src="{{guide.avatar}}"
+      mode="aspectFill"
+    />
+    <view wx:else class="avatar avatar-fallback">
+      <text class="avatar-char">{{guide.name[0]}}</text>
+    </view>
+  </view>
+
+  <!-- 右侧信息区 -->
+  <view class="info">
+    <text class="name">{{guide.name}}</text>
+    <view class="row-stats">
+      <text class="stat-exp">{{guide.experienceYear}}年经验</text>
+      <text class="stat-sep">|</text>
+      <text class="stat-thumb">👍</text>
+      <text class="stat-service">服务{{guide.serviceCount}}+游客</text>
+    </view>
+    <view class="row-tags">
+      <view class="tag-pill" wx:for="{{guide.tags}}" wx:key="*this">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 右箭头 -->
+  <view class="arrow">
+    <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>
+  </view>
+</view>
