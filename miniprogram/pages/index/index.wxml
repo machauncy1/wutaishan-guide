@@ -18,8 +18,8 @@
 
       <!-- 主标题区 -->
       <view class="banner-main">
-        <view class="banner-title">{{settings.homeTitle || '五台山导游服务'}}</view>
-        <view class="banner-subtitle">{{settings.homeSubtitle || '寺庙讲解 · 接站包车'}}</view>
+        <view class="banner-title">{{settings.homeTitle || '五台山当地导游'}}</view>
+        <view class="banner-subtitle">{{settings.homeSubtitle || '专业讲解 · 行程规划 · 定制化包车游'}}</view>
         <view class="banner-badges">
           <view class="banner-badge">
             <text class="badge-icon badge-icon-check">✓</text>
@@ -31,7 +31,7 @@
           </view>
           <view class="banner-badge">
             <text class="badge-icon">⭐</text>
-            <text>已服务{{settings.serviceTotal || '12000'}}+游客</text>
+            <text>已服务{{settings.serviceTotal || '21300'}}+游客</text>
           </view>
         </view>
       </view>
