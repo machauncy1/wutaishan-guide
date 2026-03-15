@@ -9,7 +9,16 @@ exports.main = async (event) => {
     return { success: false, errMsg: 'guideId is required' };
   }
   try {
-    const res = await db.collection('guides').doc(guideId).get();
+    const res = await db.collection('guides').doc(guideId).field({
+      name: true,
+      avatar: true,
+      experienceYear: true,
+      serviceCount: true,
+      phone: true,
+      licenseText: true,
+      wechatServiceEnabled: true,
+      status: true,
+    }).get();
     if (!res.data || res.data.status === false) {
       return { success: false, errMsg: 'not found', data: null };
     }

@@ -12,12 +12,9 @@ exports.main = async () => {
       .field({
         avatar: true,
         name: true,
-        gender: true,
         experienceYear: true,
         serviceCount: true,
         tags: true,
-        agencyName: true,
-        licenseText: true,
       })
       .get();
     return { success: true, data: res.data };
