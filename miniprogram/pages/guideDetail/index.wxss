@@ -280,8 +280,8 @@ page {
 
 .tag {
   font-size: 22rpx;
-  color: #E67E22;
-  background: #FEF5EC;
+  color: #2E86C1;
+  background: #EBF5FB;
   padding: 6rpx 16rpx;
   border-radius: 6rpx;
   line-height: 1.3;

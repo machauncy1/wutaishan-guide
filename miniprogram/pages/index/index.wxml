@@ -19,7 +19,7 @@
       <!-- 主标题区 -->
       <view class="banner-main">
         <view class="banner-title">{{settings.homeTitle || '五台山导游服务'}}</view>
-        <view class="banner-subtitle">{{settings.homeSubtitle || '寺庙讲解 · 朝台陪同 · 接站包车'}}</view>
+        <view class="banner-subtitle">{{settings.homeSubtitle || '寺庙讲解 · 接站包车'}}</view>
         <view class="banner-badges">
           <view class="banner-badge">
             <text class="badge-icon badge-icon-check">✓</text>
