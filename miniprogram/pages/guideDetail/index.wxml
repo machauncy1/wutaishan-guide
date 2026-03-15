@@ -71,7 +71,7 @@
             bindload="onAvatarLoad"
           />
           <view wx:else class="summary-avatar summary-avatar-fallback">
-            <text class="summary-avatar-char">{{guide.name[0]}}</text>
+            <text class="summary-avatar-char">{{guide.name[0] || ''}}</text>
           </view>
         </view>
 

@@ -56,7 +56,7 @@ Page({
       serviceScope: this.buildServiceScope(),
       bookingArrangement: this.buildBookingArrangement(guide),
       heroSubtitle: this.buildHeroSubtitle(guide),
-      serviceDescription: this.buildServiceDescription(guide),
+      serviceDescription: '',
     });
     this._resolveCloudFileURLs(guide);
   },
@@ -114,10 +114,6 @@ Page({
       '五台山景区内专业讲解与规划',
       '接站、包车等出行协助沟通',
     ];
-  },
-
-  buildServiceDescription(guide) {
-    return '';
   },
 
   buildBookingArrangement(guide) {

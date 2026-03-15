@@ -98,18 +98,21 @@ Page({
   },
 
   _observeGuideCards(guideList) {
-    // 清理上一次的 observer
     if (this._observer) this._observer.disconnect();
     if (!guideList.length) return;
 
-    const observer = this.createIntersectionObserver({ observeAll: true });
-    observer.relativeToViewport({ bottom: 200 }).observe('.card-wrap', (res) => {
-      if (res.intersectionRatio > 0) {
-        const id = res.dataset && res.dataset.id;
-        if (id) prefetchGuide(id);
-      }
-    });
-    this._observer = observer;
+    try {
+      const observer = this.createIntersectionObserver({ observeAll: true });
+      observer.relativeToViewport({ bottom: 200 }).observe('.card-wrap', (res) => {
+        if (res.intersectionRatio > 0) {
+          const id = res.dataset && res.dataset.id;
+          if (id) prefetchGuide(id);
+        }
+      });
+      this._observer = observer;
+    } catch (e) {
+      // 部分低版本基础库不支持 IntersectionObserver，静默降级
+    }
   },
 
   onGuideTap(e) {
