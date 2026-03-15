@@ -13,7 +13,12 @@ exports.main = async (event) => {
     if (!res.data || res.data.status === false) {
       return { success: false, errMsg: 'not found', data: null };
     }
-    return { success: true, data: res.data };
+    const guide = res.data;
+    if (guide.avatar) {
+      const urlRes = await cloud.getTempFileURL({ fileList: [guide.avatar] });
+      guide.avatar = urlRes.fileList[0].tempFileURL || guide.avatar;
+    }
+    return { success: true, data: guide };
   } catch (e) {
     return { success: false, errMsg: e.message };
   }

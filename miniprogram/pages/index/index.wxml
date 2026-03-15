@@ -5,7 +5,7 @@
   <view class="banner">
     <image
       class="banner-img"
-      src="/images/banner-image.png"
+      src="{{settings.bannerImage}}"
       mode="aspectFill"
     />
     <view class="banner-gradient"></view>

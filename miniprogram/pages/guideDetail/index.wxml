@@ -4,7 +4,7 @@
   <view class="hero">
     <image
       class="hero-img"
-      src="/images/banner-image.png"
+      src="{{settings.bannerImage}}"
       mode="aspectFill"
     />
     <view class="hero-gradient"></view>
