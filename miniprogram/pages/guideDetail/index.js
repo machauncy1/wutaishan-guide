@@ -40,7 +40,10 @@ Page({
   },
 
   async loadGuide(id) {
-    this.setData({ loading: true });
+    // 已有数据时静默刷新，不显示骨架屏
+    if (!this.data.guide) {
+      this.setData({ loading: true });
+    }
     try {
       const [guideRes, settingsRes] = await Promise.all([
         getGuideDetail(id),
