@@ -2,13 +2,13 @@
 import { getGuideDetail } from '../../services/guide';
 import { getSettings } from '../../services/settings';
 import { getTempFileURLMap } from '../../services/cloudFile';
+import { getCachedGuide } from '../../services/guideCache';
 
 Page({
   data: {
     settings: {},
     guide: null,
     loading: true,
-    heroBannerLoaded: false,
     statusBarHeight: 20,
     navBarHeight: 44,
     contactSubtitle: '',
@@ -17,11 +17,17 @@ Page({
     bookingArrangement: [],
     heroSubtitle: '',
     serviceDescription: '',
+    avatarLoaded: false,
   },
 
   onLoad(options) {
     const { id } = options;
     this._initNavHeight();
+    // 从缓存立即读取 settings，banner 图与云函数并行加载
+    try {
+      const cached = wx.getStorageSync('settings');
+      if (cached) this.setData({ settings: cached });
+    } catch (e) { /* ignore */ }
     if (!id) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
@@ -40,11 +46,31 @@ Page({
     }
   },
 
+  _applyGuide(guide, settings) {
+    this.setData({
+      guide,
+      settings,
+      loading: false,
+      contactSubtitle: this.buildContactSubtitle(guide),
+      trustPoints: this.buildTrustPoints(guide),
+      serviceScope: this.buildServiceScope(),
+      bookingArrangement: this.buildBookingArrangement(guide),
+      heroSubtitle: this.buildHeroSubtitle(guide),
+      serviceDescription: this.buildServiceDescription(guide),
+    });
+    this._resolveCloudFileURLs(guide);
+  },
+
   async loadGuide(id) {
-    // 已有数据时静默刷新，不显示骨架屏
-    if (!this.data.guide) {
+    // 优先使用预加载缓存，秒开详情
+    const cached = getCachedGuide(id);
+    if (cached) {
+      this._applyGuide(cached, this.data.settings);
+    } else if (!this.data.guide) {
       this.setData({ loading: true });
     }
+
+    // 始终从云端拉取最新数据
     try {
       const [guideRes, settingsRes] = await Promise.all([
         getGuideDetail(id),
@@ -57,24 +83,14 @@ Page({
         wx.navigateBack();
         return;
       }
-
-      // 先渲染数据，再异步转换图片链接（不阻塞详情展示）
-      this.setData({
-        guide,
-        settings,
-        loading: false,
-        contactSubtitle: this.buildContactSubtitle(guide),
-        trustPoints: this.buildTrustPoints(guide),
-        serviceScope: this.buildServiceScope(),
-        bookingArrangement: this.buildBookingArrangement(guide),
-        heroSubtitle: this.buildHeroSubtitle(guide),
-        serviceDescription: this.buildServiceDescription(guide),
-      });
-      this._resolveCloudFileURLs(guide);
+      this._applyGuide(guide, settings);
     } catch (e) {
       console.error('加载导游详情失败', e);
-      this.setData({ loading: false });
-      wx.showToast({ title: '加载失败，请重试', icon: 'none' });
+      // 如果已有缓存数据，静默失败即可
+      if (!this.data.guide) {
+        this.setData({ loading: false });
+        wx.showToast({ title: '加载失败，请重试', icon: 'none' });
+      }
     }
   },
 
@@ -114,6 +130,10 @@ Page({
     return guide.phone ? items.slice(0, 3) : items.slice(0, 2);
   },
 
+  onAvatarLoad() {
+    this.setData({ avatarLoaded: true });
+  },
+
   async _resolveCloudFileURLs(guide) {
     // banner 直接用 cloud:// 协议渲染，只转换头像
     const urlMap = await getTempFileURLMap([guide.avatar]);
@@ -122,10 +142,6 @@ Page({
     const updated = {};
     if (urlMap[guide.avatar]) updated['guide.avatar'] = urlMap[guide.avatar];
     if (Object.keys(updated).length) this.setData(updated);
-  },
-
-  onHeroBannerLoad() {
-    this.setData({ heroBannerLoaded: true });
   },
 
   onBack() {

@@ -4,9 +4,10 @@
   <view class="avatar-wrap">
     <image
       wx:if="{{guide.avatar}}"
-      class="avatar"
+      class="avatar {{avatarLoaded ? 'avatar-loaded' : ''}}"
       src="{{guide.avatar}}"
       mode="aspectFill"
+      bindload="onAvatarLoad"
     />
     <view wx:else class="avatar avatar-fallback">
       <text class="avatar-char">{{guide.name[0]}}</text>

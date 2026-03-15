@@ -6,4 +6,12 @@ Component({
       value: {},
     },
   },
+  data: {
+    avatarLoaded: false,
+  },
+  methods: {
+    onAvatarLoad() {
+      this.setData({ avatarLoaded: true });
+    },
+  },
 });

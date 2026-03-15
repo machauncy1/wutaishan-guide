@@ -3,10 +3,9 @@
 
   <view class="hero">
     <image
-      class="hero-img {{heroBannerLoaded ? 'hero-img-loaded' : ''}}"
+      class="hero-img"
       src="{{settings.bannerImage}}"
       mode="aspectFill"
-      bindload="onHeroBannerLoad"
     />
     <view class="hero-gradient"></view>
 
@@ -66,9 +65,10 @@
         <view class="summary-avatar-wrap">
           <image
             wx:if="{{guide.avatar}}"
-            class="summary-avatar"
+            class="summary-avatar {{avatarLoaded ? 'summary-avatar-loaded' : ''}}"
             src="{{guide.avatar}}"
             mode="aspectFill"
+            bindload="onAvatarLoad"
           />
           <view wx:else class="summary-avatar summary-avatar-fallback">
             <text class="summary-avatar-char">{{guide.name[0]}}</text>

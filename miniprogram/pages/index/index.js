@@ -2,6 +2,7 @@
 import { getGuideList } from '../../services/guide';
 import { getSettings } from '../../services/settings';
 import { getTempFileURLMap } from '../../services/cloudFile';
+import { prefetchGuide } from '../../services/guideCache';
 
 Page({
   data: {
@@ -16,6 +17,7 @@ Page({
 
   onLoad() {
     this._initNavHeight();
+    this._loadFromCache();
     this.loadData();
   },
 
@@ -34,6 +36,20 @@ Page({
     }
   },
 
+  _loadFromCache() {
+    try {
+      const settings = wx.getStorageSync('settings');
+      const guideList = wx.getStorageSync('guideList');
+      if (settings || (guideList && guideList.length)) {
+        this.setData({
+          settings: settings || {},
+          guideList: guideList || [],
+          loading: false,
+        });
+      }
+    } catch (e) { /* ignore */ }
+  },
+
   async loadData() {
     // 已有数据时静默刷新，不显示骨架屏
     if (!this.data.guideList.length) {
@@ -47,13 +63,21 @@ Page({
       const settings = settingsRes.result.data || {};
       const guideList = guidesRes.result.data || [];
 
-      // 先渲染数据，再异步转换图片链接（不阻塞列表展示）
+      // 缓存到本地，下次打开秒开
+      try {
+        wx.setStorageSync('settings', settings);
+        wx.setStorageSync('guideList', guideList);
+      } catch (e) { /* ignore */ }
       this.setData({ settings, guideList, loading: false });
       this._resolveCloudFileURLs(guideList);
+      this._observeGuideCards(guideList);
     } catch (e) {
       console.error('加载数据失败', e);
-      this.setData({ loading: false });
-      wx.showToast({ title: '加载失败，请重试', icon: 'none' });
+      // 有缓存数据时静默失败
+      if (!this.data.guideList.length) {
+        this.setData({ loading: false });
+        wx.showToast({ title: '加载失败，请重试', icon: 'none' });
+      }
     }
   },
 
@@ -71,6 +95,21 @@ Page({
       }
     });
     if (Object.keys(updated).length) this.setData(updated);
+  },
+
+  _observeGuideCards(guideList) {
+    // 清理上一次的 observer
+    if (this._observer) this._observer.disconnect();
+    if (!guideList.length) return;
+
+    const observer = this.createIntersectionObserver({ observeAll: true });
+    observer.relativeToViewport({ bottom: 200 }).observe('.card-wrap', (res) => {
+      if (res.intersectionRatio > 0) {
+        const id = res.dataset && res.dataset.id;
+        if (id) prefetchGuide(id);
+      }
+    });
+    this._observer = observer;
   },
 
   onGuideTap(e) {
