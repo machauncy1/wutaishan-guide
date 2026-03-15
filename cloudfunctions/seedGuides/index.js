@@ -18,7 +18,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 1,
+    sort: 7,
   },
   {
     name: '韩妮',
@@ -48,7 +48,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 3,
+    sort: 6,
   },
   {
     name: '郑瑶',
@@ -63,7 +63,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 4,
+    sort: 8,
   },
   {
     name: '索晋芳',
@@ -78,7 +78,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 5,
+    sort: 1,
   },
   {
     name: '王智慧',
@@ -93,7 +93,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 6,
+    sort: 5,
   },
   {
     name: '段紫旋',
@@ -108,7 +108,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 7,
+    sort: 9,
   },
   {
     name: '杨树花',
@@ -123,7 +123,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 8,
+    sort: 10,
   },
   {
     name: '李艳波',
@@ -138,7 +138,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 9,
+    sort: 3,
   },
   {
     name: '史小玲',
@@ -153,7 +153,7 @@ const guides = [
     licenseText: '本地持证导游',
     wechatServiceEnabled: true,
     status: true,
-    sort: 10,
+    sort: 4,
   },
   {
     name: '杨振宇',
