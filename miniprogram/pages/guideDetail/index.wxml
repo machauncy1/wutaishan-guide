@@ -3,9 +3,10 @@
 
   <view class="hero">
     <image
-      class="hero-img"
+      class="hero-img {{heroBannerLoaded ? 'hero-img-loaded' : ''}}"
       src="{{settings.bannerImage}}"
       mode="aspectFill"
+      bindload="onHeroBannerLoad"
     />
     <view class="hero-gradient"></view>
 

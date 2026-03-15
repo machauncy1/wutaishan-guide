@@ -8,6 +8,7 @@ Page({
     settings: {},
     guide: null,
     loading: true,
+    heroBannerLoaded: false,
     statusBarHeight: 20,
     navBarHeight: 44,
     contactSubtitle: '',
@@ -121,6 +122,10 @@ Page({
     if (urlMap[settings.bannerImage]) updated['settings.bannerImage'] = urlMap[settings.bannerImage];
     if (urlMap[guide.avatar]) updated['guide.avatar'] = urlMap[guide.avatar];
     if (Object.keys(updated).length) this.setData(updated);
+  },
+
+  onHeroBannerLoad() {
+    this.setData({ heroBannerLoaded: true });
   },
 
   onBack() {

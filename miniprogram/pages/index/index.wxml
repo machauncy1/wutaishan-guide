@@ -4,9 +4,10 @@
   <!-- ===== Banner ===== -->
   <view class="banner">
     <image
-      class="banner-img"
+      class="banner-img {{bannerLoaded ? 'banner-img-loaded' : ''}}"
       src="{{settings.bannerImage}}"
       mode="aspectFill"
+      bindload="onBannerLoad"
     />
     <view class="banner-gradient"></view>
 

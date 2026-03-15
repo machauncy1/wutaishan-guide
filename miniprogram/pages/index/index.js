@@ -8,6 +8,7 @@ Page({
     settings: {},
     guideList: [],
     loading: true,
+    bannerLoaded: false,
     // 自定义导航栏高度计算
     statusBarHeight: 20,
     navBarHeight: 44,
@@ -80,6 +81,10 @@ Page({
     wx.navigateTo({
       url: `/pages/guideDetail/index?id=${id}`,
     });
+  },
+
+  onBannerLoad() {
+    this.setData({ bannerLoaded: true });
   },
 
   onPhoneCall() {
