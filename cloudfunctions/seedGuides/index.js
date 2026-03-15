@@ -7,7 +7,7 @@ const db = cloud.database();
 const guides = [
   {
     name: '魏宏虎',
-    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/wei-honghu.png',
+    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/wei-honghu.jpg',
     experienceYear: 8,
     serviceCount: 1500,
     tags: ['包车服务', '寺庙讲解', '家庭游'],
@@ -19,7 +19,7 @@ const guides = [
   },
   {
     name: '韩妮',
-    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/han-ni.png',
+    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/han-ni.jpg',
     experienceYear: 8,
     serviceCount: 1500,
     tags: ['佛教文化', '许愿还愿', '司导服务'],
@@ -31,7 +31,7 @@ const guides = [
   },
   {
     name: '闫嘉豪',
-    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/yan-jiahao.png',
+    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/yan-jiahao.jpg',
     experienceYear: 10,
     serviceCount: 2000,
     tags: ['深度礼佛', '司导服务', '寺庙讲解'],
@@ -55,7 +55,7 @@ const guides = [
   },
   {
     name: '索晋芳',
-    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/suo-jinfang.png',
+    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/suo-jinfang.jpg',
     experienceYear: 9,
     serviceCount: 1800,
     tags: ['全程陪同', '深度礼佛', '行程规划'],
@@ -91,7 +91,7 @@ const guides = [
   },
   {
     name: '杨树花',
-    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/yang-shuhua.png',
+    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/yang-shuhua.jpg',
     experienceYear: 13,
     serviceCount: 2800,
     tags: ['家庭游', '亲自游', '许愿还愿'],
@@ -115,7 +115,7 @@ const guides = [
   },
   {
     name: '史小玲',
-    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/shi-xiaoling.png',
+    avatar: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/shi-xiaoling.jpg',
     experienceYear: 13,
     serviceCount: 3000,
     tags: ['徒步路线', '文化深度游', '定制路线'],
