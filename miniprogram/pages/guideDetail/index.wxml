@@ -16,7 +16,7 @@
         <view class="nav-back" bindtap="onBack">
           <text class="nav-back-icon">‹</text>
         </view>
-        <view class="nav-title">{{guide ? guide.name + ' 导游' : '导游详情'}}</view>
+        <view class="nav-title">导游详情</view>
         <view class="nav-placeholder"></view>
       </view>
 
