@@ -145,7 +145,7 @@ const defaultSettings = {
   bannerImage: 'cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/banner-image.png',
   homeTitle: '五台山本地导游',
   homeSubtitle: '寺庙讲解 · 接站包车',
-  serviceTotal: 12000,
+  serviceTotal: 21300,
   contactPhone: '13812340001',
   wechatServiceEnabled: true,
 };
