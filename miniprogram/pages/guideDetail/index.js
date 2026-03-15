@@ -70,7 +70,7 @@ Page({
         heroSubtitle: this.buildHeroSubtitle(guide),
         serviceDescription: this.buildServiceDescription(guide),
       });
-      this._resolveCloudFileURLs(settings, guide);
+      this._resolveCloudFileURLs(guide);
     } catch (e) {
       console.error('加载导游详情失败', e);
       this.setData({ loading: false });
@@ -114,12 +114,12 @@ Page({
     return guide.phone ? items.slice(0, 3) : items.slice(0, 2);
   },
 
-  async _resolveCloudFileURLs(settings, guide) {
-    const urlMap = await getTempFileURLMap([settings.bannerImage, guide.avatar]);
+  async _resolveCloudFileURLs(guide) {
+    // banner 直接用 cloud:// 协议渲染，只转换头像
+    const urlMap = await getTempFileURLMap([guide.avatar]);
     if (!Object.keys(urlMap).length) return;
 
     const updated = {};
-    if (urlMap[settings.bannerImage]) updated['settings.bannerImage'] = urlMap[settings.bannerImage];
     if (urlMap[guide.avatar]) updated['guide.avatar'] = urlMap[guide.avatar];
     if (Object.keys(updated).length) this.setData(updated);
   },

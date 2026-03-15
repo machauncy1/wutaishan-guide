@@ -49,7 +49,7 @@ Page({
 
       // 先渲染数据，再异步转换图片链接（不阻塞列表展示）
       this.setData({ settings, guideList, loading: false });
-      this._resolveCloudFileURLs(settings, guideList);
+      this._resolveCloudFileURLs(guideList);
     } catch (e) {
       console.error('加载数据失败', e);
       this.setData({ loading: false });
@@ -57,17 +57,14 @@ Page({
     }
   },
 
-  async _resolveCloudFileURLs(settings, guideList) {
-    const urlMap = await getTempFileURLMap([
-      settings.bannerImage,
-      ...guideList.map((g) => g.avatar),
-    ]);
+  async _resolveCloudFileURLs(guideList) {
+    // banner 直接用 cloud:// 协议渲染，只转换头像
+    const urlMap = await getTempFileURLMap(
+      guideList.map((g) => g.avatar),
+    );
     if (!Object.keys(urlMap).length) return;
 
     const updated = {};
-    if (urlMap[settings.bannerImage]) {
-      updated['settings.bannerImage'] = urlMap[settings.bannerImage];
-    }
     guideList.forEach((g, i) => {
       if (urlMap[g.avatar]) {
         updated[`guideList[${i}].avatar`] = urlMap[g.avatar];
