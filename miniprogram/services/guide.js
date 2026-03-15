@@ -12,24 +12,3 @@ export function getGuideDetail(guideId) {
     data: { guideId },
   });
 }
-
-export function adminUpsertGuide(data) {
-  return wx.cloud.callFunction({
-    name: 'adminUpsertGuide',
-    data,
-  });
-}
-
-export function adminDeleteGuide(guideId) {
-  return wx.cloud.callFunction({
-    name: 'adminDeleteGuide',
-    data: { guideId },
-  });
-}
-
-export function adminGetGuideList(data) {
-  return wx.cloud.callFunction({
-    name: 'adminGetGuideList',
-    data,
-  });
-}
