@@ -210,8 +210,9 @@ exports.main = async (event) => {
       log.push('settings：已存在，跳过');
     } else {
       if (settingsExists) {
+        const { _id, ...settingsData } = defaultSettings;
         await db.collection('settings').doc('global').set({
-          data: { ...defaultSettings, updatedAt: now },
+          data: { ...settingsData, updatedAt: now },
         });
         log.push('settings：已更新');
       } else {
