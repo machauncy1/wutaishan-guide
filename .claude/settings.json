@@ -20,7 +20,8 @@
       "Bash(node scripts/seed.js)",
       "Bash(pnpm exec:*)",
       "Bash(ls miniprogram/**/*.js)",
-      "Bash(pnpm seed:*)"
+      "Bash(pnpm seed:*)",
+      "Bash(node -e \":*)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide"

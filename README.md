@@ -2,36 +2,44 @@
 
 基于微信云开发的五台山当地导游服务小程序。
 
+## 技术栈
+
+- 微信小程序 + TypeScript
+- 微信云开发（CloudBase）客户端直查
+- ESLint + Prettier + husky pre-commit
+
 ## 项目结构
 
 ```
-├── miniprogram/        # 小程序前端
-├── cloudfunctions/     # 云函数
-│   ├── seedData/       # 数据初始化（导游、全局配置）
-│   ├── getGuideList/   # 获取导游列表
-│   ├── getGuideDetail/ # 获取导游详情
-│   └── getSettings/    # 获取全局配置
-├── mcp-server/         # MCP Server（本地开发工具）
-│   ├── index.js        # 入口：初始化 CloudBase + MCP
-│   └── tools/          # 工具模块（可扩展）
-└── .mcp.json           # MCP Server 配置
+├── miniprogram/           # 小程序前端（TypeScript）
+│   ├── services/          # 数据服务层（wx.cloud.database 直查）
+│   ├── pages/             # 页面（导游列表、导游详情）
+│   ├── components/        # 组件（导游卡片、底部联系栏）
+│   └── tsconfig.json      # 小程序 TS 配置
+├── scripts/               # 工具脚本
+│   ├── seed.ts            # 数据库初始化脚本
+│   └── data/              # 预置数据（guides.json、settings.json）
+├── types/                 # 共享类型定义（数据库 schema）
+│   └── index.d.ts
+├── cloudfunctions/        # 云函数（预留，当前未使用）
+├── tsconfig.json          # Node 脚本 TS 配置
+├── eslint.config.mjs      # ESLint 配置（JS + TS）
+└── package.json           # 依赖管理 + 脚本命令
 ```
 
 ## 环境准备
 
-### 1. 小程序开发
-
-使用微信开发者工具打开项目即可。
-
-### 2. MCP Server（Claude Code 集成）
-
-MCP Server 让 Claude Code 能直接操作云数据库（初始化数据、调用云函数等）。
+### 1. 安装依赖
 
 ```bash
-# 安装依赖
-cd mcp-server && pnpm install
+pnpm install
+```
 
-# 在项目根目录创建 .env 文件
+### 2. 配置环境变量
+
+在项目根目录创建 `.env` 文件：
+
+```
 TCB_SECRET_ID=你的腾讯云SecretId
 TCB_SECRET_KEY=你的腾讯云SecretKey
 TCB_ENV_ID=cloud1-7g44gn8c3a08ced5
@@ -39,16 +47,28 @@ TCB_ENV_ID=cloud1-7g44gn8c3a08ced5
 
 密钥获取：[腾讯云 API 密钥管理](https://console.cloud.tencent.com/cam/capi)
 
-配置完成后重启 Claude 插件（`Cmd+Shift+P` → `Claude: Restart`），即可通过自然语言操作云数据。
-
-### 3. 云函数部署（可选）
-
-安装云开发 CLI 后可通过命令行部署云函数：
+### 3. 初始化数据库
 
 ```bash
-pnpm add -g @cloudbase/cli
-tcb login --apiKeyId <SecretId> --apiKey <SecretKey>
-cd cloudfunctions/seedData && tcb fn deploy seedData --envId cloud1-7g44gn8c3a08ced5 --force --yes
+pnpm seed          # 增量（已有数据则跳过）
+pnpm seed:force    # 强制重置全部数据
 ```
 
-也可在微信开发者工具中右键云函数目录 → 上传并部署。
+### 4. 小程序开发
+
+使用微信开发者工具打开项目即可，TS 编译已启用。
+
+## 常用命令
+
+| 命令 | 说明 |
+|------|------|
+| `pnpm seed` | 初始化数据库（增量） |
+| `pnpm seed:force` | 强制重置数据库 |
+| `pnpm lint` | 代码检查 |
+| `pnpm lint:fix` | 自动修复 |
+
+## 数据管理
+
+导游和配置数据存放在 `scripts/data/` 目录下的 JSON 文件中。修改数据后运行 `pnpm seed:force` 即可同步到云数据库。
+
+类型定义在 `types/index.d.ts`，同时作为数据库 schema 文档。
