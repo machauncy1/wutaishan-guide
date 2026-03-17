@@ -60,8 +60,8 @@ Page({
         getSettings(),
         getGuideList(),
       ]);
-      const settings = settingsRes.result.data || {};
-      const guideList = guidesRes.result.data || [];
+      const settings = settingsRes.data || {};
+      const guideList = guidesRes.data || [];
 
       // 缓存到本地，下次打开秒开
       try {

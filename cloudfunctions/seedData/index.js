@@ -3,7 +3,8 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const db = cloud.database();
 
-// ===== 10 位导游数据 =====
+// ===== 11 位导游数据 =====
+// reviews 格式：nickname（微信风格带星号）、rating、tripType、date，无 content
 const guides = [
   {
     name: '魏宏虎',
@@ -16,6 +17,15 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 7,
+    reviews: [
+      { nickname: 'A**e', rating: 5, tripType: '公司团建', date: '2025-08-16' },
+      { nickname: '小**子', rating: 5, tripType: '周末游', date: '2025-07-26' },
+      { nickname: '云**飞', rating: 5, tripType: '独自出行', date: '2025-06-28' },
+      { nickname: 'L**y', rating: 5, tripType: '情侣出行', date: '2025-06-15' },
+      { nickname: '阳**光', rating: 5, tripType: '朋友结伴', date: '2025-06-01' },
+      { nickname: '风**起', rating: 5, tripType: '带父母', date: '2025-03-22' },
+      { nickname: 'M**k', rating: 4, tripType: '家庭出行', date: '2025-02-15' },
+    ],
   },
   {
     name: '韩妮',
@@ -28,6 +38,14 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 2,
+    reviews: [
+      { nickname: '静**水', rating: 5, tripType: '带父母', date: '2025-10-01' },
+      { nickname: '大**哥', rating: 5, tripType: '公司团建', date: '2025-09-08' },
+      { nickname: 'S**n', rating: 5, tripType: '周末游', date: '2025-08-03' },
+      { nickname: '花**开', rating: 5, tripType: '许愿祈福', date: '2025-06-15' },
+      { nickname: '天**蓝', rating: 5, tripType: '家庭出行', date: '2025-05-18' },
+      { nickname: 'J**e', rating: 5, tripType: '朋友结伴', date: '2024-12-30' },
+    ],
   },
   {
     name: '闫嘉豪',
@@ -40,6 +58,15 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 6,
+    reviews: [
+      { nickname: '心**然', rating: 5, tripType: '独自出行', date: '2025-08-03' },
+      { nickname: '雨**后', rating: 5, tripType: '许愿祈福', date: '2025-07-26' },
+      { nickname: 'W**g', rating: 5, tripType: '公司团建', date: '2025-06-15' },
+      { nickname: '星**辰', rating: 5, tripType: '朋友结伴', date: '2025-03-22' },
+      { nickname: '悠**然', rating: 5, tripType: '周末游', date: '2024-12-30' },
+      { nickname: 'R**n', rating: 5, tripType: '带父母', date: '2024-11-20' },
+      { nickname: '梦**圆', rating: 4, tripType: '家庭出行', date: '2024-11-03' },
+    ],
   },
   {
     name: '郑瑶',
@@ -52,6 +79,13 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 8,
+    reviews: [
+      { nickname: '清**风', rating: 5, tripType: '许愿祈福', date: '2025-10-01' },
+      { nickname: 'K**y', rating: 5, tripType: '公司团建', date: '2025-06-28' },
+      { nickname: '暖**阳', rating: 5, tripType: '情侣出行', date: '2025-05-03' },
+      { nickname: 'T**a', rating: 5, tripType: '带父母', date: '2025-04-20' },
+      { nickname: '小**鱼', rating: 4, tripType: '周末游', date: '2024-11-03' },
+    ],
   },
   {
     name: '索晋芳',
@@ -64,6 +98,14 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 1,
+    reviews: [
+      { nickname: 'D**d', rating: 5, tripType: '周末游', date: '2025-10-01' },
+      { nickname: '安**好', rating: 5, tripType: '家庭出行', date: '2025-08-22' },
+      { nickname: '思**远', rating: 5, tripType: '情侣出行', date: '2025-08-16' },
+      { nickname: 'H**n', rating: 5, tripType: '带父母', date: '2025-07-26' },
+      { nickname: '乐**天', rating: 5, tripType: '独自出行', date: '2025-07-12' },
+      { nickname: '晓**月', rating: 5, tripType: '朋友结伴', date: '2024-12-30' },
+    ],
   },
   {
     name: '王志慧',
@@ -76,6 +118,15 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 5,
+    reviews: [
+      { nickname: 'C**y', rating: 5, tripType: '公司团建', date: '2025-09-15' },
+      { nickname: '微**笑', rating: 5, tripType: '家庭出行', date: '2025-07-12' },
+      { nickname: 'Z**o', rating: 5, tripType: '情侣出行', date: '2025-06-28' },
+      { nickname: '如**意', rating: 5, tripType: '独自出行', date: '2025-04-05' },
+      { nickname: '朝**阳', rating: 5, tripType: '带父母', date: '2025-03-08' },
+      { nickname: 'X**n', rating: 5, tripType: '周末游', date: '2025-02-15' },
+      { nickname: '平**安', rating: 4, tripType: '朋友结伴', date: '2024-12-15' },
+    ],
   },
   {
     name: '段紫旋',
@@ -88,6 +139,13 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 9,
+    reviews: [
+      { nickname: '逐**梦', rating: 5, tripType: '朋友结伴', date: '2025-10-01' },
+      { nickname: 'B**o', rating: 5, tripType: '公司团建', date: '2025-09-28' },
+      { nickname: '若**水', rating: 5, tripType: '情侣出行', date: '2025-08-16' },
+      { nickname: 'Y**i', rating: 5, tripType: '周末游', date: '2025-07-26' },
+      { nickname: '念**念', rating: 4, tripType: '许愿祈福', date: '2024-12-15' },
+    ],
   },
   {
     name: '杨树花',
@@ -100,6 +158,14 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 10,
+    reviews: [
+      { nickname: '向**阳', rating: 5, tripType: '情侣出行', date: '2025-10-05' },
+      { nickname: 'F**g', rating: 5, tripType: '独自出行', date: '2025-07-12' },
+      { nickname: '自**在', rating: 5, tripType: '朋友结伴', date: '2025-05-18' },
+      { nickname: '慕**白', rating: 5, tripType: '家庭出行', date: '2025-03-22' },
+      { nickname: 'N**l', rating: 5, tripType: '许愿祈福', date: '2024-12-15' },
+      { nickname: '初**见', rating: 4, tripType: '周末游', date: '2024-11-20' },
+    ],
   },
   {
     name: '李艳波',
@@ -112,6 +178,13 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 3,
+    reviews: [
+      { nickname: 'G**o', rating: 5, tripType: '朋友结伴', date: '2025-10-05' },
+      { nickname: '望**山', rating: 5, tripType: '独自出行', date: '2025-08-16' },
+      { nickname: '归**来', rating: 5, tripType: '家庭出行', date: '2025-07-26' },
+      { nickname: 'P**r', rating: 5, tripType: '许愿祈福', date: '2025-07-12' },
+      { nickname: '淡**然', rating: 5, tripType: '周末游', date: '2024-11-20' },
+    ],
   },
   {
     name: '史小玲',
@@ -124,6 +197,15 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 4,
+    reviews: [
+      { nickname: '拾**光', rating: 5, tripType: '许愿祈福', date: '2025-10-05' },
+      { nickname: 'E**a', rating: 5, tripType: '独自出行', date: '2025-09-28' },
+      { nickname: '知**秋', rating: 5, tripType: '带父母', date: '2025-09-15' },
+      { nickname: 'V**n', rating: 5, tripType: '周末游', date: '2025-07-26' },
+      { nickname: '长**安', rating: 5, tripType: '家庭出行', date: '2025-06-28' },
+      { nickname: '听**风', rating: 5, tripType: '朋友结伴', date: '2025-03-08' },
+      { nickname: 'Q**n', rating: 4, tripType: '情侣出行', date: '2025-01-25' },
+    ],
   },
   {
     name: '杨振宇',
@@ -136,6 +218,13 @@ const guides = [
     wechatServiceEnabled: true,
     status: true,
     sort: 11,
+    reviews: [
+      { nickname: '素**心', rating: 5, tripType: '带父母', date: '2025-06-15' },
+      { nickname: '半**夏', rating: 5, tripType: '公司团建', date: '2025-04-20' },
+      { nickname: 'I**s', rating: 5, tripType: '家庭出行', date: '2025-03-08' },
+      { nickname: '观**海', rating: 5, tripType: '许愿祈福', date: '2024-12-15' },
+      { nickname: 'U**e', rating: 4, tripType: '情侣出行', date: '2024-11-03' },
+    ],
   },
 ];
 

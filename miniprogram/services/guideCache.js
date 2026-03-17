@@ -19,7 +19,7 @@ export function prefetchGuide(guideId) {
 
   const p = getGuideDetail(guideId)
     .then((res) => {
-      const data = res.result && res.result.data;
+      const data = res.data;
       if (data) {
         _cache[guideId] = { data, timestamp: Date.now() };
       }

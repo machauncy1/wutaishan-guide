@@ -93,7 +93,6 @@
             <text class="bullet-text">{{item}}</text>
           </view>
         </view>
-        <text wx:if="{{serviceDescription}}" class="desc-text service-desc">{{serviceDescription}}</text>
       </view>
 
       <view class="section" wx:if="{{bookingArrangement.length}}">
@@ -105,6 +104,40 @@
             <text class="bullet-dot"></text>
             <text class="bullet-text">{{item}}</text>
           </view>
+        </view>
+      </view>
+
+      <view class="section reviews-section" wx:if="{{reviewTotal}}">
+        <view class="section-head">
+          <view class="section-title">游客评价</view>
+          <view class="review-summary">
+            <text class="review-score">{{reviewScore}}</text>
+            <text class="review-count">（{{reviewTotal}}条评价）</text>
+          </view>
+        </view>
+
+        <view class="review-list">
+          <view class="review-item" wx:for="{{reviewList}}" wx:key="index">
+            <view class="review-avatar">
+              <text class="review-avatar-char">{{item.nickname[0]}}</text>
+            </view>
+            <view class="review-body">
+              <view class="review-top">
+                <text class="review-nickname">{{item.nickname}}</text>
+                <view class="review-stars">
+                  <text class="star" wx:for="{{item.stars}}" wx:for-item="star" wx:key="*this">{{star}}</text>
+                </view>
+              </view>
+              <view class="review-bottom">
+                <text class="review-trip-type">{{item.tripType}}</text>
+                <text class="review-date">{{item.date}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="review-more" wx:if="{{reviewTotal > 3}}" bindtap="onToggleReviews">
+          <text>{{showAllReviews ? '收起评价' : '查看全部' + reviewTotal + '条评价'}}</text>
         </view>
       </view>
     </block>

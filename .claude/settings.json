@@ -5,7 +5,14 @@
       "mcp__wutaishan-cloud__seed-data",
       "Bash(pnpm add:*)",
       "Bash(tcb fn:*)",
-      "Bash(tcb login:*)"
+      "Bash(tcb login:*)",
+      "Bash(xargs cat:*)",
+      "Bash(npx tcb:*)",
+      "Bash(node -c index.js)",
+      "Bash(printf '\\\\n')",
+      "Bash(tcb service:*)",
+      "Bash(tcb --help)",
+      "Bash(git status:*)"
     ]
   }
 }

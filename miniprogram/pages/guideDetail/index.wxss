@@ -7,7 +7,7 @@ page {
 
 .page {
   min-height: 100vh;
-  padding-bottom: 72rpx;
+  padding-bottom: calc(200rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -257,11 +257,6 @@ page {
   letter-spacing: 0.5rpx;
 }
 
-.summary-note {
-  font-size: 24rpx;
-  color: #2577E3;
-}
-
 .section {
   margin: 18rpx 24rpx 0;
   padding: 28rpx 24rpx;
@@ -277,31 +272,6 @@ page {
   font-size: 30rpx;
   font-weight: 700;
   color: #1A1A1A;
-}
-
-.tags-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10rpx;
-}
-
-.tag {
-  font-size: 22rpx;
-  color: #2E86C1;
-  background: #EBF5FB;
-  padding: 6rpx 16rpx;
-  border-radius: 6rpx;
-  line-height: 1.3;
-}
-
-.desc-text {
-  font-size: 28rpx;
-  line-height: 1.85;
-  color: #4A4A4A;
-}
-
-.service-desc {
-  margin-top: 16rpx;
 }
 
 .bullet-list {
@@ -380,6 +350,127 @@ page {
 
 .sk-block-sm {
   height: 120rpx;
+}
+
+/* ===== 游客评价 ===== */
+
+.reviews-section .section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.review-score {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #F5A623;
+}
+
+.review-count {
+  font-size: 22rpx;
+  color: #A3AAB5;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.review-item {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #F0F1F3;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8F0FE 0%, #D2E3FC 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.review-avatar-char {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #4A90D9;
+}
+
+.review-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.review-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-nickname {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.review-bottom {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 6rpx;
+}
+
+.review-trip-type {
+  font-size: 20rpx;
+  color: #2E86C1;
+  background: #EBF5FB;
+  padding: 2rpx 10rpx;
+  border-radius: 4rpx;
+}
+
+.review-date {
+  font-size: 20rpx;
+  color: #B0B8C1;
+}
+
+.review-stars {
+  display: flex;
+  gap: 2rpx;
+  flex-shrink: 0;
+}
+
+.review-stars .star {
+  font-size: 22rpx;
+  color: #F5A623;
+}
+
+.review-more {
+  margin-top: 24rpx;
+  text-align: center;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #F0F1F3;
+}
+
+.review-more text {
+  font-size: 26rpx;
+  color: #2577E3;
+  font-weight: 500;
 }
 
 @keyframes pulse {

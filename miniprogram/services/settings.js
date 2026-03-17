@@ -1,7 +1,8 @@
 // services/settings.js
 
 export function getSettings() {
-  return wx.cloud.callFunction({
-    name: 'getSettings',
-  });
+  return wx.cloud.database()
+    .collection('settings')
+    .doc('global')
+    .get();
 }

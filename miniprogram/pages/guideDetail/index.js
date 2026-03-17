@@ -11,13 +11,15 @@ Page({
     loading: true,
     statusBarHeight: 20,
     navBarHeight: 44,
-    contactSubtitle: '',
     trustPoints: [],
     serviceScope: [],
     bookingArrangement: [],
     heroSubtitle: '',
-    serviceDescription: '',
     avatarLoaded: false,
+    reviewList: [],
+    reviewTotal: 0,
+    reviewScore: '5.0',
+    showAllReviews: false,
   },
 
   onLoad(options) {
@@ -47,16 +49,19 @@ Page({
   },
 
   _applyGuide(guide, settings) {
+    const allReviews = this.buildReviews(guide.reviews || []);
+    this._allReviews = allReviews;
     this.setData({
       guide,
       settings,
       loading: false,
-      contactSubtitle: this.buildContactSubtitle(guide),
       trustPoints: this.buildTrustPoints(guide),
       serviceScope: this.buildServiceScope(),
       bookingArrangement: this.buildBookingArrangement(guide),
       heroSubtitle: this.buildHeroSubtitle(guide),
-      serviceDescription: '',
+      reviewList: this.data.showAllReviews ? allReviews : allReviews.slice(0, 3),
+      reviewTotal: allReviews.length,
+      reviewScore: this.calcReviewScore(allReviews),
     });
     this._resolveCloudFileURLs(guide);
   },
@@ -76,9 +81,9 @@ Page({
         getGuideDetail(id),
         getSettings(),
       ]);
-      const guide = guideRes.result.data;
-      const settings = settingsRes.result.data || {};
-      if (!guide) {
+      const guide = guideRes.data;
+      const settings = settingsRes.data || {};
+      if (!guide || guide.status === false) {
         wx.showToast({ title: '导游不存在', icon: 'none' });
         wx.navigateBack();
         return;
@@ -92,10 +97,6 @@ Page({
         wx.showToast({ title: '加载失败，请重试', icon: 'none' });
       }
     }
-  },
-
-  buildContactSubtitle(guide) {
-    return [guide.licenseText, '平台统一协调安排'].filter(Boolean).join(' · ');
   },
 
   buildHeroSubtitle(guide) {
@@ -124,6 +125,27 @@ Page({
     ];
 
     return guide.phone ? items.slice(0, 3) : items.slice(0, 2);
+  },
+
+  buildReviews(rawReviews) {
+    return rawReviews.map(r => ({
+      ...r,
+      stars: Array.from({ length: 5 }, (_, i) => i < r.rating ? '★' : '☆'),
+    }));
+  },
+
+  calcReviewScore(reviews) {
+    if (!reviews.length) return '5.0';
+    const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+    return avg.toFixed(1);
+  },
+
+  onToggleReviews() {
+    const show = !this.data.showAllReviews;
+    this.setData({
+      showAllReviews: show,
+      reviewList: show ? this._allReviews : this._allReviews.slice(0, 3),
+    });
   },
 
   onAvatarLoad() {
