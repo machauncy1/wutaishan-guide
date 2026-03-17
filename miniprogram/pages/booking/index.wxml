@@ -73,7 +73,7 @@
     <view class="field {{errors.touristPhone ? 'field-error' : ''}}">
       <view class="field-label">
         <text class="field-required">*</text>
-        <text>手机号</text>
+        <text>联系方式</text>
       </view>
       <input
         class="field-input"
@@ -86,11 +86,11 @@
       <text wx:if="{{errors.touristPhone}}" class="field-error-text">{{errors.touristPhone}}</text>
     </view>
 
-    <!-- 5. 称呼（选填） -->
+    <!-- 5. 游客姓名（选填） -->
     <view class="field">
       <view class="field-label">
         <text class="field-optional">选填</text>
-        <text>称呼</text>
+        <text>游客姓名</text>
       </view>
       <input
         class="field-input"
