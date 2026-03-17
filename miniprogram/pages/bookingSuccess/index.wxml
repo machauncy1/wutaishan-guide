@@ -1,0 +1,55 @@
+<!--pages/bookingSuccess/index.wxml-->
+<view class="page">
+
+  <view class="main">
+    <!-- 成功标识 -->
+    <view class="icon-circle">
+      <text class="icon-check">✓</text>
+    </view>
+    <view class="title">已成功锁定服务名额</view>
+    <view class="subtitle">订单已提交成功，我们已为您优先安排服务</view>
+
+    <!-- 立即沟通（第一优先） -->
+    <view wx:if="{{contactPhone}}" class="call-btn" bindtap="onPhoneCall" hover-class="call-btn-hover">
+      <text>📞 立即电话确认行程（优先安排）</text>
+    </view>
+
+    <!-- 联系提示 -->
+    <view class="contact-tip">
+      <text class="contact-tip-text">客服将在 5 分钟内联系您（本地号码），请注意接听</text>
+    </view>
+
+    <!-- 预约摘要 -->
+    <view class="summary">
+      <view class="summary-header">您的预约信息</view>
+      <view class="summary-row">
+        <text class="summary-label">出行日期</text>
+        <text class="summary-value">{{date}}</text>
+      </view>
+      <view class="summary-row">
+        <text class="summary-label">出行人数</text>
+        <text class="summary-value">{{groupSize}}人</text>
+      </view>
+      <view class="summary-row">
+        <text class="summary-label">服务时段</text>
+        <text class="summary-value">{{timePeriod}}</text>
+      </view>
+    </view>
+
+    <!-- 信任背书 -->
+    <view class="trust">
+      <text class="trust-item">✔ 本地正规旅行社服务</text>
+      <text class="trust-item">✔ 无强制消费，请放心安排</text>
+    </view>
+
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="actions">
+    <button class="btn-primary" bindtap="onBackHome" hover-class="btn-hover">
+      返回首页
+    </button>
+    <view class="btn-text" bindtap="onBackDetail">返回导游详情</view>
+  </view>
+
+</view>

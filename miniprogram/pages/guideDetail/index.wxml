@@ -76,7 +76,7 @@
         </view>
 
         <view class="summary-metrics">
-          <view class="summary-item" wx:for="{{trustPoints}}" wx:key="label">
+          <view class="summary-item" wx:for="{{trustPoints || []}}" wx:key="label">
             <view class="summary-label">{{item.label}}</view>
             <view class="summary-value">{{item.value}}</view>
           </view>
@@ -88,7 +88,7 @@
           <view class="section-title">服务说明</view>
         </view>
         <view class="bullet-list">
-          <view class="bullet-item" wx:for="{{serviceScope}}" wx:key="*this">
+          <view class="bullet-item" wx:for="{{serviceScope || []}}" wx:key="*this">
             <text class="bullet-dot"></text>
             <text class="bullet-text">{{item}}</text>
           </view>
@@ -100,7 +100,7 @@
           <view class="section-title">预订与安排</view>
         </view>
         <view class="bullet-list">
-          <view class="bullet-item" wx:for="{{bookingArrangement}}" wx:key="*this">
+          <view class="bullet-item" wx:for="{{bookingArrangement || []}}" wx:key="*this">
             <text class="bullet-dot"></text>
             <text class="bullet-text">{{item}}</text>
           </view>
@@ -117,7 +117,7 @@
         </view>
 
         <view class="review-list">
-          <view class="review-item" wx:for="{{reviewList}}" wx:key="index">
+          <view class="review-item" wx:for="{{reviewList || []}}" wx:key="index">
             <view class="review-avatar">
               <text class="review-avatar-char">{{item.nickname[0]}}</text>
             </view>
@@ -125,7 +125,7 @@
               <view class="review-top">
                 <text class="review-nickname">{{item.nickname}}</text>
                 <view class="review-stars">
-                  <text class="star" wx:for="{{item.stars}}" wx:for-item="star" wx:key="index">{{star}}</text>
+                  <text class="star" wx:for="{{item.stars || []}}" wx:for-item="star" wx:key="index">{{star}}</text>
                 </view>
               </view>
               <view class="review-bottom">
@@ -149,6 +149,24 @@
   wx:if="{{guide.phone}}"
   phone="{{guide.phone}}"
   show-consult="{{guide.wechatServiceEnabled}}"
+  show-booking="{{true}}"
   consult-label="咨询行程"
   phone-label="电话沟通"
+  bindbooking="onBooking"
+  bindconsult="onConsult"
 />
+
+<!-- 微信客服浮层 -->
+<view wx:if="{{showContactOverlay}}" class="contact-overlay" bindtap="onCloseOverlay">
+  <view class="contact-sheet" catchtap="">
+    <view class="contact-sheet-title">微信在线咨询</view>
+    <view class="contact-sheet-desc">点击下方按钮进入客服会话</view>
+    <button
+      class="contact-sheet-btn"
+      open-type="contact"
+      bindcontact="onContactSuccess"
+      hover-class="contact-sheet-btn-hover"
+    >开始咨询</button>
+    <view class="contact-sheet-cancel" bindtap="onCloseOverlay">取消</view>
+  </view>
+</view>

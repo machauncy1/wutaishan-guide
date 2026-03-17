@@ -78,6 +78,15 @@ async function seed(): Promise<void> {
     }
   }
 
+  // ===== 3. bookings（仅确保集合存在） =====
+  try {
+    await db.collection('bookings').count();
+    console.log('bookings：集合已存在');
+  } catch (_e) {
+    await db.createCollection('bookings');
+    console.log('bookings：集合已创建');
+  }
+
   console.log('Done.');
 }
 

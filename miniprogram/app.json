@@ -1,7 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/guideDetail/index"
+    "pages/guideDetail/index",
+    "pages/booking/index",
+    "pages/bookingSuccess/index"
   ],
   "window": {
     "backgroundColor": "#F2F4F7",

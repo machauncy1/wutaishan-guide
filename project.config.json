@@ -62,7 +62,13 @@
       "list": []
     },
     "miniprogram": {
-      "list": []
+      "list": [
+        {
+          "name": "预约成功页",
+          "pathName": "pages/bookingSuccess/index",
+          "query": "date=2026-03-20&timePeriod=上午&groupSize=2"
+        }
+      ]
     }
   },
   "compileType": "miniprogram",

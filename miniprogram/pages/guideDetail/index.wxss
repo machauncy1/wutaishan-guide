@@ -477,3 +477,68 @@ page {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }
 }
+
+/* ===== 微信客服浮层 ===== */
+
+.contact-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.contact-sheet {
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 48rpx 32rpx;
+  padding-bottom: max(48rpx, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-sheet-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.contact-sheet-desc {
+  font-size: 26rpx;
+  color: #A3AAB5;
+  margin-top: 12rpx;
+}
+
+.contact-sheet-btn {
+  width: 100%;
+  height: 96rpx;
+  margin-top: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #07C160 0%, #06AD56 100%);
+  border-radius: 20rpx;
+  border: none;
+}
+
+.contact-sheet-btn::after {
+  border: none;
+}
+
+.contact-sheet-btn-hover {
+  opacity: 0.85;
+}
+
+.contact-sheet-cancel {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: #A3AAB5;
+  padding: 12rpx 24rpx;
+}

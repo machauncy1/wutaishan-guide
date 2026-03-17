@@ -1,35 +1,65 @@
 <!--components/bottomContactBar/index.wxml-->
 <view class="bar">
   <view class="btn-group">
-    <!-- 在线咨询 -->
-    <button
-      wx:if="{{showConsult}}"
-      class="btn btn-consult"
-      open-type="contact"
-      hover-class="btn-hover"
-    >
-      <view class="btn-icon-wrap btn-icon-wrap-light">
-        <image class="btn-icon-img" src="/images/icons/consult-blue.svg" mode="aspectFit" />
-      </view>
-      <view class="btn-copy">
-        <text class="btn-label">{{consultLabel}}</text>
-        <text class="btn-sub">优先文字沟通</text>
-      </view>
-    </button>
 
-    <!-- 电话联系 -->
-    <view
-      class="btn btn-phone {{showConsult ? '' : 'btn-full btn-primary-solo'}}"
-      bindtap="onPhoneCall"
-      hover-class="btn-hover"
-    >
-      <view class="btn-icon-wrap btn-icon-wrap-solid">
-        <image class="btn-icon-img" src="/images/icons/phone-white.svg" mode="aspectFit" />
+    <!-- === 预约模式：咨询（次要） + 预约（主要） === -->
+    <block wx:if="{{showBooking}}">
+      <!-- 次要：先咨询一下（点击弹 ActionSheet 选渠道） -->
+      <view
+        class="btn btn-consult-secondary"
+        bindtap="onConsultSheet"
+        hover-class="btn-hover"
+      >
+        <image class="btn-icon-img-inline" src="/images/icons/chat-gray.svg" mode="aspectFit" />
+        <text class="btn-label-secondary">先咨询</text>
       </view>
-      <view class="btn-copy">
-        <text class="btn-label">{{phoneLabel}}</text>
-        <text class="btn-sub">直接快速确认</text>
+
+      <!-- 主要：立即预约 -->
+      <view
+        class="btn btn-booking"
+        bindtap="onBooking"
+        hover-class="btn-hover"
+      >
+        <view class="btn-copy">
+          <text class="btn-label">立即预约</text>
+          <text class="btn-sub">在线快速提交</text>
+        </view>
       </view>
-    </view>
+    </block>
+
+    <!-- === 默认模式：原有布局不变 === -->
+    <block wx:else>
+      <!-- 在线咨询 -->
+      <button
+        wx:if="{{showConsult}}"
+        class="btn btn-consult"
+        open-type="contact"
+        hover-class="btn-hover"
+      >
+        <view class="btn-icon-wrap btn-icon-wrap-light">
+          <image class="btn-icon-img" src="/images/icons/consult-blue.svg" mode="aspectFit" />
+        </view>
+        <view class="btn-copy">
+          <text class="btn-label">{{consultLabel}}</text>
+          <text class="btn-sub">优先文字沟通</text>
+        </view>
+      </button>
+
+      <!-- 电话联系 -->
+      <view
+        class="btn btn-phone {{showConsult ? '' : 'btn-full btn-primary-solo'}}"
+        bindtap="onPhoneCall"
+        hover-class="btn-hover"
+      >
+        <view class="btn-icon-wrap btn-icon-wrap-solid">
+          <image class="btn-icon-img" src="/images/icons/phone-white.svg" mode="aspectFit" />
+        </view>
+        <view class="btn-copy">
+          <text class="btn-label">{{phoneLabel}}</text>
+          <text class="btn-sub">直接快速确认</text>
+        </view>
+      </view>
+    </block>
+
   </view>
 </view>

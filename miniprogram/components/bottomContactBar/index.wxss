@@ -94,3 +94,33 @@
   font-size: 20rpx;
   opacity: 0.78;
 }
+
+/* ===== 预约模式 ===== */
+
+.btn-consult-secondary {
+  flex: none;
+  width: 200rpx;
+  background: rgba(255, 255, 255, 0.88);
+  border: 2rpx solid #E8EAED;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+  color: #4A4A4A;
+}
+
+.btn-icon-img-inline {
+  width: 32rpx;
+  height: 32rpx;
+  display: block;
+  flex-shrink: 0;
+}
+
+.btn-label-secondary {
+  font-size: 28rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+.btn-booking {
+  background: linear-gradient(90deg, #00A7FA 0%, #0076F5 100%);
+  box-shadow: 0 10rpx 24rpx rgba(0, 134, 246, 0.30);
+  color: #FFFFFF;
+}

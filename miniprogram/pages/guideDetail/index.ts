@@ -7,6 +7,7 @@ interface DetailData {
   settings: Partial<Settings>;
   guide: GuideDetail | null;
   loading: boolean;
+  showContactOverlay: boolean;
   statusBarHeight: number;
   navBarHeight: number;
   trustPoints: TrustPoint[];
@@ -35,6 +36,10 @@ interface DetailCustom {
   onAvatarLoad(): void;
   onBack(): void;
   onPhoneCall(): void;
+  onConsult(): void;
+  onCloseOverlay(): void;
+  onContactSuccess(): void;
+  onBooking(): void;
 }
 
 Page<DetailData, DetailCustom>({
@@ -44,6 +49,7 @@ Page<DetailData, DetailCustom>({
     settings: {},
     guide: null,
     loading: true,
+    showContactOverlay: false,
     statusBarHeight: 20,
     navBarHeight: 44,
     trustPoints: [],
@@ -99,7 +105,11 @@ Page<DetailData, DetailCustom>({
       reviewTotal: allReviews.length,
       reviewScore: this.calcReviewScore(allReviews),
     });
-    resolveAvatars([guide]).then(([resolved]) => this.setData({ 'guide.avatar': resolved.avatar }));
+    resolveAvatars([guide]).then((list) => {
+      if (list && list[0]) {
+        this.setData({ 'guide.avatar': list[0].avatar });
+      }
+    });
   },
 
   async loadGuide(id: string) {
@@ -185,6 +195,28 @@ Page<DetailData, DetailCustom>({
       return;
     }
     wx.reLaunch({ url: '/pages/index/index' });
+  },
+
+  onConsult() {
+    // 微信要求 open-type="contact" 必须由用户手动点击 <button> 触发
+    // 弹出浮层，让用户点击真正的客服按钮
+    this.setData({ showContactOverlay: true });
+  },
+
+  onCloseOverlay() {
+    this.setData({ showContactOverlay: false });
+  },
+
+  onContactSuccess() {
+    this.setData({ showContactOverlay: false });
+  },
+
+  onBooking() {
+    const guide = this.data.guide;
+    if (!guide || !guide._id) return;
+    wx.navigateTo({
+      url: `/pages/booking/index?guideId=${guide._id}&guideName=${encodeURIComponent(guide.name)}`,
+    });
   },
 
   onPhoneCall() {

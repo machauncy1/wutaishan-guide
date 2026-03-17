@@ -39,6 +39,7 @@ export async function getTempFileURLMap(fileIds: string[] = []): Promise<Record<
 }
 
 export async function resolveAvatars<T extends AvatarItem>(items: T[]): Promise<T[]> {
+  if (!items || !items.length) return items || [];
   const urlMap = await getTempFileURLMap(items.map((item) => item.avatar));
   if (!Object.keys(urlMap).length) return items;
   return items.map((item) =>

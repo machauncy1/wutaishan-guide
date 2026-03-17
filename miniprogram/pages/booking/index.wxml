@@ -1,0 +1,153 @@
+<!--pages/booking/index.wxml-->
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px">
+    <view class="nav-bar-inner" style="height: {{navBarHeight}}px">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <view class="nav-title">预约行程</view>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form">
+
+    <!-- 1. 预约日期（最重要） -->
+    <view class="field {{errors.date ? 'field-error' : ''}}">
+      <view class="field-label">
+        <text class="field-required">*</text>
+        <text>预约日期</text>
+      </view>
+      <picker mode="date" start="{{today}}" bindchange="onDateChange" value="{{form.date}}">
+        <view class="field-input picker-value {{form.date ? '' : 'picker-placeholder'}}">
+          {{form.date || '请选择预约日期'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+      <text wx:if="{{errors.date}}" class="field-error-text">{{errors.date}}</text>
+    </view>
+
+    <!-- 2. 出行人数 -->
+    <view class="field {{errors.groupSize ? 'field-error' : ''}}">
+      <view class="field-label">
+        <text class="field-required">*</text>
+        <text>出行人数</text>
+      </view>
+      <view class="stepper">
+        <view
+          class="stepper-btn {{form.groupSize <= 1 ? 'stepper-btn-disabled' : ''}}"
+          bindtap="onGroupMinus"
+        >－</view>
+        <text class="stepper-value">{{form.groupSize}}</text>
+        <view
+          class="stepper-btn {{form.groupSize >= 20 ? 'stepper-btn-disabled' : ''}}"
+          bindtap="onGroupPlus"
+        >＋</view>
+        <text class="stepper-unit">人</text>
+      </view>
+      <text wx:if="{{errors.groupSize}}" class="field-error-text">{{errors.groupSize}}</text>
+    </view>
+
+    <!-- 3. 预约时段 -->
+    <view class="field {{errors.timePeriod ? 'field-error' : ''}}">
+      <view class="field-label">
+        <text class="field-required">*</text>
+        <text>预约时段</text>
+      </view>
+      <view class="radio-group">
+        <view
+          wx:for="{{timePeriodOptions || []}}"
+          wx:key="*this"
+          class="radio-pill {{form.timePeriod === item ? 'radio-pill-active' : ''}}"
+          bindtap="onSelectPeriod"
+          data-value="{{item}}"
+        >{{item}}</view>
+      </view>
+      <text wx:if="{{errors.timePeriod}}" class="field-error-text">{{errors.timePeriod}}</text>
+    </view>
+
+    <!-- 4. 手机号（关键） -->
+    <view class="field {{errors.touristPhone ? 'field-error' : ''}}">
+      <view class="field-label">
+        <text class="field-required">*</text>
+        <text>手机号</text>
+      </view>
+      <input
+        class="field-input"
+        type="number"
+        placeholder="请输入手机号"
+        value="{{form.touristPhone}}"
+        bindinput="onInputPhone"
+        maxlength="11"
+      />
+      <text wx:if="{{errors.touristPhone}}" class="field-error-text">{{errors.touristPhone}}</text>
+    </view>
+
+    <!-- 5. 称呼（选填） -->
+    <view class="field">
+      <view class="field-label">
+        <text class="field-optional">选填</text>
+        <text>称呼</text>
+      </view>
+      <input
+        class="field-input"
+        placeholder="方便我们联系时称呼您"
+        value="{{form.touristName}}"
+        bindinput="onInputName"
+        maxlength="20"
+      />
+    </view>
+
+    <!-- 6. 备注（选填） -->
+    <view class="field">
+      <view class="field-label">
+        <text class="field-optional">选填</text>
+        <text>备注</text>
+      </view>
+      <textarea
+        class="field-textarea"
+        placeholder="例如：计划玩2天、需要接站、想去五爷庙许愿…"
+        value="{{form.remark}}"
+        bindinput="onInputRemark"
+        maxlength="200"
+        auto-height
+      />
+      <view class="textarea-count">{{form.remark.length || 0}}/200</view>
+    </view>
+
+  </view>
+
+  <!-- 信任背书 -->
+  <view class="trust-bar">
+    <view class="trust-item">
+      <text class="trust-check">✓</text>
+      <text>本地正规旅行社服务</text>
+    </view>
+    <view class="trust-item">
+      <text class="trust-check">✓</text>
+      <text>无强制消费 | 可放心咨询</text>
+    </view>
+    <view class="trust-item">
+      <text class="trust-check">✓</text>
+      <text>已服务21300+游客</text>
+    </view>
+  </view>
+
+  <!-- 提交区域 -->
+  <view class="submit-wrap">
+    <view class="submit-hint">提交后 5 分钟内联系（高峰期可能稍有延迟）</view>
+    <button
+      class="submit-btn {{submitting ? 'submit-btn-loading' : ''}}"
+      bindtap="onSubmit"
+      disabled="{{submitting}}"
+      hover-class="submit-btn-hover"
+    >
+      <text wx:if="{{submitting}}">提交中...</text>
+      <text wx:else>提交预约（无需付款）</text>
+    </button>
+  </view>
+
+</view>

@@ -60,7 +60,7 @@
 
         <view wx:else>
           <view
-            wx:for="{{guideList}}"
+            wx:for="{{guideList || []}}"
             wx:key="_id"
             class="card-wrap"
             bindtap="onGuideTap"

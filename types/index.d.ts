@@ -80,6 +80,25 @@ interface Settings {
   wechatServiceEnabled: boolean;
 }
 
+// ===== 集合: bookings =====
+
+type TimePeriod = '上午' | '下午';
+
+/** 预约记录文档 */
+interface Booking {
+  _id?: string;
+  guideId: string;
+  guideName: string;
+  openid: string;
+  touristName: string;
+  touristPhone: string;
+  date: string;
+  timePeriod: TimePeriod;
+  groupSize: number;
+  remark: string;
+  createdAt: Date;
+}
+
 // ===== 前端视图类型 =====
 
 interface TrustPoint {
