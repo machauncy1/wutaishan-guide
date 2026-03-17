@@ -3,7 +3,8 @@
 const db = wx.cloud.database();
 
 export function getGuideList() {
-  return db.collection('guides')
+  return db
+    .collection('guides')
     .where({ status: true })
     .orderBy('sort', 'asc')
     .field({
@@ -17,7 +18,8 @@ export function getGuideList() {
 }
 
 export function getGuideDetail(guideId) {
-  return db.collection('guides')
+  return db
+    .collection('guides')
     .doc(guideId)
     .field({
       name: true,

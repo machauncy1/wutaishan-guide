@@ -29,7 +29,9 @@ Page({
     try {
       const cached = wx.getStorageSync('settings');
       if (cached) this.setData({ settings: cached });
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
     if (!id) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
@@ -77,10 +79,7 @@ Page({
 
     // 始终从云端拉取最新数据
     try {
-      const [guideRes, settingsRes] = await Promise.all([
-        getGuideDetail(id),
-        getSettings(),
-      ]);
+      const [guideRes, settingsRes] = await Promise.all([getGuideDetail(id), getSettings()]);
       const guide = guideRes.data;
       const settings = settingsRes.data || {};
       if (!guide || guide.status === false) {
@@ -111,10 +110,7 @@ Page({
   },
 
   buildServiceScope() {
-    return [
-      '五台山景区内专业讲解与规划',
-      '接站、包车等出行协助沟通',
-    ];
+    return ['五台山景区内专业讲解与规划', '接站、包车等出行协助沟通'];
   },
 
   buildBookingArrangement(guide) {
@@ -128,9 +124,9 @@ Page({
   },
 
   buildReviews(rawReviews) {
-    return rawReviews.map(r => ({
+    return rawReviews.map((r) => ({
       ...r,
-      stars: Array.from({ length: 5 }, (_, i) => i < r.rating ? '★' : '☆'),
+      stars: Array.from({ length: 5 }, (_, i) => (i < r.rating ? '★' : '☆')),
     }));
   },
 

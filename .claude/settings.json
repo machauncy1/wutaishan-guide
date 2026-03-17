@@ -12,7 +12,16 @@
       "Bash(printf '\\\\n')",
       "Bash(tcb service:*)",
       "Bash(tcb --help)",
-      "Bash(git status:*)"
+      "Bash(git status:*)",
+      "Bash(pnpm init:*)",
+      "Bash(node scripts/seed.js --force)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm lint:fix)",
+      "Bash(node scripts/seed.js)",
+      "Bash(pnpm exec:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/chauncy/Project/machauncy1/wutaishan-guide"
     ]
   }
 }

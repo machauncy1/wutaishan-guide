@@ -3,8 +3,8 @@
 
 import { getGuideDetail } from './guide';
 
-const _cache = {};       // guideId -> { data, timestamp }
-const _pending = {};     // guideId -> Promise（防止重复请求）
+const _cache = {}; // guideId -> { data, timestamp }
+const _pending = {}; // guideId -> Promise（防止重复请求）
 const CACHE_TTL = 5 * 60 * 1000; // 5 分钟有效期
 
 /**

@@ -10,9 +10,11 @@ const _urlCache = {};
  * @returns {Promise<Object>} fileID -> tempFileURL 的映射
  */
 export async function getTempFileURLMap(fileIds = []) {
-  const cloudIds = [...new Set(
-    (Array.isArray(fileIds) ? fileIds : []).filter((v) => v && v.startsWith('cloud://')),
-  )];
+  const cloudIds = [
+    ...new Set(
+      (Array.isArray(fileIds) ? fileIds : []).filter((v) => v && v.startsWith('cloud://')),
+    ),
+  ];
   if (!cloudIds.length) return {};
 
   const result = {};

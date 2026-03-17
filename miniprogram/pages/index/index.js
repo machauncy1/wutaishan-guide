@@ -47,7 +47,9 @@ Page({
           loading: false,
         });
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
   },
 
   async loadData() {
@@ -56,10 +58,7 @@ Page({
       this.setData({ loading: true });
     }
     try {
-      const [settingsRes, guidesRes] = await Promise.all([
-        getSettings(),
-        getGuideList(),
-      ]);
+      const [settingsRes, guidesRes] = await Promise.all([getSettings(), getGuideList()]);
       const settings = settingsRes.data || {};
       const guideList = guidesRes.data || [];
 
@@ -67,7 +66,9 @@ Page({
       try {
         wx.setStorageSync('settings', settings);
         wx.setStorageSync('guideList', guideList);
-      } catch (e) { /* ignore */ }
+      } catch (e) {
+        /* ignore */
+      }
       this.setData({ settings, guideList, loading: false });
       this._resolveCloudFileURLs(guideList);
       this._observeGuideCards(guideList);
@@ -83,9 +84,7 @@ Page({
 
   async _resolveCloudFileURLs(guideList) {
     // banner 直接用 cloud:// 协议渲染，只转换头像
-    const urlMap = await getTempFileURLMap(
-      guideList.map((g) => g.avatar),
-    );
+    const urlMap = await getTempFileURLMap(guideList.map((g) => g.avatar));
     if (!Object.keys(urlMap).length) return;
 
     const updated = {};
