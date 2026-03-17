@@ -1,17 +1,17 @@
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
+import tseslint from 'typescript-eslint';
 
 export default [
   {
+    ignores: ['**/node_modules/', '**/miniprogram_npm/', '**/cloudfunctions/'],
+  },
+  // JS files (scripts/seed.js etc.)
+  {
+    files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
       globals: {
-        wx: 'readonly',
-        App: 'readonly',
-        Page: 'readonly',
-        Component: 'readonly',
-        getApp: 'readonly',
-        getCurrentPages: 'readonly',
         console: 'readonly',
         require: 'readonly',
         module: 'readonly',
@@ -25,8 +25,29 @@ export default [
       'no-console': 'off',
     },
   },
+  // TS files (miniprogram)
+  ...tseslint.configs.recommended.map((config) => ({
+    ...config,
+    files: ['**/*.ts'],
+  })),
   {
-    ignores: ['**/node_modules/', '**/miniprogram_npm/', '**/cloudfunctions/'],
+    files: ['**/*.ts'],
+    languageOptions: {
+      globals: {
+        wx: 'readonly',
+        App: 'readonly',
+        Page: 'readonly',
+        Component: 'readonly',
+        getApp: 'readonly',
+        getCurrentPages: 'readonly',
+        console: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-console': 'off',
+    },
   },
   eslintPluginPrettier,
 ];

@@ -1,4 +1,3 @@
-// components/bottomContactBar/index.js
 Component({
   properties: {
     phone: {

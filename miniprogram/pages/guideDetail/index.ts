@@ -1,10 +1,45 @@
-// pages/guideDetail/index.js
 import { getGuideDetail } from '../../services/guide';
 import { getSettings } from '../../services/settings';
 import { resolveAvatars } from '../../services/cloudFile';
 import { getCachedGuide } from '../../services/guideCache';
 
-Page({
+interface IDetailData {
+  settings: Partial<ISettings>;
+  guide: IGuideDetail | null;
+  loading: boolean;
+  statusBarHeight: number;
+  navBarHeight: number;
+  trustPoints: ITrustPoint[];
+  serviceScope: string[];
+  bookingArrangement: string[];
+  heroSubtitle: string;
+  avatarLoaded: boolean;
+  reviewList: IProcessedReview[];
+  reviewTotal: number;
+  reviewScore: string;
+  showAllReviews: boolean;
+}
+
+interface IDetailCustom {
+  _allReviews: IProcessedReview[];
+  _initNavHeight(): void;
+  _applyGuide(guide: IGuideDetail, settings: Partial<ISettings>): void;
+  loadGuide(id: string): Promise<void>;
+  buildHeroSubtitle(guide: IGuideDetail): string;
+  buildTrustPoints(guide: IGuideDetail): ITrustPoint[];
+  buildServiceScope(): string[];
+  buildBookingArrangement(guide: IGuideDetail): string[];
+  buildReviews(rawReviews: IReview[]): IProcessedReview[];
+  calcReviewScore(reviews: IProcessedReview[]): string;
+  onToggleReviews(): void;
+  onAvatarLoad(): void;
+  onBack(): void;
+  onPhoneCall(): void;
+}
+
+Page<IDetailData, IDetailCustom>({
+  _allReviews: [],
+
   data: {
     settings: {},
     guide: null,
@@ -22,14 +57,13 @@ Page({
     showAllReviews: false,
   },
 
-  onLoad(options) {
+  onLoad(options: Record<string, string | undefined>) {
     const { id } = options;
     this._initNavHeight();
-    // 从缓存立即读取 settings，banner 图与云函数并行加载
     try {
       const cached = wx.getStorageSync('settings');
       if (cached) this.setData({ settings: cached });
-    } catch (e) {
+    } catch (_e) {
       /* ignore */
     }
     if (!id) {
@@ -45,12 +79,12 @@ Page({
       const menuButton = wx.getMenuButtonBoundingClientRect();
       const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
       this.setData({ statusBarHeight, navBarHeight });
-    } catch (e) {
+    } catch (_e) {
       // 获取失败时使用默认值
     }
   },
 
-  _applyGuide(guide, settings) {
+  _applyGuide(guide: IGuideDetail, settings: Partial<ISettings>) {
     const allReviews = this.buildReviews(guide.reviews || []);
     this._allReviews = allReviews;
     this.setData({
@@ -68,8 +102,7 @@ Page({
     resolveAvatars([guide]).then(([resolved]) => this.setData({ 'guide.avatar': resolved.avatar }));
   },
 
-  async loadGuide(id) {
-    // 优先使用预加载缓存，秒开详情
+  async loadGuide(id: string) {
     const cached = getCachedGuide(id);
     if (cached) {
       this._applyGuide(cached, this.data.settings);
@@ -77,11 +110,10 @@ Page({
       this.setData({ loading: true });
     }
 
-    // 始终从云端拉取最新数据
     try {
       const [guideRes, settingsRes] = await Promise.all([getGuideDetail(id), getSettings()]);
-      const guide = guideRes.data;
-      const settings = settingsRes.data || {};
+      const guide = guideRes.data as IGuideDetail;
+      const settings = (settingsRes.data || {}) as ISettings;
       if (!guide || guide.status === false) {
         wx.showToast({ title: '导游不存在', icon: 'none' });
         wx.navigateBack();
@@ -90,7 +122,6 @@ Page({
       this._applyGuide(guide, settings);
     } catch (e) {
       console.error('加载导游详情失败', e);
-      // 如果已有缓存数据，静默失败即可
       if (!this.data.guide) {
         this.setData({ loading: false });
         wx.showToast({ title: '加载失败，请重试', icon: 'none' });
@@ -98,39 +129,38 @@ Page({
     }
   },
 
-  buildHeroSubtitle(guide) {
+  buildHeroSubtitle(guide: IGuideDetail): string {
     return `${guide.licenseText || '本地持证导游'}，平台统一协调安排`;
   },
 
-  buildTrustPoints(guide) {
+  buildTrustPoints(guide: IGuideDetail): ITrustPoint[] {
     return [
       { label: '从业经验', value: `${guide.experienceYear}年` },
       { label: '累计服务', value: `${guide.serviceCount}+游客` },
     ];
   },
 
-  buildServiceScope() {
+  buildServiceScope(): string[] {
     return ['五台山景区内专业讲解与规划', '接站、包车等出行协助沟通'];
   },
 
-  buildBookingArrangement(guide) {
+  buildBookingArrangement(guide: IGuideDetail): string[] {
     const items = [
       '具体接待导游将根据出行日期、人数、路线和实际档期协调安排。',
       '节假日、初一十五和暑期客流较大，建议尽早确认出发时间与行程需求。',
       '如需接站、包车服务，请在咨询时一并说明，方便统一衔接安排。',
     ];
-
     return guide.phone ? items.slice(0, 3) : items.slice(0, 2);
   },
 
-  buildReviews(rawReviews) {
+  buildReviews(rawReviews: IReview[]): IProcessedReview[] {
     return rawReviews.map((r) => ({
       ...r,
       stars: Array.from({ length: 5 }, (_, i) => (i < r.rating ? '★' : '☆')),
     }));
   },
 
-  calcReviewScore(reviews) {
+  calcReviewScore(reviews: IProcessedReview[]): string {
     if (!reviews.length) return '5.0';
     const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
     return avg.toFixed(1);

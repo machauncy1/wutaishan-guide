@@ -1,8 +1,6 @@
-// services/guide.js
-
 const db = wx.cloud.database();
 
-export function getGuideList() {
+export function getGuideList(): Promise<DB.IQueryResult> {
   return db
     .collection('guides')
     .where({ status: true })
@@ -17,7 +15,7 @@ export function getGuideList() {
     .get();
 }
 
-export function getGuideDetail(guideId) {
+export function getGuideDetail(guideId: string): Promise<DB.IQuerySingleResult> {
   return db
     .collection('guides')
     .doc(guideId)

@@ -1,10 +1,13 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 // 初始化预置数据（导游、全局配置）
-// 用法: node scripts/seed.js [--force]
+// 用法: pnpm seed / pnpm seed:force
 
-const tcb = require('@cloudbase/node-sdk');
-const { config } = require('dotenv');
-const { resolve } = require('path');
+import tcb from '@cloudbase/node-sdk';
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+import guides from './data/guides.json';
+import defaultSettings from './data/settings.json';
 
 config({ path: resolve(__dirname, '..', '.env') });
 
@@ -18,10 +21,7 @@ const app = tcb.init({ secretId: TCB_SECRET_ID, secretKey: TCB_SECRET_KEY, env: 
 const db = app.database();
 const force = process.argv.includes('--force');
 
-const guides = require('./data/guides.json');
-const defaultSettings = require('./data/settings.json');
-
-async function seed() {
+async function seed(): Promise<void> {
   const now = Date.now();
 
   // ===== 1. guides =====
@@ -53,7 +53,7 @@ async function seed() {
   try {
     await db.collection('settings').doc('global').get();
     settingsExists = true;
-  } catch (e) {
+  } catch (_e) {
     settingsExists = false;
   }
 
@@ -78,7 +78,7 @@ async function seed() {
   console.log('Done.');
 }
 
-seed().catch((e) => {
+seed().catch((e: Error) => {
   console.error(e);
   process.exit(1);
 });

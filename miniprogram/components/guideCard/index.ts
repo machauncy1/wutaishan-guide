@@ -1,9 +1,8 @@
-// components/guideCard/index.js
 Component({
   properties: {
     guide: {
       type: Object,
-      value: {},
+      value: {} as IGuideListItem,
     },
   },
   data: {

@@ -18,7 +18,9 @@
       "Bash(pnpm lint:*)",
       "Bash(pnpm lint:fix)",
       "Bash(node scripts/seed.js)",
-      "Bash(pnpm exec:*)"
+      "Bash(pnpm exec:*)",
+      "Bash(ls miniprogram/**/*.js)",
+      "Bash(pnpm seed:*)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide"

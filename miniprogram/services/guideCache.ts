@@ -1,25 +1,22 @@
-// services/guideCache.js
-// 导游详情预加载缓存
-
 import { getGuideDetail } from './guide';
 
-const _cache = {}; // guideId -> { data, timestamp }
-const _pending = {}; // guideId -> Promise（防止重复请求）
-const CACHE_TTL = 5 * 60 * 1000; // 5 分钟有效期
+interface ICacheEntry {
+  data: IGuideDetail;
+  timestamp: number;
+}
 
-/**
- * 预加载导游详情（静默，不影响主流程）
- */
-export function prefetchGuide(guideId) {
+const _cache: Record<string, ICacheEntry> = {};
+const _pending: Record<string, Promise<void>> = {};
+const CACHE_TTL = 5 * 60 * 1000;
+
+export function prefetchGuide(guideId: string): void {
   if (!guideId) return;
-  // 缓存未过期，跳过
   if (_cache[guideId] && Date.now() - _cache[guideId].timestamp < CACHE_TTL) return;
-  // 已有请求在飞，跳过
-  if (_pending[guideId]) return;
+  if (guideId in _pending) return;
 
   const p = getGuideDetail(guideId)
     .then((res) => {
-      const data = res.data;
+      const data = res.data as IGuideDetail;
       if (data) {
         _cache[guideId] = { data, timestamp: Date.now() };
       }
@@ -32,10 +29,7 @@ export function prefetchGuide(guideId) {
   _pending[guideId] = p;
 }
 
-/**
- * 读取缓存的导游详情（命中返回数据，未命中返回 null）
- */
-export function getCachedGuide(guideId) {
+export function getCachedGuide(guideId: string): IGuideDetail | null {
   const entry = _cache[guideId];
   if (!entry) return null;
   if (Date.now() - entry.timestamp > CACHE_TTL) {
