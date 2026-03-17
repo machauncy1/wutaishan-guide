@@ -46,7 +46,7 @@
   },
   "appid": "wx2629c66b5a4dd55d",
   "projectname": "wutaishan-guide",
-  "libVersion": "2.20.1",
+  "libVersion": "3.15.0",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {
     "search": {

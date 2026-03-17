@@ -1,0 +1,21 @@
+# 个人 IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 微信开发者工具
+.DS_Store
+project.private.config.json
+
+# 依赖
+node_modules/
+
+# 日志
+*.log
+npm-debug.log*
+
+# 临时文件
+.tmp/
+.cache/
