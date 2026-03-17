@@ -1,7 +1,7 @@
 // pages/index/index.js
 import { getGuideList } from '../../services/guide';
 import { getSettings } from '../../services/settings';
-import { getTempFileURLMap } from '../../services/cloudFile';
+import { resolveAvatars } from '../../services/cloudFile';
 import { prefetchGuide } from '../../services/guideCache';
 
 Page({
@@ -70,8 +70,8 @@ Page({
         /* ignore */
       }
       this.setData({ settings, guideList, loading: false });
-      this._resolveCloudFileURLs(guideList);
       this._observeGuideCards(guideList);
+      resolveAvatars(guideList).then((resolved) => this.setData({ guideList: resolved }));
     } catch (e) {
       console.error('加载数据失败', e);
       // 有缓存数据时静默失败
@@ -80,20 +80,6 @@ Page({
         wx.showToast({ title: '加载失败，请重试', icon: 'none' });
       }
     }
-  },
-
-  async _resolveCloudFileURLs(guideList) {
-    // banner 直接用 cloud:// 协议渲染，只转换头像
-    const urlMap = await getTempFileURLMap(guideList.map((g) => g.avatar));
-    if (!Object.keys(urlMap).length) return;
-
-    const updated = {};
-    guideList.forEach((g, i) => {
-      if (urlMap[g.avatar]) {
-        updated[`guideList[${i}].avatar`] = urlMap[g.avatar];
-      }
-    });
-    if (Object.keys(updated).length) this.setData(updated);
   },
 
   _observeGuideCards(guideList) {

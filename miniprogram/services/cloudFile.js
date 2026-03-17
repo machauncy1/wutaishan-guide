@@ -46,3 +46,17 @@ export async function getTempFileURLMap(fileIds = []) {
 
   return result;
 }
+
+/**
+ * 将对象数组中的 avatar 字段从 cloud:// 转为临时 HTTPS 链接
+ * @param {Object[]} items - 含 avatar 字段的对象数组
+ * @returns {Promise<Object[]>} 转换后的数组（原数组不变）
+ */
+export async function resolveAvatars(items) {
+  const list = Array.isArray(items) ? items : [items];
+  const urlMap = await getTempFileURLMap(list.map((item) => item.avatar));
+  if (!Object.keys(urlMap).length) return items;
+  return list.map((item) =>
+    urlMap[item.avatar] ? { ...item, avatar: urlMap[item.avatar] } : item,
+  );
+}

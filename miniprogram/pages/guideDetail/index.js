@@ -1,7 +1,7 @@
 // pages/guideDetail/index.js
 import { getGuideDetail } from '../../services/guide';
 import { getSettings } from '../../services/settings';
-import { getTempFileURLMap } from '../../services/cloudFile';
+import { resolveAvatars } from '../../services/cloudFile';
 import { getCachedGuide } from '../../services/guideCache';
 
 Page({
@@ -65,7 +65,7 @@ Page({
       reviewTotal: allReviews.length,
       reviewScore: this.calcReviewScore(allReviews),
     });
-    this._resolveCloudFileURLs(guide);
+    resolveAvatars([guide]).then(([resolved]) => this.setData({ 'guide.avatar': resolved.avatar }));
   },
 
   async loadGuide(id) {
@@ -146,16 +146,6 @@ Page({
 
   onAvatarLoad() {
     this.setData({ avatarLoaded: true });
-  },
-
-  async _resolveCloudFileURLs(guide) {
-    // banner 直接用 cloud:// 协议渲染，只转换头像
-    const urlMap = await getTempFileURLMap([guide.avatar]);
-    if (!Object.keys(urlMap).length) return;
-
-    const updated = {};
-    if (urlMap[guide.avatar]) updated['guide.avatar'] = urlMap[guide.avatar];
-    if (Object.keys(updated).length) this.setData(updated);
   },
 
   onBack() {
