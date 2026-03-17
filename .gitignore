@@ -19,6 +19,9 @@ npm-debug.log*
 # 环境变量（密钥）
 .env
 
+# TypeScript 编译产物
+*.tsbuildinfo
+
 # 临时文件
 .tmp/
 .cache/

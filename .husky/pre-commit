@@ -1,1 +1,3 @@
+npx tsc --noEmit -p miniprogram/tsconfig.json
+npx tsc --noEmit -p tsconfig.json
 pnpm exec lint-staged
