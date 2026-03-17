@@ -53,7 +53,7 @@ const guides = [
         date: '2025-06-01',
       },
       { nickname: '风**起', rating: 5, tripType: '带父母', date: '2025-03-22' },
-      { nickname: 'M**k', rating: 4, tripType: '家庭出行', date: '2025-02-15' },
+      { nickname: 'M**k', rating: 5, tripType: '家庭出行', date: '2025-02-15' },
     ],
   },
   {
@@ -128,7 +128,7 @@ const guides = [
       { nickname: 'R**n', rating: 5, tripType: '带父母', date: '2024-11-20' },
       {
         nickname: '梦**圆',
-        rating: 4,
+        rating: 5,
         tripType: '家庭出行',
         date: '2024-11-03',
       },
@@ -161,7 +161,7 @@ const guides = [
         date: '2025-05-03',
       },
       { nickname: 'T**a', rating: 5, tripType: '带父母', date: '2025-04-20' },
-      { nickname: '小**鱼', rating: 4, tripType: '周末游', date: '2024-11-03' },
+      { nickname: '小**鱼', rating: 5, tripType: '周末游', date: '2024-11-03' },
     ],
   },
   {
@@ -236,7 +236,7 @@ const guides = [
       { nickname: 'X**n', rating: 5, tripType: '周末游', date: '2025-02-15' },
       {
         nickname: '平**安',
-        rating: 4,
+        rating: 5,
         tripType: '朋友结伴',
         date: '2024-12-15',
       },
@@ -271,7 +271,7 @@ const guides = [
       { nickname: 'Y**i', rating: 5, tripType: '周末游', date: '2025-07-26' },
       {
         nickname: '念**念',
-        rating: 4,
+        rating: 5,
         tripType: '许愿祈福',
         date: '2024-12-15',
       },
@@ -310,7 +310,7 @@ const guides = [
         date: '2025-03-22',
       },
       { nickname: 'N**l', rating: 5, tripType: '许愿祈福', date: '2024-12-15' },
-      { nickname: '初**见', rating: 4, tripType: '周末游', date: '2024-11-20' },
+      { nickname: '初**见', rating: 5, tripType: '周末游', date: '2024-11-20' },
     ],
   },
   {
@@ -377,7 +377,7 @@ const guides = [
         tripType: '朋友结伴',
         date: '2025-03-08',
       },
-      { nickname: 'Q**n', rating: 4, tripType: '情侣出行', date: '2025-01-25' },
+      { nickname: 'Q**n', rating: 5, tripType: '情侣出行', date: '2025-01-25' },
     ],
   },
   {
@@ -407,7 +407,7 @@ const guides = [
         tripType: '许愿祈福',
         date: '2024-12-15',
       },
-      { nickname: 'U**e', rating: 4, tripType: '情侣出行', date: '2024-11-03' },
+      { nickname: 'U**e', rating: 5, tripType: '情侣出行', date: '2024-11-03' },
     ],
   },
 ];
