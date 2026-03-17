@@ -1,9 +1,0 @@
-{
-  "name": "seedGuides",
-  "version": "1.0.0",
-  "description": "初始化导游示例数据（仅开发/初始化阶段使用）",
-  "main": "index.js",
-  "dependencies": {
-    "wx-server-sdk": "~2.6.3"
-  }
-}

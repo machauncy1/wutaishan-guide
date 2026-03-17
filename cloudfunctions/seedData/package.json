@@ -1,0 +1,9 @@
+{
+  "name": "seedData",
+  "version": "1.0.0",
+  "description": "初始化预置数据（导游、全局配置等，仅开发/初始化阶段使用）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
