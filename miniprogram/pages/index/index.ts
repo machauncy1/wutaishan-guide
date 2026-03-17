@@ -45,7 +45,7 @@ Page<IndexData, IndexCustom>({
 
   _initNavHeight() {
     try {
-      const { statusBarHeight } = wx.getSystemInfoSync();
+      const { statusBarHeight } = wx.getWindowInfo();
       const menuButton = wx.getMenuButtonBoundingClientRect();
       const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
       this.setData({ statusBarHeight, navBarHeight });
@@ -102,7 +102,7 @@ Page<IndexData, IndexCustom>({
     if (!guideList.length) return;
 
     try {
-      const observer = this.createIntersectionObserver({ observeAll: true });
+      const observer = this.createIntersectionObserver({ observeAll: true, nativeMode: true });
       observer.relativeToViewport({ bottom: 200 }).observe('.card-wrap', (res) => {
         if (res.intersectionRatio > 0) {
           const id = res.dataset && res.dataset.id;

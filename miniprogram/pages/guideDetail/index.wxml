@@ -125,7 +125,7 @@
               <view class="review-top">
                 <text class="review-nickname">{{item.nickname}}</text>
                 <view class="review-stars">
-                  <text class="star" wx:for="{{item.stars}}" wx:for-item="star" wx:key="*this">{{star}}</text>
+                  <text class="star" wx:for="{{item.stars}}" wx:for-item="star" wx:key="index">{{star}}</text>
                 </view>
               </view>
               <view class="review-bottom">
@@ -146,7 +146,7 @@
 </view>
 
 <bottom-contact-bar
-  wx:if="{{guide}}"
+  wx:if="{{guide.phone}}"
   phone="{{guide.phone}}"
   show-consult="{{guide.wechatServiceEnabled}}"
   consult-label="咨询行程"

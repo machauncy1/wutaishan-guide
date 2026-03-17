@@ -75,7 +75,7 @@ Page<DetailData, DetailCustom>({
 
   _initNavHeight() {
     try {
-      const { statusBarHeight } = wx.getSystemInfoSync();
+      const { statusBarHeight } = wx.getWindowInfo();
       const menuButton = wx.getMenuButtonBoundingClientRect();
       const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
       this.setData({ statusBarHeight, navBarHeight });

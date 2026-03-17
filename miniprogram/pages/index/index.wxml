@@ -81,6 +81,7 @@
 </view>
 
 <bottom-contact-bar
+  wx:if="{{settings.contactPhone}}"
   phone="{{settings.contactPhone}}"
   show-consult="{{settings.wechatServiceEnabled}}"
   consult-label="咨询行程"
