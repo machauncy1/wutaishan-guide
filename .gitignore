@@ -16,6 +16,9 @@ node_modules/
 *.log
 npm-debug.log*
 
+# 环境变量（密钥）
+.env
+
 # 临时文件
 .tmp/
 .cache/

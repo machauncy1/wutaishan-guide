@@ -177,10 +177,17 @@ exports.main = async (event) => {
       log.push(`guides：已有 ${guidesTotal} 条数据，跳过（force=true 可强制重置）`);
     } else {
       if (force && guidesTotal > 0) {
-        await db.collection('guides')
-          .where({ sort: db.command.gte(0) })
-          .update({ data: { status: false } });
-        log.push('guides：已软删除旧数据');
+        // 云数据库 remove 每次最多删 20 条，需循环删除
+        let deleted = 0;
+        while (true) {
+          const res = await db.collection('guides')
+            .where({ sort: db.command.gte(0) })
+            .limit(20)
+            .remove();
+          deleted += res.stats.removed;
+          if (res.stats.removed === 0) break;
+        }
+        log.push(`guides：已硬删除 ${deleted} 条旧数据`);
       }
       for (const guide of guides) {
         await db.collection('guides').add({

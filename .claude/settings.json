@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "mcp__wutaishan-cloud__seed-data",
+      "Bash(pnpm add:*)",
+      "Bash(tcb fn:*)",
+      "Bash(tcb login:*)"
+    ]
+  }
+}
