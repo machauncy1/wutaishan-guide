@@ -3,27 +3,27 @@ import { getSettings } from '../../services/settings';
 import { resolveAvatars } from '../../services/cloudFile';
 import { prefetchGuide } from '../../services/guideCache';
 
-interface IIndexData {
-  settings: Partial<ISettings>;
-  guideList: IGuideListItem[];
+interface IndexData {
+  settings: Partial<Settings>;
+  guideList: GuideListItem[];
   loading: boolean;
   bannerLoaded: boolean;
   statusBarHeight: number;
   navBarHeight: number;
 }
 
-interface IIndexCustom {
+interface IndexCustom {
   _observer?: WechatMiniprogram.IntersectionObserver;
   _initNavHeight(): void;
   _loadFromCache(): void;
   loadData(): Promise<void>;
-  _observeGuideCards(guideList: IGuideListItem[]): void;
+  _observeGuideCards(guideList: GuideListItem[]): void;
   onGuideTap(e: WechatMiniprogram.TouchEvent): void;
   onBannerLoad(): void;
   onPhoneCall(): void;
 }
 
-Page<IIndexData, IIndexCustom>({
+Page<IndexData, IndexCustom>({
   data: {
     settings: {},
     guideList: [],
@@ -76,8 +76,8 @@ Page<IIndexData, IIndexCustom>({
     }
     try {
       const [settingsRes, guidesRes] = await Promise.all([getSettings(), getGuideList()]);
-      const settings = (settingsRes.data || {}) as ISettings;
-      const guideList = (guidesRes.data || []) as IGuideListItem[];
+      const settings = (settingsRes.data || {}) as Settings;
+      const guideList = (guidesRes.data || []) as GuideListItem[];
 
       try {
         wx.setStorageSync('settings', settings);
@@ -97,7 +97,7 @@ Page<IIndexData, IIndexCustom>({
     }
   },
 
-  _observeGuideCards(guideList: IGuideListItem[]) {
+  _observeGuideCards(guideList: GuideListItem[]) {
     if (this._observer) this._observer.disconnect();
     if (!guideList.length) return;
 

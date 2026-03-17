@@ -9,8 +9,8 @@ import { resolve } from 'path';
 import guidesJson from './data/guides.json';
 import settingsJson from './data/settings.json';
 
-const guides = guidesJson as IGuide[];
-const defaultSettings = settingsJson as ISettings;
+const guides = guidesJson as Guide[];
+const defaultSettings = settingsJson as Settings;
 
 config({ path: resolve(__dirname, '..', '.env') });
 

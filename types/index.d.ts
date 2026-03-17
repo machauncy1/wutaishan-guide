@@ -1,15 +1,15 @@
-interface IReview {
+interface Review {
   nickname: string;
   rating: number;
   tripType: string;
   date: string;
 }
 
-interface IProcessedReview extends IReview {
+interface ProcessedReview extends Review {
   stars: string[];
 }
 
-interface IGuide {
+interface Guide {
   _id?: string;
   name: string;
   avatar: string;
@@ -21,17 +21,17 @@ interface IGuide {
   wechatServiceEnabled: boolean;
   status: boolean;
   sort: number;
-  reviews: IReview[];
+  reviews: Review[];
 }
 
-type IGuideListItem = Pick<
-  IGuide,
+type GuideListItem = Pick<
+  Guide,
   '_id' | 'avatar' | 'name' | 'experienceYear' | 'serviceCount' | 'tags'
 > & { _id: string };
 
-type IGuideDetail = Omit<IGuide, 'sort' | 'tags'> & { _id: string };
+type GuideDetail = Omit<Guide, 'sort' | 'tags'> & { _id: string };
 
-interface ISettings {
+interface Settings {
   _id?: string;
   bannerImage: string;
   homeTitle: string;
@@ -41,7 +41,7 @@ interface ISettings {
   wechatServiceEnabled: boolean;
 }
 
-interface ITrustPoint {
+interface TrustPoint {
   label: string;
   value: string;
 }

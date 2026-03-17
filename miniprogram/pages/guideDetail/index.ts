@@ -3,41 +3,41 @@ import { getSettings } from '../../services/settings';
 import { resolveAvatars } from '../../services/cloudFile';
 import { getCachedGuide } from '../../services/guideCache';
 
-interface IDetailData {
-  settings: Partial<ISettings>;
-  guide: IGuideDetail | null;
+interface DetailData {
+  settings: Partial<Settings>;
+  guide: GuideDetail | null;
   loading: boolean;
   statusBarHeight: number;
   navBarHeight: number;
-  trustPoints: ITrustPoint[];
+  trustPoints: TrustPoint[];
   serviceScope: string[];
   bookingArrangement: string[];
   heroSubtitle: string;
   avatarLoaded: boolean;
-  reviewList: IProcessedReview[];
+  reviewList: ProcessedReview[];
   reviewTotal: number;
   reviewScore: string;
   showAllReviews: boolean;
 }
 
-interface IDetailCustom {
-  _allReviews: IProcessedReview[];
+interface DetailCustom {
+  _allReviews: ProcessedReview[];
   _initNavHeight(): void;
-  _applyGuide(guide: IGuideDetail, settings: Partial<ISettings>): void;
+  _applyGuide(guide: GuideDetail, settings: Partial<Settings>): void;
   loadGuide(id: string): Promise<void>;
-  buildHeroSubtitle(guide: IGuideDetail): string;
-  buildTrustPoints(guide: IGuideDetail): ITrustPoint[];
+  buildHeroSubtitle(guide: GuideDetail): string;
+  buildTrustPoints(guide: GuideDetail): TrustPoint[];
   buildServiceScope(): string[];
-  buildBookingArrangement(guide: IGuideDetail): string[];
-  buildReviews(rawReviews: IReview[]): IProcessedReview[];
-  calcReviewScore(reviews: IProcessedReview[]): string;
+  buildBookingArrangement(guide: GuideDetail): string[];
+  buildReviews(rawReviews: Review[]): ProcessedReview[];
+  calcReviewScore(reviews: ProcessedReview[]): string;
   onToggleReviews(): void;
   onAvatarLoad(): void;
   onBack(): void;
   onPhoneCall(): void;
 }
 
-Page<IDetailData, IDetailCustom>({
+Page<DetailData, DetailCustom>({
   _allReviews: [],
 
   data: {
@@ -84,7 +84,7 @@ Page<IDetailData, IDetailCustom>({
     }
   },
 
-  _applyGuide(guide: IGuideDetail, settings: Partial<ISettings>) {
+  _applyGuide(guide: GuideDetail, settings: Partial<Settings>) {
     const allReviews = this.buildReviews(guide.reviews || []);
     this._allReviews = allReviews;
     this.setData({
@@ -112,8 +112,8 @@ Page<IDetailData, IDetailCustom>({
 
     try {
       const [guideRes, settingsRes] = await Promise.all([getGuideDetail(id), getSettings()]);
-      const guide = guideRes.data as IGuideDetail;
-      const settings = (settingsRes.data || {}) as ISettings;
+      const guide = guideRes.data as GuideDetail;
+      const settings = (settingsRes.data || {}) as Settings;
       if (!guide || guide.status === false) {
         wx.showToast({ title: '导游不存在', icon: 'none' });
         wx.navigateBack();
@@ -129,11 +129,11 @@ Page<IDetailData, IDetailCustom>({
     }
   },
 
-  buildHeroSubtitle(guide: IGuideDetail): string {
+  buildHeroSubtitle(guide: GuideDetail): string {
     return `${guide.licenseText || '本地持证导游'}，平台统一协调安排`;
   },
 
-  buildTrustPoints(guide: IGuideDetail): ITrustPoint[] {
+  buildTrustPoints(guide: GuideDetail): TrustPoint[] {
     return [
       { label: '从业经验', value: `${guide.experienceYear}年` },
       { label: '累计服务', value: `${guide.serviceCount}+游客` },
@@ -144,7 +144,7 @@ Page<IDetailData, IDetailCustom>({
     return ['五台山景区内专业讲解与规划', '接站、包车等出行协助沟通'];
   },
 
-  buildBookingArrangement(guide: IGuideDetail): string[] {
+  buildBookingArrangement(guide: GuideDetail): string[] {
     const items = [
       '具体接待导游将根据出行日期、人数、路线和实际档期协调安排。',
       '节假日、初一十五和暑期客流较大，建议尽早确认出发时间与行程需求。',
@@ -153,14 +153,14 @@ Page<IDetailData, IDetailCustom>({
     return guide.phone ? items.slice(0, 3) : items.slice(0, 2);
   },
 
-  buildReviews(rawReviews: IReview[]): IProcessedReview[] {
+  buildReviews(rawReviews: Review[]): ProcessedReview[] {
     return rawReviews.map((r) => ({
       ...r,
       stars: Array.from({ length: 5 }, (_, i) => (i < r.rating ? '★' : '☆')),
     }));
   },
 
-  calcReviewScore(reviews: IProcessedReview[]): string {
+  calcReviewScore(reviews: ProcessedReview[]): string {
     if (!reviews.length) return '5.0';
     const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
     return avg.toFixed(1);

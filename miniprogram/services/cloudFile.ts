@@ -1,4 +1,4 @@
-interface IAvatarItem {
+interface AvatarItem {
   avatar: string;
 }
 
@@ -38,7 +38,7 @@ export async function getTempFileURLMap(fileIds: string[] = []): Promise<Record<
   return result;
 }
 
-export async function resolveAvatars<T extends IAvatarItem>(items: T[]): Promise<T[]> {
+export async function resolveAvatars<T extends AvatarItem>(items: T[]): Promise<T[]> {
   const urlMap = await getTempFileURLMap(items.map((item) => item.avatar));
   if (!Object.keys(urlMap).length) return items;
   return items.map((item) =>

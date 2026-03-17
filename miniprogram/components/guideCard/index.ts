@@ -2,7 +2,7 @@ Component({
   properties: {
     guide: {
       type: Object,
-      value: {} as IGuideListItem,
+      value: {} as GuideListItem,
     },
   },
   data: {

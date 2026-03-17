@@ -1,11 +1,11 @@
 import { getGuideDetail } from './guide';
 
-interface ICacheEntry {
-  data: IGuideDetail;
+interface CacheEntry {
+  data: GuideDetail;
   timestamp: number;
 }
 
-const _cache: Record<string, ICacheEntry> = {};
+const _cache: Record<string, CacheEntry> = {};
 const _pending: Record<string, Promise<void>> = {};
 const CACHE_TTL = 5 * 60 * 1000;
 
@@ -16,7 +16,7 @@ export function prefetchGuide(guideId: string): void {
 
   const p = getGuideDetail(guideId)
     .then((res) => {
-      const data = res.data as IGuideDetail;
+      const data = res.data as GuideDetail;
       if (data) {
         _cache[guideId] = { data, timestamp: Date.now() };
       }
@@ -29,7 +29,7 @@ export function prefetchGuide(guideId: string): void {
   _pending[guideId] = p;
 }
 
-export function getCachedGuide(guideId: string): IGuideDetail | null {
+export function getCachedGuide(guideId: string): GuideDetail | null {
   const entry = _cache[guideId];
   if (!entry) return null;
   if (Date.now() - entry.timestamp > CACHE_TTL) {
