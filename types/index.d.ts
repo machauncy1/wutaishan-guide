@@ -9,27 +9,27 @@ interface IProcessedReview extends IReview {
   stars: string[];
 }
 
-interface IGuideListItem {
-  _id: string;
-  avatar: string;
+interface IGuide {
+  _id?: string;
   name: string;
+  avatar: string;
   experienceYear: number;
   serviceCount: number;
   tags: string[];
-}
-
-interface IGuideDetail {
-  _id: string;
-  name: string;
-  avatar: string;
-  experienceYear: number;
-  serviceCount: number;
   phone: string;
   licenseText: string;
   wechatServiceEnabled: boolean;
   status: boolean;
+  sort: number;
   reviews: IReview[];
 }
+
+type IGuideListItem = Pick<
+  IGuide,
+  '_id' | 'avatar' | 'name' | 'experienceYear' | 'serviceCount' | 'tags'
+> & { _id: string };
+
+type IGuideDetail = Omit<IGuide, 'sort' | 'tags'> & { _id: string };
 
 interface ISettings {
   _id?: string;

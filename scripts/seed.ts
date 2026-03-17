@@ -6,8 +6,11 @@ import tcb from '@cloudbase/node-sdk';
 import { config } from 'dotenv';
 import { resolve } from 'path';
 
-import guides from './data/guides.json';
-import defaultSettings from './data/settings.json';
+import guidesJson from './data/guides.json';
+import settingsJson from './data/settings.json';
+
+const guides = guidesJson as IGuide[];
+const defaultSettings = settingsJson as ISettings;
 
 config({ path: resolve(__dirname, '..', '.env') });
 

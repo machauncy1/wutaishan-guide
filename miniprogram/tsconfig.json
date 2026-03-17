@@ -12,6 +12,6 @@
     "sourceMap": false,
     "types": ["miniprogram-api-typings"]
   },
-  "include": ["./**/*.ts"],
+  "include": ["./**/*.ts", "../types/**/*.d.ts"],
   "exclude": ["node_modules", "miniprogram_npm"]
 }
