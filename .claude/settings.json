@@ -21,7 +21,8 @@
       "Bash(pnpm exec:*)",
       "Bash(ls miniprogram/**/*.js)",
       "Bash(pnpm seed:*)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(git push:*)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide"
