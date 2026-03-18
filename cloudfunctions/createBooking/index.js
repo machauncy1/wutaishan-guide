@@ -1,6 +1,8 @@
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
+const { notifyBooking } = require('./notify');
+
 const db = cloud.database();
 const _ = db.command;
 const PHONE_RE = /^1[3-9]\d{9}$/;
@@ -72,6 +74,11 @@ exports.main = async (event) => {
     };
 
     await db.collection('bookings').add({ data: record });
+
+    // 发送通知（失败不影响预约结果）
+    await notifyBooking(record).catch((e) => {
+      console.error('通知发送异常:', e);
+    });
 
     return { success: true };
   } catch (e) {

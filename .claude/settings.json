@@ -22,7 +22,9 @@
       "Bash(ls miniprogram/**/*.js)",
       "Bash(pnpm seed:*)",
       "Bash(node -e \":*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide"
