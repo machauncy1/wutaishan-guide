@@ -15,7 +15,7 @@
   <!-- Banner -->
   <view class="page-banner">
     <view class="banner-title">五台山行程怎么安排</view>
-    <view class="banner-sub">路线规划 · 出行准备 · 省心安排</view>
+    <view class="banner-sub">祈福许愿 · 路线规划 · 省心出行</view>
   </view>
 
   <!-- 常见问题 -->
@@ -134,6 +134,11 @@
     <view class="guide-cta-desc">地点、顺序、讲解一站式安排，省心出行</view>
   </view>
 
+
+</view>
+
+<view class="page-footer-desc">
+  <text>五台山是很多游客祈福许愿的热门目的地。每年中考、高考、考研及公务员考试前后，不少家长带孩子来五台山，对行程有什么要求，学会提前规划总没错。也有人在忙碌中追求事业与内心的平衡，来这里放松身心。我们讲求财务透明、明码标价，对游客没有特别要求，子女老人均可放心出行。出行讲求健康第一，建议穿舒适步行鞋、带好证件。</text>
 </view>
 
 <bottom-contact-bar

@@ -75,7 +75,7 @@
         </view>
         <view class="entry-info">
           <text class="entry-title">五台山行程怎么安排</text>
-          <text class="entry-sub">路线规划 / 祈福参拜 / 省心安排</text>
+          <text class="entry-sub">祈福许愿 / 路线规划 / 省心安排</text>
         </view>
         <view class="entry-arrow">
           <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>

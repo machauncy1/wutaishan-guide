@@ -196,3 +196,11 @@ page {
   color: #666;
   margin-top: 8rpx;
 }
+
+/* ===== 页面底部描述 ===== */
+.page-footer-desc {
+  padding: 12rpx 24rpx;
+  font-size: 16rpx;
+  color: #DCDFE3;
+  line-height: 1.5;
+}
