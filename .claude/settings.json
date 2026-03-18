@@ -27,7 +27,13 @@
       "Bash(git commit:*)",
       "Bash(npx tsc:*)",
       "Bash(sips:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(python3:*)",
+      "Bash(cwebp -lossless /tmp/route_480_transparent.png -o \"miniprogram/images/icons/route.webp\")",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Bash(cwebp -lossless /tmp/route_new.png -o \"miniprogram/images/icons/route.webp\")",
+      "Bash(cwebp -q 90 /tmp/route_final.png -o \"miniprogram/images/icons/route.webp\")"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide"
