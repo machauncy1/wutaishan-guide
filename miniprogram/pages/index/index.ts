@@ -18,6 +18,7 @@ interface IndexCustom {
   _loadFromCache(): void;
   loadData(): Promise<void>;
   _observeGuideCards(guideList: GuideListItem[]): void;
+  onEntryTap(e: WechatMiniprogram.TouchEvent): void;
   onGuideTap(e: WechatMiniprogram.TouchEvent): void;
   onBannerLoad(): void;
   onPhoneCall(): void;
@@ -113,6 +114,17 @@ Page<IndexData, IndexCustom>({
     } catch (_e) {
       // 部分低版本基础库不支持 IntersectionObserver，静默降级
     }
+  },
+
+  onEntryTap(e: WechatMiniprogram.TouchEvent) {
+    const { path } = e.currentTarget.dataset;
+    if (!path) return;
+    wx.navigateTo({
+      url: path,
+      fail() {
+        wx.showToast({ title: '即将开放，敬请期待', icon: 'none' });
+      },
+    });
   },
 
   onGuideTap(e: WechatMiniprogram.TouchEvent) {

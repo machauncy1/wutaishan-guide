@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "五台山行程怎么安排 - 路线规划、求学求财、出行准备",
+  "usingComponents": {
+    "bottom-contact-bar": "/components/bottomContactBar/index"
+  }
+}

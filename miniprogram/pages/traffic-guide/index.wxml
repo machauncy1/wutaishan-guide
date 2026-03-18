@@ -1,0 +1,134 @@
+<!--pages/traffic-guide/index.wxml-->
+<view class="page">
+
+  <!-- 导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px">
+    <view class="nav-bar-inner" style="height: {{navBarHeight}}px">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <view class="nav-title">五台山交通怎么走</view>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- Banner -->
+  <view class="page-banner">
+    <view class="banner-title">五台山交通怎么走</view>
+    <view class="banner-sub">打车约车、公交路线一目了然</view>
+  </view>
+
+  <!-- 常见问题 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">常见问题</text>
+    </view>
+
+    <view class="faq-list">
+      <view class="faq-item {{activeIndex === 0 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="0">
+        <view class="faq-q">
+          <text class="faq-q-text">景区里能打车吗？</text>
+          <text class="faq-arrow">{{activeIndex === 0 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 0}}">
+          <text>景区内有出租车和包车服务，也可联系导游统一安排用车。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 1 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="1">
+        <view class="faq-q">
+          <text class="faq-q-text">怎么约车或包车？</text>
+          <text class="faq-arrow">{{activeIndex === 1 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 1}}">
+          <text>可以联系导游统一安排包车，价格透明、路线合理。也可到景区后现场约车，但旺季车辆紧张。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 2 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="2">
+        <view class="faq-q">
+          <text class="faq-q-text">公交车挤吗？好等吗？</text>
+          <text class="faq-arrow">{{activeIndex === 2 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 2}}">
+          <text>景区内公交车免费乘坐。旺季会有点挤，但发车频率高、等候时间很短。怕挤可以包车或打车，也可以联系导游统一安排用车。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 3 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="3">
+        <view class="faq-q">
+          <text class="faq-q-text">自驾能进景区吗？</text>
+          <text class="faq-arrow">{{activeIndex === 3 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 3}}">
+          <text>可以自驾进入台怀镇区域，但旺季核心区域交通管制，建议停车后换乘环保车。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 4 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="4">
+        <view class="faq-q">
+          <text class="faq-q-text">旺季堵车严重吗？</text>
+          <text class="faq-arrow">{{activeIndex === 4 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 4}}">
+          <text>五一、十一等假期拥堵明显，建议错峰出行或由当地导游安排路线。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 5 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="5">
+        <view class="faq-q">
+          <text class="faq-q-text">怎么从太原/忻州到五台山？</text>
+          <text class="faq-arrow">{{activeIndex === 5 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 5}}">
+          <text>太原出发约3.5小时车程，忻州出发约2小时。可选大巴、包车或导游接送。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 6 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="6">
+        <view class="faq-q">
+          <text class="faq-q-text">游客中心在哪里？</text>
+          <text class="faq-arrow">{{activeIndex === 6 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 6}}">
+          <text>五台山游客中心位于景区入口处，可办理购票、咨询等服务。导游一般会在景区内约定地点与您会合。</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 出行建议 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">出行建议</text>
+    </view>
+    <view class="tip-list">
+      <view class="tip-item">
+        <text class="tip-dot"></text>
+        <text class="tip-text">旺季建议包车或导游接送，避免堵车烦恼</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-dot"></text>
+        <text class="tip-text">景区内步行 + 免费公交结合，效率最高</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-dot"></text>
+        <text class="tip-text">冬季山路可能结冰，注意行车安全</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导游安排引导 -->
+  <view class="guide-cta-section">
+    <view class="guide-cta-title">交通 + 行程，导游统一安排</view>
+    <view class="guide-cta-desc">接送、包车、路线规划一站式安排，省心出行</view>
+  </view>
+
+</view>
+
+<bottom-contact-bar
+  phone="{{contactPhone}}"
+  show-consult="{{true}}"
+  consult-label="咨询导游"
+  phone-label="电话沟通"
+/>

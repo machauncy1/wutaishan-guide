@@ -3,12 +3,15 @@
     "pages/index/index",
     "pages/guideDetail/index",
     "pages/booking/index",
-    "pages/bookingSuccess/index"
+    "pages/bookingSuccess/index",
+    "pages/ticket-guide/index",
+    "pages/traffic-guide/index",
+    "pages/blessing-guide/index"
   ],
   "window": {
     "backgroundColor": "#F2F4F7",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#A52826",
+    "navigationBarBackgroundColor": "#6B5A7A",
     "navigationBarTitleText": "五台山导游",
     "navigationBarTextStyle": "white"
   },

@@ -109,7 +109,7 @@
       </view>
       <textarea
         class="field-textarea"
-        placeholder="例如：计划玩2天、需要接站、想去五爷庙许愿…"
+        placeholder="例如：计划玩2天、需要接站、想深度游览…"
         value="{{form.remark}}"
         bindinput="onInputRemark"
         maxlength="200"

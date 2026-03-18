@@ -218,5 +218,43 @@
       { "nickname": "观**海", "rating": 5, "tripType": "许愿祈福", "date": "2024-12-15" },
       { "nickname": "U**e", "rating": 5, "tripType": "情侣出行", "date": "2024-11-03" }
     ]
+  },
+  {
+    "name": "张燕",
+    "avatar": "cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/zhang-yan.jpg",
+    "experienceYear": 12,
+    "serviceCount": 2500,
+    "tags": ["深度礼佛", "行程规划", "许愿还愿"],
+    "phone": "18834032968",
+    "licenseText": "本地持证导游",
+    "wechatServiceEnabled": true,
+    "status": true,
+    "sort": 12,
+    "reviews": [
+      { "nickname": "映**雪", "rating": 5, "tripType": "许愿祈福", "date": "2025-03-28" },
+      { "nickname": "O**r", "rating": 5, "tripType": "家庭出行", "date": "2025-02-03" },
+      { "nickname": "望**月", "rating": 5, "tripType": "带父母", "date": "2024-12-15" },
+      { "nickname": "J**n", "rating": 5, "tripType": "朋友结伴", "date": "2024-10-20" },
+      { "nickname": "清**莲", "rating": 5, "tripType": "周末游", "date": "2024-08-30" }
+    ]
+  },
+  {
+    "name": "陈新梅",
+    "avatar": "cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/guides/chen-xinmei.jpg",
+    "experienceYear": 9,
+    "serviceCount": 1800,
+    "tags": ["佛教文化", "寺庙讲解", "家庭游"],
+    "phone": "18834032968",
+    "licenseText": "本地持证导游",
+    "wechatServiceEnabled": true,
+    "status": true,
+    "sort": 13,
+    "reviews": [
+      { "nickname": "锦**年", "rating": 5, "tripType": "带父母", "date": "2025-03-01" },
+      { "nickname": "H**o", "rating": 5, "tripType": "独自出行", "date": "2025-02-16" },
+      { "nickname": "浅**笑", "rating": 5, "tripType": "情侣出行", "date": "2024-12-28" },
+      { "nickname": "D**n", "rating": 5, "tripType": "许愿祈福", "date": "2024-10-05" },
+      { "nickname": "静**好", "rating": 5, "tripType": "家庭出行", "date": "2024-08-20" }
+    ]
   }
 ]

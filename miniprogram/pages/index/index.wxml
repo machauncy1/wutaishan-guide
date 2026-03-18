@@ -43,8 +43,51 @@
   <!-- ===== 内容区 ===== -->
   <view class="content-sheet">
 
+    <!-- ===== 核心入口区 ===== -->
+    <view class="entry-section">
+      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/ticket-guide/index">
+        <view class="entry-icon entry-icon-ticket">
+          <image class="entry-icon-img" src="cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/ticket.webp" />
+        </view>
+        <view class="entry-info">
+          <text class="entry-title">五台山门票怎么买</text>
+          <text class="entry-sub">是否限流 / 提前几天 / 当天能不能进</text>
+        </view>
+        <view class="entry-arrow">
+          <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>
+        </view>
+      </view>
+      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/traffic-guide/index">
+        <view class="entry-icon entry-icon-traffic">
+          <image class="entry-icon-img" src="cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/traffic.webp" />
+        </view>
+        <view class="entry-info">
+          <text class="entry-title">五台山交通怎么走</text>
+          <text class="entry-sub">打车约车 / 公交方便吗 / 拥堵情况</text>
+        </view>
+        <view class="entry-arrow">
+          <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>
+        </view>
+      </view>
+      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/blessing-guide/index">
+        <view class="entry-icon entry-icon-trip">
+          <image class="entry-icon-img" src="cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/route.webp" />
+        </view>
+        <view class="entry-info">
+          <text class="entry-title">五台山行程怎么安排</text>
+          <text class="entry-sub">路线规划 / 祈福参拜 / 省心安排</text>
+        </view>
+        <view class="entry-arrow">
+          <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>
+        </view>
+      </view>
+    </view>
+
     <!-- 导游列表 -->
-    <view class="list-section">
+    <view class="guide-section">
+      <view class="section-header">
+        <text class="section-title">本地持证导游</text>
+      </view>
       <view class="list-wrap">
 
         <view wx:if="{{loading}}" class="skeleton-list">

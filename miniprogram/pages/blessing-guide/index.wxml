@@ -1,0 +1,144 @@
+<!--pages/blessing-guide/index.wxml-->
+<view class="page">
+
+  <!-- 导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px">
+    <view class="nav-bar-inner" style="height: {{navBarHeight}}px">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <view class="nav-title">五台山行程怎么安排</view>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- Banner -->
+  <view class="page-banner">
+    <view class="banner-title">五台山行程怎么安排</view>
+    <view class="banner-sub">路线规划 · 出行准备 · 省心安排</view>
+  </view>
+
+  <!-- 常见问题 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">常见问题</text>
+    </view>
+
+    <view class="faq-list">
+      <view class="faq-item {{activeIndex === 0 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="0">
+        <view class="faq-q">
+          <text class="faq-q-text">想为孩子祈福，一般去哪些地方？</text>
+          <text class="faq-arrow">{{activeIndex === 0 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 0}}">
+          <text>台怀镇核心景区内有多处游客常去的寺庙。具体路线可咨询导游统一安排。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 1 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="1">
+        <view class="faq-q">
+          <text class="faq-q-text">想祈求事业顺利，去哪些寺庙合适？</text>
+          <text class="faq-arrow">{{activeIndex === 1 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 1}}">
+          <text>景区内有多处热门寺庙可以参观。导游会根据您的行程合理安排参观顺序。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 2 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="2">
+        <view class="faq-q">
+          <text class="faq-q-text">需要提前准备什么？</text>
+          <text class="faq-arrow">{{activeIndex === 2 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 2}}">
+          <text>穿舒适步行鞋，带好身份证。其他物品景区附近均可买到，无需提前准备。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 3 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="3">
+        <view class="faq-q">
+          <text class="faq-q-text">一天能走完吗？</text>
+          <text class="faq-arrow">{{activeIndex === 3 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 3}}">
+          <text>热门路线一天可走完。如果想深度游览，建议安排1.5-2天。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 4 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="4">
+        <view class="faq-q">
+          <text class="faq-q-text">有推荐的参观顺序吗？</text>
+          <text class="faq-arrow">{{activeIndex === 4 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 4}}">
+          <text>建议由导游根据当天人流和您的时间安排最佳顺序，避开高峰更省时间。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 5 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="5">
+        <view class="faq-q">
+          <text class="faq-q-text">导游怎么收费？</text>
+          <text class="faq-arrow">{{activeIndex === 5 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 5}}">
+          <text>费用根据行程天数和人数确定，提前沟通、明码标价，没有隐形消费。具体可咨询导游。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 6 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="6">
+        <view class="faq-q">
+          <text class="faq-q-text">会带我们去购物店吗？</text>
+          <text class="faq-arrow">{{activeIndex === 6 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 6}}">
+          <text>不会。全程纯玩，不进购物店、不强制消费，专注游览体验。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 7 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="7">
+        <view class="faq-q">
+          <text class="faq-q-text">你们是正规导游吗？</text>
+          <text class="faq-arrow">{{activeIndex === 7 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 7}}">
+          <text>是的，均为五台山本地持证导游，常年在景区服务，熟悉路线和各寺庙情况。</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 出行安排建议 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">出行安排建议</text>
+    </view>
+    <view class="tip-list">
+      <view class="tip-item">
+        <text class="tip-dot"></text>
+        <text class="tip-text">五台山海拔较高，夏天也建议带件外套</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-dot"></text>
+        <text class="tip-text">旺季建议早出发，避开人流高峰</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-dot"></text>
+        <text class="tip-text">跟导游走更省心，路线讲解全程安排</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导游安排引导 -->
+  <view class="guide-cta-section">
+    <view class="guide-cta-title">行程路线，导游统一安排</view>
+    <view class="guide-cta-desc">地点、顺序、讲解一站式安排，省心出行</view>
+  </view>
+
+</view>
+
+<bottom-contact-bar
+  phone="{{contactPhone}}"
+  show-consult="{{true}}"
+  consult-label="咨询导游"
+  phone-label="电话沟通"
+/>

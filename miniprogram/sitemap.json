@@ -1,7 +1,38 @@
 {
   "desc": "关于本文件的更多信息，请参考文档 https://developers.weixin.qq.com/miniprogram/dev/framework/sitemap.html",
-  "rules": [{
-    "action": "allow",
-    "page": "*"
-  }]
+  "rules": [
+    {
+      "action": "allow",
+      "page": "pages/index/index",
+      "priority": 1
+    },
+    {
+      "action": "allow",
+      "page": "pages/ticket-guide/index",
+      "priority": 2
+    },
+    {
+      "action": "allow",
+      "page": "pages/traffic-guide/index",
+      "priority": 3
+    },
+    {
+      "action": "allow",
+      "page": "pages/blessing-guide/index",
+      "priority": 4
+    },
+    {
+      "action": "allow",
+      "page": "pages/guideDetail/index",
+      "priority": 5
+    },
+    {
+      "action": "disallow",
+      "page": "pages/booking/index"
+    },
+    {
+      "action": "disallow",
+      "page": "pages/bookingSuccess/index"
+    }
+  ]
 }
