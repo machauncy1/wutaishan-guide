@@ -1,21 +1,28 @@
 <!--pages/blessing-guide/index.wxml-->
 <view class="page">
 
-  <!-- 导航栏 -->
-  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px">
-    <view class="nav-bar-inner" style="height: {{navBarHeight}}px">
-      <view class="nav-back" bindtap="onBack">
-        <text class="nav-back-icon">‹</text>
-      </view>
-      <view class="nav-title">五台山行程怎么安排</view>
-      <view class="nav-placeholder"></view>
-    </view>
-  </view>
-
-  <!-- Banner -->
+  <!-- Banner（导航栏嵌入 banner 内部，图片通顶） -->
   <view class="page-banner">
-    <view class="banner-title">五台山行程怎么安排</view>
-    <view class="banner-sub">祈福许愿 · 路线规划 · 省心出行</view>
+    <image
+      class="page-banner-img {{bannerLoaded ? 'page-banner-img-loaded' : ''}}"
+      src="{{bannerImage}}"
+      mode="aspectFill"
+      bindload="onBannerLoad"
+      wx:if="{{bannerImage}}"
+    />
+    <view class="page-banner-gradient"></view>
+    <view class="page-banner-content">
+      <view style="height: {{statusBarHeight}}px"></view>
+      <view class="page-banner-nav" style="height: {{navBarHeight}}px">
+        <view class="nav-back" bindtap="onBack">
+          <text class="nav-back-icon">‹</text>
+        </view>
+        <view class="nav-title">行程攻略</view>
+        <view class="nav-placeholder"></view>
+      </view>
+      <view class="banner-title">五台山行程怎么安排</view>
+      <view class="banner-sub">祈福许愿 · 路线规划 · 省心出行</view>
+    </view>
   </view>
 
   <!-- 常见问题 -->

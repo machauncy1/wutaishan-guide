@@ -22,9 +22,26 @@ export function getCachedContactPhone(): string {
   }
 }
 
+/** 从缓存获取 Banner 图片 */
+export function getCachedBannerImage(): string {
+  try {
+    const cached = wx.getStorageSync('settings');
+    return (cached && cached.bannerImage) || '';
+  } catch (_e) {
+    return '';
+  }
+}
+
 /** 从云端获取联系电话 */
 export async function fetchContactPhone(): Promise<string> {
   const res = await getSettings();
   const settings = (res.data || {}) as Settings;
   return settings.contactPhone || '';
+}
+
+/** 从云端获取 Banner 图片 */
+export async function fetchBannerImage(): Promise<string> {
+  const res = await getSettings();
+  const settings = (res.data || {}) as Settings;
+  return settings.bannerImage || '';
 }
