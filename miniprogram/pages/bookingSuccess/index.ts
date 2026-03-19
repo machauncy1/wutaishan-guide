@@ -1,3 +1,5 @@
+import { getCachedSettings } from '../../services/appService';
+
 interface SuccessData {
   guideId: string;
   date: string;
@@ -22,21 +24,14 @@ Page<SuccessData, SuccessCustom>({
   },
 
   onLoad(options: Record<string, string | undefined>) {
+    const cached = getCachedSettings();
     this.setData({
       guideId: options.guideId || '',
       date: options.date || '',
       timePeriod: options.timePeriod || '',
       groupSize: options.groupSize || '',
+      contactPhone: cached.contactPhone || '',
     });
-
-    try {
-      const settings = wx.getStorageSync('settings');
-      if (settings && settings.contactPhone) {
-        this.setData({ contactPhone: settings.contactPhone });
-      }
-    } catch (_e) {
-      /* ignore */
-    }
   },
 
   onPhoneCall() {

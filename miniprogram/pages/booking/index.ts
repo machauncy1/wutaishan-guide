@@ -1,3 +1,5 @@
+import { getNavBarInfo, getCachedSettings } from '../../services/appService';
+
 interface BookingForm {
   touristName: string;
   touristPhone: string;
@@ -25,10 +27,10 @@ interface BookingData {
   form: BookingForm;
   errors: BookingErrors;
   submitting: boolean;
+  serviceTotal: number;
 }
 
 interface BookingCustom {
-  _initNavHeight(): void;
   _validate(): boolean;
   onInputName(e: WechatMiniprogram.Input): void;
   onInputPhone(e: WechatMiniprogram.Input): void;
@@ -43,12 +45,11 @@ interface BookingCustom {
 
 const PHONE_RE = /^1[3-9]\d{9}$/;
 
+/** 获取北京时间今天日期，与云函数保持一致 */
 function getToday(): string {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
+  const now = new Date();
+  const bjTime = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+  return bjTime.toISOString().slice(0, 10);
 }
 
 function emptyErrors(): BookingErrors {
@@ -79,6 +80,7 @@ Page<BookingData, BookingCustom>({
       groupSize: '',
     },
     submitting: false,
+    serviceTotal: 21300,
   },
 
   onLoad(options: Record<string, string | undefined>) {
@@ -87,23 +89,14 @@ Page<BookingData, BookingCustom>({
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
-    this._initNavHeight();
+    const cached = getCachedSettings();
     this.setData({
+      ...getNavBarInfo(),
       guideId,
       guideName: decodeURIComponent(guideName),
       today: getToday(),
+      serviceTotal: cached.serviceTotal || 21300,
     });
-  },
-
-  _initNavHeight() {
-    try {
-      const { statusBarHeight } = wx.getWindowInfo();
-      const menuButton = wx.getMenuButtonBoundingClientRect();
-      const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
-      this.setData({ statusBarHeight, navBarHeight });
-    } catch (_e) {
-      /* 使用默认值 */
-    }
   },
 
   // ===== 输入事件 =====

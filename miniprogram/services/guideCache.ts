@@ -1,4 +1,4 @@
-import { getGuideDetail } from './guide';
+import { getGuideDetail } from './guideDb';
 
 interface CacheEntry {
   data: GuideDetail;
@@ -21,7 +21,9 @@ export function prefetchGuide(guideId: string): void {
         _cache[guideId] = { data, timestamp: Date.now() };
       }
     })
-    .catch(() => {})
+    .catch((e) => {
+      console.warn('[guideCache] prefetch 失败:', guideId, e);
+    })
     .finally(() => {
       delete _pending[guideId];
     });

@@ -1,7 +1,7 @@
-import { getGuideDetail } from '../../services/guide';
-import { getSettings } from '../../services/settings';
+import { getGuideDetail } from '../../services/guideDb';
 import { resolveAvatars } from '../../services/cloudFile';
 import { getCachedGuide } from '../../services/guideCache';
+import { getNavBarInfo, getCachedSettings, fetchRemoteSettings } from '../../services/appService';
 
 interface DetailData {
   settings: Partial<Settings>;
@@ -23,7 +23,6 @@ interface DetailData {
 
 interface DetailCustom {
   _allReviews: ProcessedReview[];
-  _initNavHeight(): void;
   _applyGuide(guide: GuideDetail, settings: Partial<Settings>): void;
   loadGuide(id: string): Promise<void>;
   buildHeroSubtitle(guide: GuideDetail): string;
@@ -65,29 +64,13 @@ Page<DetailData, DetailCustom>({
 
   onLoad(options: Record<string, string | undefined>) {
     const { id } = options;
-    this._initNavHeight();
-    try {
-      const cached = wx.getStorageSync('settings');
-      if (cached) this.setData({ settings: cached });
-    } catch (_e) {
-      /* ignore */
-    }
+    const cached = getCachedSettings();
+    this.setData({ ...getNavBarInfo(), settings: cached });
     if (!id) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
     this.loadGuide(id);
-  },
-
-  _initNavHeight() {
-    try {
-      const { statusBarHeight } = wx.getWindowInfo();
-      const menuButton = wx.getMenuButtonBoundingClientRect();
-      const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
-      this.setData({ statusBarHeight, navBarHeight });
-    } catch (_e) {
-      // 获取失败时使用默认值
-    }
   },
 
   _applyGuide(guide: GuideDetail, settings: Partial<Settings>) {
@@ -121,9 +104,8 @@ Page<DetailData, DetailCustom>({
     }
 
     try {
-      const [guideRes, settingsRes] = await Promise.all([getGuideDetail(id), getSettings()]);
+      const [guideRes, settings] = await Promise.all([getGuideDetail(id), fetchRemoteSettings()]);
       const guide = guideRes.data as GuideDetail;
-      const settings = (settingsRes.data || {}) as Settings;
       if (!guide || guide.status === false) {
         wx.showToast({ title: '导游不存在', icon: 'none' });
         wx.navigateBack();

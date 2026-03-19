@@ -1,4 +1,4 @@
-/* 攻略页共享样式 (ticket-guide / traffic-guide / blessing-guide) */
+/* 攻略页共享样式 (ticketGuide / trafficGuide / blessingGuide) */
 
 page {
   background: #F2F4F7;

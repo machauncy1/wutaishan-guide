@@ -8,17 +8,17 @@
     },
     {
       "action": "allow",
-      "page": "pages/ticket-guide/index",
+      "page": "pages/ticketGuide/index",
       "priority": 2
     },
     {
       "action": "allow",
-      "page": "pages/traffic-guide/index",
+      "page": "pages/trafficGuide/index",
       "priority": 3
     },
     {
       "action": "allow",
-      "page": "pages/blessing-guide/index",
+      "page": "pages/blessingGuide/index",
       "priority": 4
     },
     {

@@ -2,19 +2,28 @@ interface AvatarItem {
   avatar: string;
 }
 
-const _urlCache: Record<string, string> = {};
+interface UrlCacheEntry {
+  url: string;
+  timestamp: number;
+}
+
+const _urlCache: Record<string, UrlCacheEntry> = {};
+const URL_CACHE_TTL = 90 * 60 * 1000; // 90 分钟（临时 URL 有效期通常为 2 小时）
 
 export async function getTempFileURLMap(fileIds: string[] = []): Promise<Record<string, string>> {
   const cloudIds = [...new Set(fileIds.filter((v) => v && v.startsWith('cloud://')))];
   if (!cloudIds.length) return {};
 
+  const now = Date.now();
   const result: Record<string, string> = {};
   const needFetch: string[] = [];
 
   cloudIds.forEach((id) => {
-    if (_urlCache[id]) {
-      result[id] = _urlCache[id];
+    const entry = _urlCache[id];
+    if (entry && now - entry.timestamp < URL_CACHE_TTL) {
+      result[id] = entry.url;
     } else {
+      delete _urlCache[id];
       needFetch.push(id);
     }
   });
@@ -26,7 +35,7 @@ export async function getTempFileURLMap(fileIds: string[] = []): Promise<Record<
     if (res && res.fileList) {
       res.fileList.forEach((f) => {
         if (f && f.fileID && f.tempFileURL) {
-          _urlCache[f.fileID] = f.tempFileURL;
+          _urlCache[f.fileID] = { url: f.tempFileURL, timestamp: Date.now() };
           result[f.fileID] = f.tempFileURL;
         }
       });

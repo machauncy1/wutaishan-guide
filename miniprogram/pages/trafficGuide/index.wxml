@@ -1,4 +1,4 @@
-<!--pages/traffic-guide/index.wxml-->
+<!--pages/trafficGuide/index.wxml-->
 <view class="page">
 
   <!-- Banner（导航栏嵌入 banner 内部，图片通顶） -->

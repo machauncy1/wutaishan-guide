@@ -4,9 +4,9 @@
     "pages/guideDetail/index",
     "pages/booking/index",
     "pages/bookingSuccess/index",
-    "pages/ticket-guide/index",
-    "pages/traffic-guide/index",
-    "pages/blessing-guide/index"
+    "pages/ticketGuide/index",
+    "pages/trafficGuide/index",
+    "pages/blessingGuide/index"
   ],
   "window": {
     "backgroundColor": "#F2F4F7",

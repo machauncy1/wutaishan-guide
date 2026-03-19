@@ -132,7 +132,7 @@
     </view>
     <view class="trust-item">
       <text class="trust-check">✓</text>
-      <text>已服务21300+游客</text>
+      <text>已服务{{serviceTotal || 21300}}+游客</text>
     </view>
   </view>
 

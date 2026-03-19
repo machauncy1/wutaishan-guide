@@ -146,7 +146,7 @@
 </view>
 
 <bottom-contact-bar
-  wx:if="{{guide.phone}}"
+  wx:if="{{guide && guide.phone}}"
   phone="{{guide.phone}}"
   show-consult="{{guide.wechatServiceEnabled}}"
   show-booking="{{true}}"

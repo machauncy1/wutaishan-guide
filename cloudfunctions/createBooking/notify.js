@@ -53,7 +53,7 @@ async function notifyBooking(record) {
     .filter(Boolean)
     .join('\n');
 
-  await Promise.allSettled([sendWxwork(content)]);
+  await sendWxwork(content);
 }
 
 module.exports = { notifyBooking };

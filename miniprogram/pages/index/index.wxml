@@ -45,7 +45,7 @@
 
     <!-- ===== 核心入口区 ===== -->
     <view class="entry-section">
-      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/ticket-guide/index">
+      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/ticketGuide/index">
         <view class="entry-icon entry-icon-ticket">
           <image class="entry-icon-img" src="cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/ticket.webp" />
         </view>
@@ -57,7 +57,7 @@
           <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>
         </view>
       </view>
-      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/traffic-guide/index">
+      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/trafficGuide/index">
         <view class="entry-icon entry-icon-traffic">
           <image class="entry-icon-img" src="cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/traffic.webp" />
         </view>
@@ -69,7 +69,7 @@
           <mp-icon icon="arrow" color="#C0C4CC" size="{{16}}"></mp-icon>
         </view>
       </view>
-      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/blessing-guide/index">
+      <view class="entry-card" bindtap="onEntryTap" data-path="/pages/blessingGuide/index">
         <view class="entry-icon entry-icon-trip">
           <image class="entry-icon-img" src="cloud://cloud1-7g44gn8c3a08ced5.636c-cloud1-7g44gn8c3a08ced5-1411386376/route.webp" />
         </view>

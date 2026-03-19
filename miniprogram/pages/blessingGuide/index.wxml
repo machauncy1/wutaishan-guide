@@ -1,4 +1,4 @@
-<!--pages/ticket-guide/index.wxml-->
+<!--pages/blessingGuide/index.wxml-->
 <view class="page">
 
   <!-- Banner（导航栏嵌入 banner 内部，图片通顶） -->
@@ -17,11 +17,11 @@
         <view class="nav-back" bindtap="onBack">
           <text class="nav-back-icon">‹</text>
         </view>
-        <view class="nav-title">门票攻略</view>
+        <view class="nav-title">行程攻略</view>
         <view class="nav-placeholder"></view>
       </view>
-      <view class="banner-title">五台山门票怎么买</view>
-      <view class="banner-sub">游客服务中心购票及在线购票全指南</view>
+      <view class="banner-title">五台山行程怎么安排</view>
+      <view class="banner-sub">祈福许愿 · 路线规划 · 省心出行</view>
     </view>
   </view>
 
@@ -34,103 +34,118 @@
     <view class="faq-list">
       <view class="faq-item {{activeIndex === 0 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="0">
         <view class="faq-q">
-          <text class="faq-q-text">五台山门票多少钱？</text>
+          <text class="faq-q-text">想为孩子祈福，一般去哪些地方？</text>
           <text class="faq-arrow">{{activeIndex === 0 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 0}}">
-          <text>进山门票135元/人，不分淡旺季，全年统一价格。</text>
+          <text>台怀镇核心景区内有多处游客常去的寺庙。具体路线可咨询导游统一安排。</text>
         </view>
       </view>
 
       <view class="faq-item {{activeIndex === 1 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="1">
         <view class="faq-q">
-          <text class="faq-q-text">需要提前几天买票？</text>
+          <text class="faq-q-text">想祈求事业顺利，去哪些寺庙合适？</text>
           <text class="faq-arrow">{{activeIndex === 1 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 1}}">
-          <text>建议至少提前1天在线购票，五一、十一等高峰期建议提前2-3天预订。</text>
+          <text>景区内有多处热门寺庙可以参观。导游会根据您的行程合理安排参观顺序。</text>
         </view>
       </view>
 
       <view class="faq-item {{activeIndex === 2 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="2">
         <view class="faq-q">
-          <text class="faq-q-text">当天能直接买票进吗？</text>
+          <text class="faq-q-text">需要提前准备什么？</text>
           <text class="faq-arrow">{{activeIndex === 2 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 2}}">
-          <text>淡季一般可以，旺季可能限流。建议提前在线购票，也可到五台山游客服务中心现场购买，但排队时间较长。</text>
+          <text>穿舒适步行鞋，带好身份证。其他物品景区附近均可买到，无需提前准备。</text>
         </view>
       </view>
 
       <view class="faq-item {{activeIndex === 3 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="3">
         <view class="faq-q">
-          <text class="faq-q-text">景区会限流吗？</text>
+          <text class="faq-q-text">一天能走完吗？</text>
           <text class="faq-arrow">{{activeIndex === 3 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 3}}">
-          <text>节假日高峰期会限流，日常一般不限流。具体以景区当日公告为准。</text>
+          <text>热门路线一天可走完。如果想深度游览，建议安排1.5-2天。</text>
         </view>
       </view>
 
       <view class="faq-item {{activeIndex === 4 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="4">
         <view class="faq-q">
-          <text class="faq-q-text">门票包含哪些景点？</text>
+          <text class="faq-q-text">有推荐的参观顺序吗？</text>
           <text class="faq-arrow">{{activeIndex === 4 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 4}}">
-          <text>进山门票包含景区内所有寺庙参观，无需额外购票。</text>
+          <text>建议由导游根据当天人流和您的时间安排最佳顺序，避开高峰更省时间。</text>
         </view>
       </view>
 
       <view class="faq-item {{activeIndex === 5 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="5">
         <view class="faq-q">
-          <text class="faq-q-text">我该买哪天的门票？</text>
+          <text class="faq-q-text">导游怎么收费？</text>
           <text class="faq-arrow">{{activeIndex === 5 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 5}}">
-          <text>建议根据行程确定入山日期后再购票。导游可以帮您规划日期和行程，避免买错日期。</text>
+          <text>费用根据行程天数和人数确定，提前沟通、明码标价，没有隐形消费。具体可咨询导游。</text>
         </view>
       </view>
 
       <view class="faq-item {{activeIndex === 6 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="6">
         <view class="faq-q">
-          <text class="faq-q-text">景区附近住宿方便吗？</text>
+          <text class="faq-q-text">会带我们去购物店吗？</text>
           <text class="faq-arrow">{{activeIndex === 6 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 6}}">
-          <text>台怀镇有各档位住宿，旺季建议提前预订。导游可根据预算推荐合适的住宿。</text>
+          <text>不会。全程纯玩，不进购物店、不强制消费，专注游览体验。</text>
+        </view>
+      </view>
+
+      <view class="faq-item {{activeIndex === 7 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="7">
+        <view class="faq-q">
+          <text class="faq-q-text">你们是正规导游吗？</text>
+          <text class="faq-arrow">{{activeIndex === 7 ? '−' : '+'}}</text>
+        </view>
+        <view class="faq-a" wx:if="{{activeIndex === 7}}">
+          <text>是的，均为五台山本地持证导游，常年在景区服务，熟悉路线和各寺庙情况。</text>
         </view>
       </view>
     </view>
   </view>
 
-  <!-- 购票建议 -->
+  <!-- 出行安排建议 -->
   <view class="section">
     <view class="section-head">
-      <text class="section-title">购票建议</text>
+      <text class="section-title">出行安排建议</text>
     </view>
     <view class="tip-list">
       <view class="tip-item">
         <text class="tip-dot"></text>
-        <text class="tip-text">线上购票更方便，到五台山游客服务中心扫码入园</text>
+        <text class="tip-text">五台山海拔较高，夏天也建议带件外套</text>
       </view>
       <view class="tip-item">
         <text class="tip-dot"></text>
-        <text class="tip-text">随身携带身份证，购票和入园均需要</text>
+        <text class="tip-text">旺季建议早出发，避开人流高峰</text>
       </view>
       <view class="tip-item">
         <text class="tip-dot"></text>
-        <text class="tip-text">节假日建议提前购票，避免限流无法入园</text>
+        <text class="tip-text">跟导游走更省心，路线讲解全程安排</text>
       </view>
     </view>
   </view>
 
   <!-- 导游安排引导 -->
   <view class="guide-cta-section">
-    <view class="guide-cta-title">门票 + 行程，导游统一安排</view>
-    <view class="guide-cta-desc">购票、路线、讲解一站式安排，省心出行</view>
+    <view class="guide-cta-title">行程路线，导游统一安排</view>
+    <view class="guide-cta-desc">地点、顺序、讲解一站式安排，省心出行</view>
   </view>
 
+
+</view>
+
+<view class="page-footer-desc">
+  <text>五台山是很多游客祈福许愿的热门目的地。抵达五台山游客服务中心后，如何规划行程是大多数游客关心的问题。每年中考、高考、考研及公务员考试前后，不少家长带孩子来五台山，对行程有什么要求，学会提前规划总没错。也有人在忙碌中追求事业与内心的平衡，来这里放松身心。我们讲求财务透明、明码标价，对游客没有特别要求，子女老人均可放心出行。出行讲求健康第一，建议穿舒适步行鞋、带好证件。到达游客服务中心后可联系导游，统一安排后续行程。</text>
 </view>
 
 <bottom-contact-bar

@@ -1,7 +1,9 @@
-import { getGuideList } from '../../services/guide';
-import { getSettings } from '../../services/settings';
+import { getGuideList } from '../../services/guideDb';
 import { resolveAvatars } from '../../services/cloudFile';
 import { prefetchGuide } from '../../services/guideCache';
+import { getNavBarInfo, getCachedSettings, fetchRemoteSettings } from '../../services/appService';
+
+const REFRESH_INTERVAL = 30 * 1000; // onShow 最短刷新间隔
 
 interface IndexData {
   settings: Partial<Settings>;
@@ -14,7 +16,7 @@ interface IndexData {
 
 interface IndexCustom {
   _observer?: WechatMiniprogram.IntersectionObserver;
-  _initNavHeight(): void;
+  _lastLoadTime: number;
   _loadFromCache(): void;
   loadData(): Promise<void>;
   _observeGuideCards(guideList: GuideListItem[]): void;
@@ -25,6 +27,8 @@ interface IndexCustom {
 }
 
 Page<IndexData, IndexCustom>({
+  _lastLoadTime: 0,
+
   data: {
     settings: {},
     guideList: [],
@@ -35,53 +39,40 @@ Page<IndexData, IndexCustom>({
   },
 
   onLoad() {
-    this._initNavHeight();
+    this.setData(getNavBarInfo());
     this._loadFromCache();
     this.loadData();
   },
 
   onShow() {
-    this.loadData();
-  },
-
-  _initNavHeight() {
-    try {
-      const { statusBarHeight } = wx.getWindowInfo();
-      const menuButton = wx.getMenuButtonBoundingClientRect();
-      const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
-      this.setData({ statusBarHeight, navBarHeight });
-    } catch (_e) {
-      // 获取失败时使用默认值
+    if (Date.now() - this._lastLoadTime > REFRESH_INTERVAL) {
+      this.loadData();
     }
   },
 
   _loadFromCache() {
+    const settings = getCachedSettings();
+    let guideList: GuideListItem[] = [];
     try {
-      const settings = wx.getStorageSync('settings');
-      const guideList = wx.getStorageSync('guideList');
-      if (settings || (guideList && guideList.length)) {
-        this.setData({
-          settings: settings || {},
-          guideList: guideList || [],
-          loading: false,
-        });
-      }
+      guideList = wx.getStorageSync('guideList') || [];
     } catch (_e) {
       /* ignore */
+    }
+    if (Object.keys(settings).length || guideList.length) {
+      this.setData({ settings, guideList, loading: false });
     }
   },
 
   async loadData() {
+    this._lastLoadTime = Date.now();
     if (!this.data.guideList.length) {
       this.setData({ loading: true });
     }
     try {
-      const [settingsRes, guidesRes] = await Promise.all([getSettings(), getGuideList()]);
-      const settings = (settingsRes.data || {}) as Settings;
+      const [settings, guidesRes] = await Promise.all([fetchRemoteSettings(), getGuideList()]);
       const guideList = (guidesRes.data || []) as GuideListItem[];
 
       try {
-        wx.setStorageSync('settings', settings);
         wx.setStorageSync('guideList', guideList);
       } catch (_e) {
         /* ignore */
