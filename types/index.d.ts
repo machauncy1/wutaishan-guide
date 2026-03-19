@@ -82,7 +82,7 @@ interface Settings {
 
 type TimePeriod = '上午' | '下午';
 
-/** 预约记录文档 */
+/** 咨询记录文档 */
 interface Booking {
   _id?: string;
   guideId: string;

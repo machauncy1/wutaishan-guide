@@ -36,11 +36,11 @@ function sendWxwork(content) {
 }
 
 /**
- * 发送预约通知到所有渠道
+ * 发送咨询通知到所有渠道
  */
 async function notifyBooking(record) {
   const content = [
-    '## 📋 小程序平台 · 新预约单',
+    '## 📋 小程序平台 · 新咨询单',
     `> 来源：<font color="info">五台山导游小程序</font>`,
     '',
     `**导游：**${record.guideName}`,

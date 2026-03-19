@@ -7,7 +7,7 @@
       <view class="nav-back" bindtap="onBack">
         <text class="nav-back-icon">‹</text>
       </view>
-      <view class="nav-title">预约行程</view>
+      <view class="nav-title">咨询行程</view>
       <view class="nav-placeholder"></view>
     </view>
   </view>
@@ -19,11 +19,11 @@
     <view class="field {{errors.date ? 'field-error' : ''}}">
       <view class="field-label">
         <text class="field-required">*</text>
-        <text>预约日期</text>
+        <text>出行日期</text>
       </view>
       <picker mode="date" start="{{today}}" bindchange="onDateChange" value="{{form.date}}">
         <view class="field-input picker-value {{form.date ? '' : 'picker-placeholder'}}">
-          {{form.date || '请选择预约日期'}}
+          {{form.date || '请选择出行日期'}}
           <text class="picker-arrow">›</text>
         </view>
       </picker>
@@ -51,11 +51,11 @@
       <text wx:if="{{errors.groupSize}}" class="field-error-text">{{errors.groupSize}}</text>
     </view>
 
-    <!-- 3. 预约时段 -->
+    <!-- 3. 出行时段 -->
     <view class="field {{errors.timePeriod ? 'field-error' : ''}}">
       <view class="field-label">
         <text class="field-required">*</text>
-        <text>预约时段</text>
+        <text>出行时段</text>
       </view>
       <view class="radio-group">
         <view
@@ -146,7 +146,7 @@
       hover-class="submit-btn-hover"
     >
       <text wx:if="{{submitting}}">提交中...</text>
-      <text wx:else>提交预约（无需付款）</text>
+      <text wx:else>提交需求（无需付款）</text>
     </button>
   </view>
 

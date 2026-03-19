@@ -149,11 +149,11 @@ Page<BookingData, BookingCustom>({
       valid = false;
     }
     if (!form.date) {
-      errors.date = '请选择预约日期';
+      errors.date = '请选择出行日期';
       valid = false;
     }
     if (!form.timePeriod) {
-      errors.timePeriod = '请选择预约时段';
+      errors.timePeriod = '请选择出行时段';
       valid = false;
     }
 

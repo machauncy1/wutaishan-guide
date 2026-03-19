@@ -95,7 +95,7 @@
   opacity: 0.78;
 }
 
-/* ===== 预约模式 ===== */
+/* ===== 咨询模式 ===== */
 
 .btn-consult-secondary {
   flex: none;

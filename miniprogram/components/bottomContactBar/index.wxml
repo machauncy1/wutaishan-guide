@@ -2,7 +2,7 @@
 <view class="bar">
   <view class="btn-group">
 
-    <!-- === 预约模式：咨询（次要） + 预约（主要） === -->
+    <!-- === 咨询模式：咨询（次要） + 提交需求（主要） === -->
     <block wx:if="{{showBooking}}">
       <!-- 次要：先咨询一下（点击弹 ActionSheet 选渠道） -->
       <view
@@ -14,14 +14,14 @@
         <text class="btn-label-secondary">先咨询</text>
       </view>
 
-      <!-- 主要：立即预约 -->
+      <!-- 主要：提交需求 -->
       <view
         class="btn btn-booking"
         bindtap="onBooking"
         hover-class="btn-hover"
       >
         <view class="btn-copy">
-          <text class="btn-label">立即预约</text>
+          <text class="btn-label">提交需求</text>
           <text class="btn-sub">在线快速提交</text>
         </view>
       </view>

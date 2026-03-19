@@ -56,7 +56,7 @@ exports.main = async (event) => {
       .get();
 
     if (existing.length > 0) {
-      return { success: false, errMsg: '您已提交过该预约，请勿重复提交' };
+      return { success: false, errMsg: '您已提交过该需求，请勿重复提交' };
     }
 
     // ===== 写入 =====
@@ -75,7 +75,7 @@ exports.main = async (event) => {
 
     await db.collection('bookings').add({ data: record });
 
-    // 发送通知（失败不影响预约结果）
+    // 发送通知（失败不影响提交结果）
     await notifyBooking(record).catch((e) => {
       console.error('通知发送异常:', e);
     });

@@ -6,8 +6,8 @@
     <view class="icon-circle">
       <text class="icon-check">✓</text>
     </view>
-    <view class="title">已成功锁定服务名额</view>
-    <view class="subtitle">订单已提交成功，我们已为您优先安排服务</view>
+    <view class="title">已提交成功</view>
+    <view class="subtitle">客服将联系您，为您安排后续服务</view>
 
     <!-- 立即沟通（第一优先） -->
     <view wx:if="{{contactPhone}}" class="call-btn" bindtap="onPhoneCall" hover-class="call-btn-hover">
@@ -19,9 +19,9 @@
       <text class="contact-tip-text">客服将在 5 分钟内联系您（本地号码），请注意接听</text>
     </view>
 
-    <!-- 预约摘要 -->
+    <!-- 需求摘要 -->
     <view class="summary">
-      <view class="summary-header">您的预约信息</view>
+      <view class="summary-header">您的需求信息</view>
       <view class="summary-row">
         <text class="summary-label">出行日期</text>
         <text class="summary-value">{{date}}</text>
