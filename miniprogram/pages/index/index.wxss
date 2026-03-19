@@ -302,6 +302,26 @@ page {
   50%       { opacity: 0.45; }
 }
 
+/* ===== 意见反馈 ===== */
+.feedback-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 32rpx 0 16rpx;
+}
+
+.feedback-btn {
+  background: none;
+  border: none;
+  font-size: 24rpx;
+  color: #A3AAB5;
+  padding: 8rpx 24rpx;
+  line-height: 1.5;
+}
+
+.feedback-btn::after {
+  border: none;
+}
+
 /* ===== 空状态 ===== */
 .empty {
   display: flex;

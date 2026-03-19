@@ -120,6 +120,12 @@
 
       </view>
     </view>
+
+    <!-- 意见反馈 -->
+    <view class="feedback-wrap">
+      <button class="feedback-btn" open-type="feedback">意见反馈</button>
+    </view>
+
   </view>
 </view>
 
