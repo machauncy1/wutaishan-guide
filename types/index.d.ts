@@ -73,8 +73,6 @@ type GuideDetail = Omit<Guide, 'sort' | 'tags'> & { _id: string };
 interface Settings {
   _id?: string;
   bannerImage: string;
-  homeTitle: string;
-  homeSubtitle: string;
   serviceTotal: number;
   contactPhone: string;
   wechatServiceEnabled: boolean;

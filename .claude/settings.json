@@ -33,7 +33,8 @@
       "Read(//tmp/**)",
       "Read(//private/tmp/**)",
       "Bash(cwebp -lossless /tmp/route_new.png -o \"miniprogram/images/icons/route.webp\")",
-      "Bash(cwebp -q 90 /tmp/route_final.png -o \"miniprogram/images/icons/route.webp\")"
+      "Bash(cwebp -q 90 /tmp/route_final.png -o \"miniprogram/images/icons/route.webp\")",
+      "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide/cloud -name *.ts)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide"

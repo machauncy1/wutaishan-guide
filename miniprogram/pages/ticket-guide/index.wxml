@@ -21,7 +21,7 @@
         <view class="nav-placeholder"></view>
       </view>
       <view class="banner-title">五台山门票怎么买</view>
-      <view class="banner-sub">提前了解，出行更省心</view>
+      <view class="banner-sub">游客服务中心购票及在线购票全指南</view>
     </view>
   </view>
 
@@ -58,7 +58,7 @@
           <text class="faq-arrow">{{activeIndex === 2 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 2}}">
-          <text>淡季一般可以，旺季可能限流。建议提前在线购票，避免排队等候。</text>
+          <text>淡季一般可以，旺季可能限流。建议提前在线购票，也可到五台山游客服务中心现场购买，但排队时间较长。</text>
         </view>
       </view>
 
@@ -112,7 +112,7 @@
     <view class="tip-list">
       <view class="tip-item">
         <text class="tip-dot"></text>
-        <text class="tip-text">线上购票更方便，到景区扫码入园</text>
+        <text class="tip-text">线上购票更方便，到五台山游客服务中心扫码入园</text>
       </view>
       <view class="tip-item">
         <text class="tip-dot"></text>

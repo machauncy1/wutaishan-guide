@@ -81,7 +81,7 @@ page {
 }
 
 .banner-subtitle {
-  font-size: 28rpx;
+  font-size: 24rpx;
   color: rgba(255, 255, 255, 0.90);
   letter-spacing: 2rpx;
   text-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.2);

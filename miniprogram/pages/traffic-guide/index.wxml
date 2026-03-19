@@ -21,7 +21,7 @@
         <view class="nav-placeholder"></view>
       </view>
       <view class="banner-title">五台山交通怎么走</view>
-      <view class="banner-sub">打车约车、公交路线一目了然</view>
+      <view class="banner-sub">游客服务中心出发，打车包车公交全攻略</view>
     </view>
   </view>
 
@@ -94,11 +94,11 @@
 
       <view class="faq-item {{activeIndex === 6 ? 'faq-active' : ''}}" bindtap="onFaqTap" data-index="6">
         <view class="faq-q">
-          <text class="faq-q-text">游客中心在哪里？</text>
+          <text class="faq-q-text">五台山游客服务中心在哪里？</text>
           <text class="faq-arrow">{{activeIndex === 6 ? '−' : '+'}}</text>
         </view>
         <view class="faq-a" wx:if="{{activeIndex === 6}}">
-          <text>五台山游客中心位于景区入口处，可办理购票、咨询等服务。导游一般会在景区内约定地点与您会合。</text>
+          <text>五台山游客服务中心位于景区南入口处，可办理购票、咨询、寄存等服务。自驾游客可将车停在游客服务中心停车场，再换乘景区交通。导游一般会在游客服务中心或景区内约定地点与您会合。</text>
         </view>
       </view>
     </view>

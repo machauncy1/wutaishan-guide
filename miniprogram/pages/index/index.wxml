@@ -19,16 +19,16 @@
 
       <!-- 主标题区 -->
       <view class="banner-main">
-        <view class="banner-title">{{settings.homeTitle || '五台山当地导游'}}</view>
-        <view class="banner-subtitle">{{settings.homeSubtitle || '专业讲解 · 行程规划 · 定制化包车游'}}</view>
+        <view class="banner-title">五台山游客导游服务</view>
+        <view class="banner-subtitle">新世纪之旅 · 专业讲解 · 路线规划 · 门票约车指南</view>
         <view class="banner-badges">
           <view class="banner-badge">
             <text class="badge-icon badge-icon-check">✓</text>
-            <text>本地持证导游</text>
+            <text>正规持证导游</text>
           </view>
           <view class="banner-badge">
             <text class="badge-icon">📍</text>
-            <text>五台山本地</text>
+            <text>五台山景区</text>
           </view>
           <view class="banner-badge">
             <text class="badge-icon">⭐</text>
