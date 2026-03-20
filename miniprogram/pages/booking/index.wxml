@@ -143,8 +143,6 @@
 
   <!-- 提交区域 -->
   <view class="submit-wrap">
-    <view class="submit-hint">提交后 5 分钟内联系（高峰期可能稍有延迟）</view>
-
     <!-- 协议勾选 -->
     <view class="agreement-wrap">
       <view class="agreement-checkbox {{agreed ? 'agreement-checkbox-checked' : ''}}" bindtap="onToggleAgreement">

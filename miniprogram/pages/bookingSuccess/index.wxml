@@ -16,7 +16,7 @@
 
     <!-- 联系提示 -->
     <view class="contact-tip">
-      <text class="contact-tip-text">客服将在 5 分钟内联系您（本地号码），请注意接听</text>
+      <text class="contact-tip-text">客服将尽快联系您（本地号码），请注意接听</text>
     </view>
 
     <!-- 需求摘要 -->
@@ -38,8 +38,9 @@
 
     <!-- 信任背书 -->
     <view class="trust">
-      <text class="trust-item">✔ 本地正规旅行社服务</text>
-      <text class="trust-item">✔ 无强制消费，请放心安排</text>
+      <text class="trust-item">✔ 本地正规旅行社（持证经营）</text>
+      <text class="trust-item">✔ 信息仅用于行程联系，不做其他用途</text>
+      <text class="trust-item">✔ 无强制消费，可放心咨询</text>
     </view>
 
   </view>

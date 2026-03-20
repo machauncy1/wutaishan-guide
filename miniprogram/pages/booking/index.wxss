@@ -276,13 +276,6 @@ page {
   padding: 20rpx 24rpx 0;
 }
 
-.submit-hint {
-  text-align: center;
-  font-size: 22rpx;
-  color: #A3AAB5;
-  margin-bottom: 16rpx;
-}
-
 .submit-btn {
   width: 100% !important;
   height: 96rpx;
