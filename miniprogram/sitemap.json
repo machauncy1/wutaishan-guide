@@ -33,6 +33,14 @@
     {
       "action": "disallow",
       "page": "pages/bookingSuccess/index"
+    },
+    {
+      "action": "disallow",
+      "page": "pages/privacy/index"
+    },
+    {
+      "action": "disallow",
+      "page": "pages/agreement/index"
     }
   ]
 }

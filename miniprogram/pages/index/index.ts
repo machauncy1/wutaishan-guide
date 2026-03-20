@@ -24,6 +24,8 @@ interface IndexCustom {
   onGuideTap(e: WechatMiniprogram.TouchEvent): void;
   onBannerLoad(): void;
   onPhoneCall(): void;
+  goAgreement(): void;
+  goPrivacy(): void;
 }
 
 Page<IndexData, IndexCustom>({
@@ -133,5 +135,13 @@ Page<IndexData, IndexCustom>({
     const phone = this.data.settings.contactPhone;
     if (!phone) return;
     wx.makePhoneCall({ phoneNumber: phone });
+  },
+
+  goAgreement() {
+    wx.navigateTo({ url: '/pages/agreement/index' });
+  },
+
+  goPrivacy() {
+    wx.navigateTo({ url: '/pages/privacy/index' });
   },
 });

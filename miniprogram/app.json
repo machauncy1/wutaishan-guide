@@ -6,7 +6,9 @@
     "pages/bookingSuccess/index",
     "pages/ticketGuide/index",
     "pages/trafficGuide/index",
-    "pages/blessingGuide/index"
+    "pages/blessingGuide/index",
+    "pages/privacy/index",
+    "pages/agreement/index"
   ],
   "window": {
     "backgroundColor": "#F2F4F7",

@@ -1,0 +1,39 @@
+page {
+  background: #FFFFFF;
+}
+
+.page {
+  min-height: 100vh;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+
+.content {
+  padding: 32rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 12rpx;
+}
+
+.update-time {
+  font-size: 24rpx;
+  color: #A3AAB5;
+  margin-bottom: 32rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-top: 32rpx;
+  margin-bottom: 12rpx;
+}
+
+.paragraph {
+  font-size: 26rpx;
+  color: #4A4A4A;
+  line-height: 1.8;
+}

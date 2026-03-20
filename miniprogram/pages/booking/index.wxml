@@ -83,6 +83,7 @@
         bindinput="onInputPhone"
         maxlength="11"
       />
+      <view class="field-hint">用于客服联系确认行程，请放心填写</view>
       <text wx:if="{{errors.touristPhone}}" class="field-error-text">{{errors.touristPhone}}</text>
     </view>
 
@@ -124,11 +125,15 @@
   <view class="trust-bar">
     <view class="trust-item">
       <text class="trust-check">✓</text>
-      <text>本地正规旅行社服务</text>
+      <text>本地正规旅行社（持证经营）</text>
     </view>
     <view class="trust-item">
       <text class="trust-check">✓</text>
-      <text>无强制消费 | 可放心咨询</text>
+      <text>信息仅用于行程联系，不做其他用途</text>
+    </view>
+    <view class="trust-item">
+      <text class="trust-check">✓</text>
+      <text>无强制消费，可放心咨询</text>
     </view>
     <view class="trust-item">
       <text class="trust-check">✓</text>
@@ -139,6 +144,20 @@
   <!-- 提交区域 -->
   <view class="submit-wrap">
     <view class="submit-hint">提交后 5 分钟内联系（高峰期可能稍有延迟）</view>
+
+    <!-- 协议勾选 -->
+    <view class="agreement-wrap">
+      <view class="agreement-checkbox {{agreed ? 'agreement-checkbox-checked' : ''}}" bindtap="onToggleAgreement">
+        <text wx:if="{{agreed}}" class="agreement-check-icon">✓</text>
+      </view>
+      <view class="agreement-text">
+        <text>我已阅读并同意</text>
+        <text class="agreement-link" bindtap="goAgreement">《用户服务协议》</text>
+        <text>和</text>
+        <text class="agreement-link" bindtap="goPrivacy">《隐私政策》</text>
+      </view>
+    </view>
+
     <button
       class="submit-btn {{submitting ? 'submit-btn-loading' : ''}}"
       bindtap="onSubmit"

@@ -121,9 +121,11 @@
       </view>
     </view>
 
-    <!-- 意见反馈 -->
-    <view class="feedback-wrap">
-      <button class="feedback-btn" open-type="feedback">意见反馈</button>
+    <!-- 协议入口 -->
+    <view class="footer-links">
+      <text class="footer-link" bindtap="goAgreement">用户服务协议</text>
+      <text class="footer-divider">|</text>
+      <text class="footer-link" bindtap="goPrivacy">隐私政策</text>
     </view>
 
   </view>

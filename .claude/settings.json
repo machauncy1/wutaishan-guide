@@ -40,7 +40,8 @@
       "Bash(mv blessing-guide:*)"
     ],
     "additionalDirectories": [
-      "/Users/chauncy/Project/machauncy1/wutaishan-guide"
+      "/Users/chauncy/Project/machauncy1/wutaishan-guide",
+      "/Users/chauncy/Project/machauncy1/wutaishan-guide/miniprogram/pages"
     ]
   }
 }

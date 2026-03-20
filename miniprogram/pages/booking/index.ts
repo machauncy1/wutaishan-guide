@@ -28,6 +28,7 @@ interface BookingData {
   errors: BookingErrors;
   submitting: boolean;
   serviceTotal: number;
+  agreed: boolean;
 }
 
 interface BookingCustom {
@@ -39,6 +40,9 @@ interface BookingCustom {
   onGroupMinus(): void;
   onGroupPlus(): void;
   onInputRemark(e: WechatMiniprogram.Input): void;
+  onToggleAgreement(): void;
+  goAgreement(): void;
+  goPrivacy(): void;
   onSubmit(): void;
   onBack(): void;
 }
@@ -81,6 +85,7 @@ Page<BookingData, BookingCustom>({
     },
     submitting: false,
     serviceTotal: 21300,
+    agreed: false,
   },
 
   onLoad(options: Record<string, string | undefined>) {
@@ -134,6 +139,18 @@ Page<BookingData, BookingCustom>({
     this.setData({ 'form.remark': e.detail.value });
   },
 
+  onToggleAgreement() {
+    this.setData({ agreed: !this.data.agreed });
+  },
+
+  goAgreement() {
+    wx.navigateTo({ url: '/pages/agreement/index' });
+  },
+
+  goPrivacy() {
+    wx.navigateTo({ url: '/pages/privacy/index' });
+  },
+
   // ===== 校验 =====
 
   _validate(): boolean {
@@ -158,6 +175,31 @@ Page<BookingData, BookingCustom>({
     }
 
     this.setData({ errors });
+
+    if (valid && !this.data.agreed) {
+      wx.showModal({
+        title: '服务协议',
+        content: '提交前请阅读并同意《用户服务协议》和《隐私政策》',
+        confirmText: '同意提交',
+        cancelText: '查看协议',
+        success: (res) => {
+          if (res.confirm) {
+            this.setData({ agreed: true });
+            this.onSubmit();
+          } else if (res.cancel) {
+            wx.showActionSheet({
+              itemList: ['用户服务协议', '隐私政策'],
+              success: (action) => {
+                const urls = ['/pages/agreement/index', '/pages/privacy/index'];
+                wx.navigateTo({ url: urls[action.tapIndex] });
+              },
+            });
+          }
+        },
+      });
+      return false;
+    }
+
     return valid;
   },
 
