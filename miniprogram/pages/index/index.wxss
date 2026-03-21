@@ -132,98 +132,80 @@ page {
   padding-bottom: 24rpx;
 }
 
-/* ===== 核心入口区 ===== */
-.entry-section {
-  margin: 24rpx 24rpx 0;
-  display: flex;
-  flex-direction: column;
-  gap: 18rpx;
+/* ===== 核心入口区（横向滑动） ===== */
+.entry-scroll-wrap {
+  position: relative;
+  margin-top: 24rpx;
 }
 
-.entry-card {
-  display: flex;
+.entry-scroll {
+  white-space: nowrap;
+}
+
+.entry-track {
+  display: inline-flex;
+  gap: 16rpx;
+  padding: 0 24rpx;
+}
+
+/* 右侧渐变遮罩，暗示可滑动 */
+.entry-scroll-fade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 60rpx;
+  background: linear-gradient(to right, transparent, #F2F4F7);
+  pointer-events: none;
+}
+
+
+.entry-chip {
+  display: inline-flex;
   align-items: center;
+  gap: 12rpx;
   background: #fff;
-  border-radius: 16rpx;
-  padding: 12rpx;
+  border-radius: 100rpx;
+  padding: 16rpx 24rpx 16rpx 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease;
 }
 
-.entry-card:active {
-  background: #F7F7F7;
+.entry-chip:active {
+  transform: scale(0.96);
 }
 
-.entry-icon {
-  width: 150rpx;
-  height: 150rpx;
-  border-radius: 22rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.entry-chip-icon {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
   flex-shrink: 0;
-  margin-right: 20rpx;
 }
 
-.entry-icon-img {
-  width: 100%;
-  height: 100%;
+.entry-chip-text {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
 }
 
-.entry-icon-ticket {
-  background: #FFF8F0;
-}
-
-.entry-icon-traffic {
-  background: #F0F9F0;
-}
-
-.entry-icon-trip {
-  background: #F0F6FE;
-}
-
-.entry-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6rpx;
-  min-width: 0;
-}
-
-.entry-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #1A1A1A;
-  line-height: 1.3;
-}
-
-.entry-sub {
-  font-size: 24rpx;
-  color: #999;
-  line-height: 1.3;
-}
-
-.entry-arrow {
+.entry-chip-arrow {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  padding-left: 8rpx;
+  margin-left: 2rpx;
 }
 
 /* ===== 导游区块 ===== */
-.guide-section {
-  margin: 24rpx 24rpx 0;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  overflow: hidden;
-}
-
 .section-header {
-  padding: 28rpx 24rpx;
+  padding: 32rpx 24rpx 12rpx;
   display: flex;
   align-items: center;
   gap: 12rpx;
-  border-bottom: 1rpx solid #F0F1F3;
+}
+
+.guide-section {
+  margin: 0 24rpx;
 }
 
 .section-title {
@@ -238,23 +220,18 @@ page {
 }
 
 .card-wrap {
-  border-bottom: 1rpx solid #F0F1F3;
+  margin-bottom: 18rpx;
 }
 
 .card-wrap:last-child {
-  border-bottom: none;
-}
-
-.guide-section .card {
-  border-radius: 0;
-  box-shadow: none;
+  margin-bottom: 0;
 }
 
 /* ===== 骨架屏 ===== */
 .skeleton-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 18rpx;
 }
 
 .skeleton-card {
@@ -262,11 +239,8 @@ page {
   padding: 28rpx 24rpx;
   display: flex;
   gap: 22rpx;
-  border-bottom: 1rpx solid #F0F1F3;
-}
-
-.skeleton-card:last-child {
-  border-bottom: none;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .sk-avatar {
