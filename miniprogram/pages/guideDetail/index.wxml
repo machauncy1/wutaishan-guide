@@ -31,7 +31,7 @@
             </view>
             <view class="hero-badge">
               <text class="badge-icon">📅</text>
-              <text>按日期和行程协调安排</text>
+              <text>支持一日游与深度讲解行程</text>
             </view>
           </view>
         </view>
@@ -42,6 +42,14 @@
         <view class="sk-hero-line sk-hero-title"></view>
         <view class="sk-hero-line sk-hero-mid"></view>
       </view>
+    </view>
+  </view>
+
+  <!-- SEO 静态兜底：爬虫抓取时 guide 为空，此区域可见；数据加载后隐藏 -->
+  <view class="seo-fallback" wx:if="{{!guide && !loading}}">
+    <view class="seo-fallback-inner">
+      <view class="seo-title">五台山导游讲解服务</view>
+      <view class="seo-text">五台山导游讲解服务，支持五台山一日游、五台山深度游路线安排。提供五台山接站、五台山包车、五台山接送站服务。适合五台山自由行游客、首次来五台山游客，可根据需求定制行程。五台山导游多少钱？根据人数、时间和行程不同，一般为定制报价。首次来五台山或想深入了解文化的游客更推荐请导游讲解。</view>
     </view>
   </view>
 
@@ -103,6 +111,18 @@
           <view class="bullet-item" wx:for="{{bookingArrangement || []}}" wx:key="*this">
             <text class="bullet-dot"></text>
             <text class="bullet-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section faq-section" wx:if="{{faq.length}}">
+        <view class="section-head">
+          <view class="section-title">常见问题</view>
+        </view>
+        <view class="faq-list">
+          <view class="faq-item" wx:for="{{faq}}" wx:key="q">
+            <view class="faq-q">{{item.q}}</view>
+            <view class="faq-a">{{item.a}}</view>
           </view>
         </view>
       </view>

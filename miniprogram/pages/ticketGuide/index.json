@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "五台山门票怎么买 - 价格、限流、购票攻略",
+  "navigationBarTitleText": "五台山门票怎么买",
   "usingComponents": {
     "bottom-contact-bar": "/components/bottomContactBar/index"
   }

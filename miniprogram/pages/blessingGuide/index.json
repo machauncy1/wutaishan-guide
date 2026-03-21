@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "五台山行程怎么安排 - 路线规划、景点参观、出行攻略",
+  "navigationBarTitleText": "五台山行程怎么安排",
   "usingComponents": {
     "bottom-contact-bar": "/components/bottomContactBar/index"
   }

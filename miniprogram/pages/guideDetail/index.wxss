@@ -473,6 +473,68 @@ page {
   font-weight: 500;
 }
 
+/* ===== 常见问题 ===== */
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F0F1F3;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.faq-q {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+  line-height: 1.6;
+}
+
+.faq-a {
+  margin-top: 8rpx;
+  font-size: 26rpx;
+  line-height: 1.75;
+  color: #666666;
+}
+
+/* ===== SEO 兜底区域 ===== */
+
+.seo-fallback {
+  position: relative;
+  z-index: 2;
+  margin-top: -28rpx;
+  background: #F2F4F7;
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 40rpx 24rpx;
+}
+
+.seo-fallback-inner {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 32rpx 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.seo-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 16rpx;
+}
+
+.seo-text {
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: #4A4A4A;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }

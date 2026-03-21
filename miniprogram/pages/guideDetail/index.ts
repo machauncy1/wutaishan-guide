@@ -13,6 +13,7 @@ interface DetailData {
   trustPoints: TrustPoint[];
   serviceScope: string[];
   bookingArrangement: string[];
+  faq: Array<{ q: string; a: string }>;
   heroSubtitle: string;
   avatarLoaded: boolean;
   reviewList: ProcessedReview[];
@@ -28,6 +29,7 @@ interface DetailCustom {
   buildHeroSubtitle(guide: GuideDetail): string;
   buildTrustPoints(guide: GuideDetail): TrustPoint[];
   buildServiceScope(): string[];
+  buildFAQ(): Array<{ q: string; a: string }>;
   buildBookingArrangement(guide: GuideDetail): string[];
   buildReviews(rawReviews: Review[]): ProcessedReview[];
   calcReviewScore(reviews: ProcessedReview[]): string;
@@ -54,6 +56,7 @@ Page<DetailData, DetailCustom>({
     trustPoints: [],
     serviceScope: [],
     bookingArrangement: [],
+    faq: [],
     heroSubtitle: '',
     avatarLoaded: false,
     reviewList: [],
@@ -65,7 +68,7 @@ Page<DetailData, DetailCustom>({
   onLoad(options: Record<string, string | undefined>) {
     const { id } = options;
     const cached = getCachedSettings();
-    this.setData({ ...getNavBarInfo(), settings: cached });
+    this.setData({ ...getNavBarInfo(), settings: cached, loading: !!id });
     if (!id) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
@@ -82,6 +85,7 @@ Page<DetailData, DetailCustom>({
       loading: false,
       trustPoints: this.buildTrustPoints(guide),
       serviceScope: this.buildServiceScope(),
+      faq: this.buildFAQ(),
       bookingArrangement: this.buildBookingArrangement(guide),
       heroSubtitle: this.buildHeroSubtitle(guide),
       reviewList: this.data.showAllReviews ? allReviews : allReviews.slice(0, 3),
@@ -122,7 +126,7 @@ Page<DetailData, DetailCustom>({
   },
 
   buildHeroSubtitle(guide: GuideDetail): string {
-    return `${guide.licenseText || '本地持证导游'}，平台统一协调安排`;
+    return `五台山导游讲解服务 · ${guide.licenseText || '本地持证导游'}`;
   },
 
   buildTrustPoints(guide: GuideDetail): TrustPoint[] {
@@ -133,7 +137,25 @@ Page<DetailData, DetailCustom>({
   },
 
   buildServiceScope(): string[] {
-    return ['五台山景区内专业讲解与规划', '接站、包车等出行协助沟通'];
+    return [
+      '五台山导游讲解服务，支持五台山一日游、五台山深度游路线安排',
+      '提供五台山接站、五台山包车、五台山接送站服务',
+      '适合五台山自由行游客、首次来五台山游客，可根据需求定制行程',
+    ];
+  },
+
+  buildFAQ(): Array<{ q: string; a: string }> {
+    return [
+      { q: '五台山导游多少钱？', a: '根据人数、时间和行程不同，一般为定制报价，咨询即可获取。' },
+      {
+        q: '五台山需要请导游吗？',
+        a: '首次来或想深入了解佛教文化的游客更推荐，讲解体验完全不同。',
+      },
+      {
+        q: '五台山一日游怎么安排？',
+        a: '可根据时间定制经典路线或深度讲解路线，提前沟通效果更佳。',
+      },
+    ];
   },
 
   buildBookingArrangement(guide: GuideDetail): string[] {

@@ -19,7 +19,7 @@
 
       <!-- 主标题区 -->
       <view class="banner-main">
-        <view class="banner-title">五台山游客导游服务</view>
+        <view class="banner-title">五台山导游服务</view>
         <view class="banner-subtitle">新世纪之旅 · 专业讲解 · 路线规划 · 门票约车指南</view>
         <view class="banner-badges">
           <view class="banner-badge">

@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "五台山交通怎么走 - 打车约车、公交、自驾攻略",
+  "navigationBarTitleText": "五台山交通怎么走",
   "usingComponents": {
     "bottom-contact-bar": "/components/bottomContactBar/index"
   }
