@@ -26,12 +26,12 @@
           <view class="hero-subtitle">{{heroSubtitle || (guide.licenseText || '本地持证导游')}}</view>
           <view class="hero-badges">
             <view class="hero-badge">
-              <text class="badge-icon badge-icon-check">✓</text>
+              <image class="badge-img" src="/images/icons/check-blue.svg" />
               <text>正规持证服务</text>
             </view>
             <view class="hero-badge">
-              <text class="badge-icon">📅</text>
-              <text>支持一日游与深度讲解行程</text>
+              <image class="badge-img" src="/images/icons/pin-red.svg" />
+              <text>熟悉五台山路线</text>
             </view>
           </view>
         </view>

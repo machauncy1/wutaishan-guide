@@ -85,9 +85,9 @@
 }
 
 .btn-label {
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 700;
-  letter-spacing: 1rpx;
+  letter-spacing: 2rpx;
 }
 
 .btn-sub {
@@ -114,9 +114,9 @@
 }
 
 .btn-label-secondary {
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 600;
-  letter-spacing: 1rpx;
+  letter-spacing: 2rpx;
 }
 
 .btn-booking {

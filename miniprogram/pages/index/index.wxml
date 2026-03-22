@@ -23,15 +23,15 @@
         <view class="banner-subtitle">专业讲解 · 路线规划 · 门票约车指南</view>
         <view class="banner-badges">
           <view class="banner-badge">
-            <text class="badge-icon badge-icon-check">✓</text>
+            <image class="badge-img" src="/images/icons/check-blue.svg" />
             <text>正规持证导游</text>
           </view>
           <view class="banner-badge">
-            <text class="badge-icon">📍</text>
+            <image class="badge-img" src="/images/icons/pin-red.svg" />
             <text>五台山景区</text>
           </view>
           <view class="banner-badge">
-            <text class="badge-icon">⭐</text>
+            <image class="badge-img" src="/images/icons/star-yellow.svg" />
             <text>已服务{{settings.serviceTotal || '21300'}}+游客</text>
           </view>
         </view>

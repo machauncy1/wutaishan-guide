@@ -20,10 +20,7 @@
         bindtap="onBooking"
         hover-class="btn-hover"
       >
-        <view class="btn-copy">
-          <text class="btn-label">提交需求</text>
-          <text class="btn-sub">在线快速提交</text>
-        </view>
+        <text class="btn-label">提交需求</text>
       </view>
     </block>
 

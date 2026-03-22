@@ -107,20 +107,10 @@ page {
   color: rgba(255, 255, 255, 0.94);
 }
 
-.badge-icon {
-  font-size: 22rpx;
-}
-
-.badge-icon-check {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28rpx;
-  height: 28rpx;
-  background: #3B8BF2;
-  border-radius: 50%;
-  font-size: 18rpx;
-  color: #fff;
+.badge-img {
+  width: 26rpx;
+  height: 26rpx;
+  margin-right: 4rpx;
 }
 
 /* ===== 内容区 ===== */
