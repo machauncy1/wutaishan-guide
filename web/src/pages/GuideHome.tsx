@@ -69,7 +69,7 @@ export default function GuideHome() {
         className="text-white px-4 py-4 flex items-center justify-between"
         style={{ background: '#1890ff' }}
       >
-        <h1 className="text-lg font-semibold">我的可用时间</h1>
+        <h1 className="text-lg font-semibold">我的档期</h1>
         <button onClick={logout} className="text-sm text-blue-200 active:text-white">
           {name} | 退出
         </button>
