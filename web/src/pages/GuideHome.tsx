@@ -15,18 +15,6 @@ function formatDate(dateStr: string) {
   return { display: `${month}/${day}`, weekday: `周${weekday}` };
 }
 
-function getWeekLabel(dateStr: string, todayStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00+08:00');
-  const t = new Date(todayStr + 'T00:00:00+08:00');
-  const diff = Math.floor((d.getTime() - t.getTime()) / 86400000);
-  const todayDay = t.getDay() || 7; // 周日=7
-  const daysToEndOfWeek = 7 - todayDay;
-  if (diff <= daysToEndOfWeek) return '本周';
-  if (diff <= daysToEndOfWeek + 7) return '下周';
-  const weekNum = Math.ceil((diff - daysToEndOfWeek) / 7);
-  return `第${weekNum + 1}周`;
-}
-
 const guideActions = [
   { label: '未派', value: 'free' },
   { label: '请假', value: 'leave' },
@@ -39,6 +27,7 @@ export default function GuideHome() {
   const [days, setDays] = useState<DayStatus[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
   const name = localStorage.getItem('avail_name') || '导游';
 
   async function fetchData() {
@@ -64,7 +53,12 @@ export default function GuideHome() {
     fetchData();
   }
 
-  const todayStr = days[0]?.date || '';
+  // 前 7 天列表展示，其余通过日历设置
+  const recentDays = days.slice(0, 7);
+  const laterDays = days.slice(7);
+
+  // 日历中有非 free 状态的天数
+  const laterSetCount = laterDays.filter((d) => d.status !== 'free').length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -76,41 +70,68 @@ export default function GuideHome() {
         </button>
       </div>
 
-      {/* List */}
+      {/* 近 7 天列表 */}
       <div className="p-4">
+        <div className="text-xs font-medium text-gray-400 tracking-wide pb-2 px-1">近 7 天</div>
         {loading ? (
           <p className="text-center text-gray-400 py-8">加载中...</p>
         ) : (
           <div className="space-y-2">
-            {days.map((day, i) => {
+            {recentDays.map((day) => {
               const { display, weekday } = formatDate(day.date);
-              const weekLabel = getWeekLabel(day.date, todayStr);
-              const prevWeekLabel = i > 0 ? getWeekLabel(days[i - 1].date, todayStr) : '';
-              const showWeekHeader = weekLabel !== prevWeekLabel;
-
               return (
-                <div key={day.date}>
-                  {showWeekHeader && (
-                    <div className="text-xs font-medium text-gray-400 uppercase tracking-wide pt-3 pb-1 px-1">
-                      {weekLabel}
-                    </div>
-                  )}
-                  <div
-                    className="flex items-center justify-between bg-white rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50"
-                    onClick={() => setSelectedDate(day.date)}
-                  >
-                    <div>
-                      <span className="text-base font-medium text-gray-800">{display}</span>
-                      <span className="ml-2 text-sm text-gray-400">{weekday}</span>
-                    </div>
-                    <StatusTag status={day.status} />
+                <div
+                  key={day.date}
+                  className="flex items-center justify-between bg-white rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50"
+                  onClick={() => setSelectedDate(day.date)}
+                >
+                  <div>
+                    <span className="text-base font-medium text-gray-800">{display}</span>
+                    <span className="ml-2 text-sm text-gray-400">{weekday}</span>
                   </div>
+                  <StatusTag status={day.status} />
                 </div>
               );
             })}
           </div>
         )}
       </div>
+
+      {/* 更远日期入口 */}
+      {laterDays.length > 0 && (
+        <div className="px-4 pb-4">
+          <button
+            className="w-full py-3 rounded-xl bg-white shadow-sm text-center text-sm text-gray-600 active:bg-gray-50"
+            onClick={() => setShowCalendar(!showCalendar)}
+          >
+            {showCalendar ? '收起' : '设置更远日期'}
+            {!showCalendar && laterSetCount > 0 && (
+              <span className="ml-1 text-indigo-500">（已设 {laterSetCount} 天）</span>
+            )}
+          </button>
+
+          {showCalendar && (
+            <div className="mt-3 space-y-2">
+              {laterDays.map((day) => {
+                const { display, weekday } = formatDate(day.date);
+                return (
+                  <div
+                    key={day.date}
+                    className="flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm active:bg-gray-50"
+                    onClick={() => setSelectedDate(day.date)}
+                  >
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">{display}</span>
+                      <span className="ml-2 text-xs text-gray-400">{weekday}</span>
+                    </div>
+                    <StatusTag status={day.status} />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       <ActionSheet
         visible={!!selectedDate}
