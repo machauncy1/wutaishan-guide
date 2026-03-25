@@ -73,13 +73,8 @@ export default function Login() {
 
       <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
-          <img
-            src="https://636c-cloud1-7g44gn8c3a08ced5-1411386376.tcb.qcloud.la/logo.webp"
-            alt="logo"
-            className="w-20 h-20 mx-auto mb-4 rounded-full shadow-lg"
-          />
           <h1 className="text-2xl font-bold text-white">新世纪导游调度系统</h1>
-          <p className="mt-1 text-sm text-white/60">五台山旅游服务</p>
+          <p className="mt-2 text-sm text-white/60">五台山旅游服务</p>
         </div>
 
         {mode === 'login' ? (
