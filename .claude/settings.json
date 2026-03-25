@@ -51,7 +51,9 @@
       "Bash(pnpm web:build)",
       "WebFetch(domain:docs.cloudbase.net)",
       "WebFetch(domain:developers.weixin.qq.com)",
-      "Bash(tcb hosting:*)"
+      "Bash(tcb hosting:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide",

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getMyAvailability, setAvailability } from '../services/availService';
 import type { DayStatus } from '../services/availService';
 import { logout } from '../services/authService';
+import { getLunarText, isLunarKeyDay } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 
@@ -88,6 +89,11 @@ export default function GuideHome() {
                   <div>
                     <span className="text-base font-medium text-gray-800">{display}</span>
                     <span className="ml-2 text-sm text-gray-400">{weekday}</span>
+                    <span
+                      className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
+                    >
+                      {getLunarText(day.date)}
+                    </span>
                   </div>
                   <StatusTag status={day.status} />
                 </div>
@@ -123,6 +129,11 @@ export default function GuideHome() {
                     <div>
                       <span className="text-sm font-medium text-gray-700">{display}</span>
                       <span className="ml-2 text-xs text-gray-400">{weekday}</span>
+                      <span
+                        className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
+                      >
+                        {getLunarText(day.date)}
+                      </span>
                     </div>
                     <StatusTag status={day.status} />
                   </div>

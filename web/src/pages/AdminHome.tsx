@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getDailyGuides, updateGuideStatus } from '../services/availService';
 import { logout } from '../services/authService';
-import { todayBJ, offsetDateBJ } from '../utils/date';
+import { todayBJ, offsetDateBJ, getLunarText, isLunarKeyDay } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 import type { GuideDay } from '../services/availService';
@@ -123,8 +123,16 @@ export default function AdminHome() {
         )}
       </div>
 
-      {/* Stats */}
-      <div className="px-4 py-2 flex gap-4 text-sm text-gray-500">
+      {/* Lunar + Stats */}
+      <div className="px-4 pt-2 pb-1">
+        <span
+          className={`text-sm ${isLunarKeyDay(date) ? 'text-red-500 font-medium' : 'text-gray-400'}`}
+        >
+          {getLunarText(date)}
+          {isLunarKeyDay(date) && ' (佛教重要日)'}
+        </span>
+      </div>
+      <div className="px-4 py-1 flex gap-4 text-sm text-gray-500">
         <span>共 {guides.length} 人</span>
         <span className="text-green-600">未派 {free}</span>
         <span className="text-blue-600">已派 {assigned}</span>
