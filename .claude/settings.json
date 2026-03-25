@@ -48,7 +48,9 @@
       "Bash(/Users/chauncy/Project/machauncy1/wutaishan-guide/web/node_modules/.bin/vite build:*)",
       "Bash(/Users/chauncy/Project/machauncy1/wutaishan-guide/node_modules/.bin/tsc --noEmit --project /Users/chauncy/Project/machauncy1/wutaishan-guide/web/tsconfig.json)",
       "Bash(export PATH=/usr/local/bin:/opt/homebrew/bin:$PATH)",
-      "Bash(pnpm web:build)"
+      "Bash(pnpm web:build)",
+      "WebFetch(domain:docs.cloudbase.net)",
+      "WebFetch(domain:developers.weixin.qq.com)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide",
