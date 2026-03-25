@@ -144,15 +144,59 @@ async function seedUsers(now: number): Promise<void> {
   console.log(`users：已创建 ${adminUsers.length} 个管理员账号`);
 }
 
+async function clearGuideAvailabilityOnForce(): Promise<void> {
+  if (!force) return;
+
+  const { total } = await db.collection('guide_availability').count();
+  if (total === 0) {
+    console.log('guide_availability：无需清空（0 条）');
+    return;
+  }
+
+  let deleted = 0;
+  while (true) {
+    const res = await db
+      .collection('guide_availability')
+      .where({ _id: db.command.neq('') })
+      .remove();
+    deleted += res.deleted;
+    if (res.deleted === 0) break;
+  }
+  console.log(`guide_availability：已删除 ${deleted} 条`);
+}
+
+async function clearBookingsOnForce(): Promise<void> {
+  if (!force) return;
+
+  const { total } = await db.collection('bookings').count();
+  if (total === 0) {
+    console.log('bookings：无需清空（0 条）');
+    return;
+  }
+
+  let deleted = 0;
+  while (true) {
+    const res = await db
+      .collection('bookings')
+      .where({ _id: db.command.neq('') })
+      .remove();
+    deleted += res.deleted;
+    if (res.deleted === 0) break;
+  }
+  console.log(`bookings：已删除 ${deleted} 条`);
+}
+
 async function seed(): Promise<void> {
   const now = Date.now();
 
   await seedGuides(now);
   await seedSettings(now);
   await ensureCollection('bookings');
+  await clearBookingsOnForce();
   await ensureCollection('users');
   await ensureCollection('guide_availability');
   await ensureCollection('sessions');
+  await clearGuideAvailabilityOnForce();
   await seedUsers(now);
 
   console.log('Done.');
