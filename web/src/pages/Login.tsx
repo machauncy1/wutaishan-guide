@@ -54,9 +54,33 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-gray-50">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-center mb-8 text-gray-800">导游调度系统</h1>
+    <div
+      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)' }}
+    >
+      {/* Mountain silhouette decoration */}
+      <svg
+        className="absolute bottom-0 left-0 w-full"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+        style={{ height: '40vh', opacity: 0.1 }}
+      >
+        <path
+          fill="#fff"
+          d="M0,160L60,170.7C120,181,240,203,360,186.7C480,171,600,117,720,112C840,107,960,149,1080,165.3C1200,181,1320,171,1380,165.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+        />
+      </svg>
+
+      <div className="w-full max-w-sm relative z-10">
+        <div className="text-center mb-8">
+          <img
+            src="https://636c-cloud1-7g44gn8c3a08ced5-1411386376.tcb.qcloud.la/logo.webp"
+            alt="logo"
+            className="w-20 h-20 mx-auto mb-4 rounded-full shadow-lg"
+          />
+          <h1 className="text-2xl font-bold text-white">新世纪导游调度系统</h1>
+          <p className="mt-1 text-sm text-white/60">五台山旅游服务</p>
+        </div>
 
         {mode === 'login' ? (
           <form onSubmit={handleLogin} className="space-y-4">
@@ -78,13 +102,13 @@ export default function Login() {
               className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
 
-            {error && <p className="text-sm text-red-500">{error}</p>}
-            {resetMsg && <p className="text-sm text-green-500">{resetMsg}</p>}
+            {error && <p className="text-sm text-red-300">{error}</p>}
+            {resetMsg && <p className="text-sm text-green-300">{resetMsg}</p>}
 
             <button
               type="submit"
               disabled={loading || phone.length !== 11 || password.length === 0}
-              className="w-full py-3 rounded-lg bg-indigo-600 text-white text-base font-medium disabled:opacity-50 active:bg-indigo-700"
+              className="w-full py-3 rounded-lg bg-white text-indigo-700 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
             >
               {loading ? '登录中...' : '登录'}
             </button>
@@ -97,7 +121,7 @@ export default function Login() {
                   setError('');
                   setResetMsg('');
                 }}
-                className="text-sm text-indigo-500"
+                className="text-sm text-white/70"
               >
                 修改密码
               </button>
@@ -131,12 +155,12 @@ export default function Login() {
               className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
 
-            {resetMsg && <p className="text-sm text-red-500">{resetMsg}</p>}
+            {resetMsg && <p className="text-sm text-red-300">{resetMsg}</p>}
 
             <button
               type="submit"
               disabled={loading || phone.length !== 11 || oldPwd.length === 0 || newPwd.length < 4}
-              className="w-full py-3 rounded-lg bg-indigo-600 text-white text-base font-medium disabled:opacity-50 active:bg-indigo-700"
+              className="w-full py-3 rounded-lg bg-white text-indigo-700 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
             >
               {loading ? '提交中...' : '确认修改'}
             </button>
@@ -148,7 +172,7 @@ export default function Login() {
                   setMode('login');
                   setResetMsg('');
                 }}
-                className="text-sm text-indigo-500"
+                className="text-sm text-white/70"
               >
                 返回登录
               </button>
@@ -156,7 +180,7 @@ export default function Login() {
           </form>
         )}
 
-        <p className="mt-6 text-center text-xs text-gray-400">仅限内部人员使用</p>
+        <p className="mt-6 text-center text-xs text-white/40">仅限内部人员使用</p>
       </div>
     </div>
   );
