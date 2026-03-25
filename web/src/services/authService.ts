@@ -14,8 +14,8 @@ interface MeData {
   guideId: string | null;
 }
 
-export async function login(phone: string) {
-  const res = await request<LoginData>('POST', '/login', { phone });
+export async function login(phone: string, password: string) {
+  const res = await request<LoginData>('POST', '/login', { phone, password });
   if (res.success && res.data) {
     setToken(res.data.token);
     localStorage.setItem('avail_role', res.data.role);

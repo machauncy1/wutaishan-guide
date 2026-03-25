@@ -4,6 +4,7 @@ import { login } from '../services/authService';
 
 export default function Login() {
   const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await login(phone);
+      const res = await login(phone, password);
       if (res.success && res.data) {
         navigate(res.data.role === 'admin' ? '/admin' : '/guide', { replace: true });
       } else {
@@ -33,23 +34,30 @@ export default function Login() {
         <h1 className="text-2xl font-bold text-center mb-8 text-gray-800">导游调度系统</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <input
-              type="tel"
-              inputMode="numeric"
-              maxLength={11}
-              placeholder="请输入手机号"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
+          <input
+            type="tel"
+            inputMode="numeric"
+            maxLength={11}
+            placeholder="请输入手机号"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          />
+          <input
+            type="password"
+            inputMode="numeric"
+            maxLength={4}
+            placeholder="请输入密码"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          />
 
           {error && <p className="text-sm text-red-500">{error}</p>}
 
           <button
             type="submit"
-            disabled={loading || phone.length !== 11}
+            disabled={loading || phone.length !== 11 || password.length === 0}
             className="w-full py-3 rounded-lg bg-indigo-600 text-white text-base font-medium disabled:opacity-50 active:bg-indigo-700"
           >
             {loading ? '登录中...' : '登录'}

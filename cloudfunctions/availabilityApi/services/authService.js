@@ -8,7 +8,7 @@ function generateToken() {
   return crypto.randomUUID();
 }
 
-async function login(phone) {
+async function login(phone, password) {
   if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
     return { success: false, errMsg: '请输入正确的手机号' };
   }
@@ -16,6 +16,11 @@ async function login(phone) {
   const user = await userRepo.findByPhone(phone);
   if (!user) {
     return { success: false, errMsg: '该手机号未注册' };
+  }
+
+  const expected = user.password || phone.slice(-4);
+  if (password !== expected) {
+    return { success: false, errMsg: '密码错误' };
   }
 
   const token = generateToken();

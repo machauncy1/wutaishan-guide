@@ -97,7 +97,7 @@ const server = createServer(async (req, res) => {
   try {
     // Login
     if (method === 'POST' && path === '/login') {
-      const { phone } = await readBody(req);
+      const { phone, password } = await readBody(req);
       if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
         json(res, 400, { success: false, errMsg: '请输入正确的手机号' });
         return;
@@ -108,6 +108,11 @@ const server = createServer(async (req, res) => {
         return;
       }
       const user = data[0];
+      const expected = user.password || phone.slice(-4);
+      if (password !== expected) {
+        json(res, 400, { success: false, errMsg: '密码错误' });
+        return;
+      }
       const tk = crypto.randomUUID();
       await db
         .collection('sessions')
