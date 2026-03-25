@@ -1,5 +1,5 @@
 const authService = require('./services/authService');
-const { handleLogin, handleGetMe } = require('./handlers/auth');
+const { handleLogin, handleGetMe, handleResetPassword } = require('./handlers/auth');
 const {
   handleGetMyAvailability,
   handleSetAvailability,
@@ -10,6 +10,7 @@ const {
 // Route definitions: [method, path, handler, requiresAuth]
 const routes = [
   ['POST', '/login', handleLogin, false],
+  ['POST', '/reset-password', handleResetPassword, false],
   ['GET', '/me', handleGetMe, true],
   ['GET', '/my-availability', handleGetMyAvailability, true],
   ['POST', '/set-availability', handleSetAvailability, true],

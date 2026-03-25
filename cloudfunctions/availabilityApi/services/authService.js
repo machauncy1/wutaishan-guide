@@ -54,4 +54,26 @@ async function authenticate(token) {
   return user;
 }
 
-module.exports = { login, authenticate };
+async function resetPassword(phone, oldPassword, newPassword) {
+  if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
+    return { success: false, errMsg: '请输入正确的手机号' };
+  }
+  if (!newPassword || newPassword.length < 4) {
+    return { success: false, errMsg: '新密码至少4位' };
+  }
+
+  const user = await userRepo.findByPhone(phone);
+  if (!user) {
+    return { success: false, errMsg: '该手机号未注册' };
+  }
+
+  const expected = user.password || phone.slice(-4);
+  if (oldPassword !== expected) {
+    return { success: false, errMsg: '原密码错误' };
+  }
+
+  await userRepo.updatePassword(user._id, newPassword);
+  return { success: true };
+}
+
+module.exports = { login, authenticate, resetPassword };

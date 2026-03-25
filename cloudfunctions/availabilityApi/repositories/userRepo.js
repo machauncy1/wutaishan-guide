@@ -14,4 +14,8 @@ async function findById(userId) {
   }
 }
 
-module.exports = { findByPhone, findById };
+async function updatePassword(userId, password) {
+  await db.collection('users').doc(userId).update({ data: { password } });
+}
+
+module.exports = { findByPhone, findById, updatePassword };

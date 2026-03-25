@@ -17,4 +17,8 @@ async function handleGetMe(user) {
   };
 }
 
-module.exports = { handleLogin, handleGetMe };
+async function handleResetPassword(body) {
+  return authService.resetPassword(body.phone, body.oldPassword, body.newPassword);
+}
+
+module.exports = { handleLogin, handleGetMe, handleResetPassword };

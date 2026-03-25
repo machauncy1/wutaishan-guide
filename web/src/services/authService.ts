@@ -42,3 +42,7 @@ export function isLoggedIn(): boolean {
 export function getSavedRole(): UserRole | null {
   return localStorage.getItem('avail_role') as UserRole | null;
 }
+
+export async function resetPassword(phone: string, oldPassword: string, newPassword: string) {
+  return request('POST', '/reset-password', { phone, oldPassword, newPassword });
+}

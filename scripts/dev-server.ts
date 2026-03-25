@@ -127,6 +127,33 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    // Reset password (no auth)
+    if (method === 'POST' && path === '/reset-password') {
+      const { phone, oldPassword, newPassword } = await readBody(req);
+      if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
+        json(res, 400, { success: false, errMsg: '请输入正确的手机号' });
+        return;
+      }
+      if (!newPassword || (newPassword as string).length < 4) {
+        json(res, 400, { success: false, errMsg: '新密码至少4位' });
+        return;
+      }
+      const { data } = await db.collection('users').where({ phone }).limit(1).get();
+      if (!data[0]) {
+        json(res, 400, { success: false, errMsg: '该手机号未注册' });
+        return;
+      }
+      const u = data[0];
+      const expected = u.password || phone.slice(-4);
+      if (oldPassword !== expected) {
+        json(res, 400, { success: false, errMsg: '原密码错误' });
+        return;
+      }
+      await db.collection('users').doc(u._id).update({ password: newPassword });
+      json(res, 200, { success: true });
+      return;
+    }
+
     // Auth required
     const user = await auth(token(req));
     if (!user) {
