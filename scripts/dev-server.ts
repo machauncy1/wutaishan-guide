@@ -150,7 +150,7 @@ const server = createServer(async (req, res) => {
         json(res, 400, { success: false, errMsg: '仅导游可访问' });
         return;
       }
-      const dates = dateRange(7);
+      const dates = dateRange(30);
       const { data: records } = await db
         .collection('guide_availability')
         .where({ guideId: user.guideId, date: _.gte(dates[0]).and(_.lte(dates[6])) })

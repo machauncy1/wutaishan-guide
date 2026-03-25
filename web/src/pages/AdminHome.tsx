@@ -12,6 +12,14 @@ const quickDates = [
   { label: '后天', offset: 2 },
 ];
 
+const STATUS_ORDER: Record<string, number> = {
+  free: 0,
+  morning: 0,
+  afternoon: 0,
+  allday: 1,
+  leave: 2,
+};
+
 const adminActions = [
   { label: '未派', value: 'free' },
   { label: '请假', value: 'leave' },
@@ -33,7 +41,10 @@ export default function AdminHome() {
     try {
       const res = await getDailyGuides(d);
       if (res.success && res.data) {
-        setGuides(res.data);
+        const sorted = [...res.data].sort(
+          (a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99),
+        );
+        setGuides(sorted);
       }
     } finally {
       setLoading(false);

@@ -14,7 +14,7 @@ function getDateRange(days) {
 }
 
 async function getMyAvailability(user) {
-  const dates = getDateRange(7);
+  const dates = getDateRange(30);
   const records = await availRepo.findByGuideAndDateRange(
     user.guideId,
     dates[0],
