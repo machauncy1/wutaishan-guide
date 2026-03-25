@@ -1,16 +1,14 @@
 const availRepo = require('../repositories/availRepo');
 const { db } = require('../shared/cloud');
 
-const VALID_STATUSES = ['available', 'unavailable', 'assigned'];
-const GUIDE_ALLOWED_STATUSES = ['available', 'unavailable'];
+const VALID_STATUSES = ['free', 'leave', 'morning', 'afternoon', 'allday'];
 
 function getDateRange(days) {
   const dates = [];
-  const now = new Date();
-  const bjOffset = 8 * 60 * 60 * 1000;
   for (let i = 0; i < days; i++) {
-    const d = new Date(now.getTime() + bjOffset + i * 24 * 60 * 60 * 1000);
-    dates.push(d.toISOString().slice(0, 10));
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    dates.push(d.toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' }));
   }
   return dates;
 }
@@ -30,7 +28,7 @@ async function getMyAvailability(user) {
 
   return dates.map((date) => ({
     date,
-    status: statusMap[date] || 'available',
+    status: statusMap[date] || 'free',
   }));
 }
 
@@ -38,8 +36,8 @@ async function setAvailability(user, date, status) {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return { success: false, errMsg: '无效日期' };
   }
-  if (!GUIDE_ALLOWED_STATUSES.includes(status)) {
-    return { success: false, errMsg: '导游只能设为可接或不可接' };
+  if (!VALID_STATUSES.includes(status)) {
+    return { success: false, errMsg: '无效状态' };
   }
 
   await availRepo.upsert(user.guideId, date, status, user._id);
@@ -71,7 +69,7 @@ async function getDailyGuides(date) {
     guideId: u.guideId,
     name: u.name,
     phone: u.phone,
-    status: statusMap[u.guideId] || 'available',
+    status: statusMap[u.guideId] || 'free',
   }));
 
   return { success: true, data: list };

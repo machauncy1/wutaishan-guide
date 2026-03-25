@@ -1,11 +1,13 @@
 const statusConfig: Record<AvailabilityStatus, { label: string; className: string }> = {
-  available: { label: '可接', className: 'bg-green-100 text-green-700' },
-  unavailable: { label: '不可接', className: 'bg-gray-100 text-gray-500' },
-  assigned: { label: '已派', className: 'bg-blue-100 text-blue-700' },
+  free: { label: '未派', className: 'bg-green-100 text-green-700' },
+  leave: { label: '请假', className: 'bg-gray-100 text-gray-500' },
+  morning: { label: '上午已派', className: 'bg-blue-100 text-blue-700' },
+  afternoon: { label: '下午已派', className: 'bg-purple-100 text-purple-700' },
+  allday: { label: '全天已派', className: 'bg-orange-100 text-orange-700' },
 };
 
 export default function StatusTag({ status }: { status: AvailabilityStatus }) {
-  const config = statusConfig[status] || statusConfig.available;
+  const config = statusConfig[status] || statusConfig.free;
   return (
     <span className={`inline-block rounded-full px-3 py-1 text-sm font-medium ${config.className}`}>
       {config.label}

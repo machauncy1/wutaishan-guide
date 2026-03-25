@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getMyAvailability, setAvailability } from '../services/availService';
+import type { DayStatus } from '../services/availService';
 import { logout } from '../services/authService';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
-
-interface DayStatus {
-  date: string;
-  status: AvailabilityStatus;
-}
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -20,8 +16,11 @@ function formatDate(dateStr: string) {
 }
 
 const guideActions = [
-  { label: '设为可接', value: 'available' },
-  { label: '设为不可接', value: 'unavailable' },
+  { label: '未派', value: 'free' },
+  { label: '请假', value: 'leave' },
+  { label: '上午已派', value: 'morning' },
+  { label: '下午已派', value: 'afternoon' },
+  { label: '全天已派', value: 'allday' },
 ];
 
 export default function GuideHome() {
@@ -93,6 +92,7 @@ export default function GuideHome() {
         visible={!!selectedDate}
         title={selectedDate ? `设置 ${selectedDate} 状态` : ''}
         actions={guideActions}
+        currentValue={days.find((d) => d.date === selectedDate)?.status}
         onSelect={handleSelect}
         onClose={() => setSelectedDate(null)}
       />

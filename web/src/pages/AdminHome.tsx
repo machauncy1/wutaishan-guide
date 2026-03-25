@@ -1,28 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getDailyGuides, updateGuideStatus } from '../services/availService';
 import { logout } from '../services/authService';
+import { todayBJ, offsetDateBJ } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
-
-interface GuideDay {
-  userId: string;
-  guideId: string;
-  name: string;
-  phone: string;
-  status: AvailabilityStatus;
-}
-
-function getTodayStr() {
-  const now = new Date();
-  const bjOffset = 8 * 60 * 60 * 1000;
-  return new Date(now.getTime() + bjOffset).toISOString().slice(0, 10);
-}
-
-function getDateOffset(days: number) {
-  const now = new Date();
-  const bjOffset = 8 * 60 * 60 * 1000;
-  return new Date(now.getTime() + bjOffset + days * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-}
+import type { GuideDay } from '../services/availService';
 
 const quickDates = [
   { label: '今天', offset: 0 },
@@ -31,13 +13,15 @@ const quickDates = [
 ];
 
 const adminActions = [
-  { label: '设为可接', value: 'available' },
-  { label: '设为不可接', value: 'unavailable' },
-  { label: '标记已派', value: 'assigned' },
+  { label: '未派', value: 'free' },
+  { label: '请假', value: 'leave' },
+  { label: '上午已派', value: 'morning' },
+  { label: '下午已派', value: 'afternoon' },
+  { label: '全天已派', value: 'allday' },
 ];
 
 export default function AdminHome() {
-  const [date, setDate] = useState(getTodayStr);
+  const [date, setDate] = useState(todayBJ);
   const [guides, setGuides] = useState<GuideDay[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedGuide, setSelectedGuide] = useState<GuideDay | null>(null);
@@ -68,8 +52,11 @@ export default function AdminHome() {
   }
 
   // Count stats
-  const available = guides.filter((g) => g.status === 'available').length;
-  const assigned = guides.filter((g) => g.status === 'assigned').length;
+  const free = guides.filter((g) => g.status === 'free').length;
+  const assigned = guides.filter((g) =>
+    ['morning', 'afternoon', 'allday'].includes(g.status),
+  ).length;
+  const leave = guides.filter((g) => g.status === 'leave').length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -85,7 +72,7 @@ export default function AdminHome() {
       <div className="px-4 pt-4 pb-2">
         <div className="flex gap-2">
           {quickDates.map((qd) => {
-            const d = getDateOffset(qd.offset);
+            const d = offsetDateBJ(qd.offset);
             return (
               <button
                 key={qd.offset}
@@ -128,8 +115,9 @@ export default function AdminHome() {
       {/* Stats */}
       <div className="px-4 py-2 flex gap-4 text-sm text-gray-500">
         <span>共 {guides.length} 人</span>
-        <span className="text-green-600">可接 {available}</span>
+        <span className="text-green-600">未派 {free}</span>
         <span className="text-blue-600">已派 {assigned}</span>
+        <span className="text-gray-400">请假 {leave}</span>
       </div>
 
       {/* Guide list */}
@@ -161,6 +149,7 @@ export default function AdminHome() {
         visible={!!selectedGuide}
         title={selectedGuide ? `${selectedGuide.name} - ${date}` : ''}
         actions={adminActions}
+        currentValue={selectedGuide?.status}
         onSelect={handleSelect}
         onClose={() => setSelectedGuide(null)}
       />

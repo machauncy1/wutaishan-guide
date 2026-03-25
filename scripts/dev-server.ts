@@ -21,8 +21,7 @@ const db = app.database();
 const _ = db.command;
 
 const SESSION_TTL_MS = 90 * 24 * 60 * 60 * 1000;
-const VALID_STATUSES = ['available', 'unavailable', 'assigned'];
-const GUIDE_ALLOWED_STATUSES = ['available', 'unavailable'];
+const VALID_STATUSES = ['free', 'leave', 'morning', 'afternoon', 'allday'];
 
 function json(res: ServerResponse, code: number, data: unknown) {
   res.writeHead(code, {
@@ -63,10 +62,10 @@ function token(req: IncomingMessage): string {
 
 function dateRange(days: number): string[] {
   const r: string[] = [];
-  const now = new Date();
-  const bj = 8 * 60 * 60 * 1000;
   for (let i = 0; i < days; i++) {
-    r.push(new Date(now.getTime() + bj + i * 86400000).toISOString().slice(0, 10));
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    r.push(d.toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' }));
   }
   return r;
 }
@@ -160,7 +159,7 @@ const server = createServer(async (req, res) => {
       for (const r of records) m[r.date] = r.status;
       json(res, 200, {
         success: true,
-        data: dates.map((d) => ({ date: d, status: m[d] || 'available' })),
+        data: dates.map((d) => ({ date: d, status: m[d] || 'free' })),
       });
       return;
     }
@@ -176,8 +175,8 @@ const server = createServer(async (req, res) => {
         json(res, 400, { success: false, errMsg: '无效日期' });
         return;
       }
-      if (!GUIDE_ALLOWED_STATUSES.includes(status)) {
-        json(res, 400, { success: false, errMsg: '导游只能设为可接或不可接' });
+      if (!VALID_STATUSES.includes(status)) {
+        json(res, 400, { success: false, errMsg: '无效状态' });
         return;
       }
       const { data: ex } = await db
@@ -226,7 +225,7 @@ const server = createServer(async (req, res) => {
           guideId: u.guideId,
           name: u.name,
           phone: u.phone,
-          status: m[u.guideId] || 'available',
+          status: m[u.guideId] || 'free',
         })),
       });
       return;

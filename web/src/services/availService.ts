@@ -1,11 +1,11 @@
 import { request } from '../api/client';
 
-interface DayStatus {
+export interface DayStatus {
   date: string;
   status: AvailabilityStatus;
 }
 
-interface GuideDay {
+export interface GuideDay {
   userId: string;
   guideId: string;
   name: string;

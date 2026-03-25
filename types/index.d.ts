@@ -107,7 +107,7 @@ interface TrustPoint {
 // ===== 可用性管理系统（H5）=====
 
 type UserRole = 'guide' | 'admin' | 'tourist';
-type AvailabilityStatus = 'available' | 'unavailable' | 'assigned';
+type AvailabilityStatus = 'free' | 'leave' | 'morning' | 'afternoon' | 'allday';
 
 /** 用户账号（Identity Context，跨端通用） */
 interface User {
