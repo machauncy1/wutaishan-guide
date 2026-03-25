@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getMyAvailability, setAvailability } from '../services/availService';
 import type { DayStatus } from '../services/availService';
 import { logout } from '../services/authService';
-import { getLunarText, isLunarKeyDay } from '../utils/date';
+import { todayBJ, getLunarText, isLunarKeyDay } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 
@@ -30,6 +30,7 @@ export default function GuideHome() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const name = localStorage.getItem('avail_name') || '导游';
+  const today = todayBJ();
 
   async function fetchData() {
     setLoading(true);
@@ -64,9 +65,12 @@ export default function GuideHome() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-indigo-600 text-white px-4 py-4 flex items-center justify-between">
+      <div
+        className="text-white px-4 py-4 flex items-center justify-between"
+        style={{ background: '#1890ff' }}
+      >
         <h1 className="text-lg font-semibold">我的可用时间</h1>
-        <button onClick={logout} className="text-sm text-indigo-200 active:text-white">
+        <button onClick={logout} className="text-sm text-blue-200 active:text-white">
           {name} | 退出
         </button>
       </div>
@@ -80,14 +84,20 @@ export default function GuideHome() {
           <div className="space-y-2">
             {recentDays.map((day) => {
               const { display, weekday } = formatDate(day.date);
+              const isToday = day.date === today;
               return (
                 <div
                   key={day.date}
-                  className="flex items-center justify-between bg-white rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50"
+                  className={`flex items-center justify-between rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50 ${
+                    isToday ? 'bg-blue-50 border border-blue-200' : 'bg-white'
+                  }`}
                   onClick={() => setSelectedDate(day.date)}
                 >
                   <div>
-                    <span className="text-base font-medium text-gray-800">{display}</span>
+                    <span className="text-base font-medium text-gray-800">
+                      {display}
+                      {isToday && <span className="ml-1 text-blue-500 text-xs">今天</span>}
+                    </span>
                     <span className="ml-2 text-sm text-gray-400">{weekday}</span>
                     <span
                       className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
@@ -112,7 +122,7 @@ export default function GuideHome() {
           >
             {showCalendar ? '收起' : '设置更远日期'}
             {!showCalendar && laterSetCount > 0 && (
-              <span className="ml-1 text-indigo-500">（已设 {laterSetCount} 天）</span>
+              <span className="ml-1 text-blue-500">（已设 {laterSetCount} 天）</span>
             )}
           </button>
 

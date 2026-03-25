@@ -72,9 +72,12 @@ export default function AdminHome() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-indigo-600 text-white px-4 py-4 flex items-center justify-between">
+      <div
+        className="text-white px-4 py-4 flex items-center justify-between"
+        style={{ background: '#1890ff' }}
+      >
         <h1 className="text-lg font-semibold">导游可用总览</h1>
-        <button onClick={logout} className="text-sm text-indigo-200 active:text-white">
+        <button onClick={logout} className="text-sm text-blue-200 active:text-white">
           {name} | 退出
         </button>
       </div>
@@ -91,11 +94,12 @@ export default function AdminHome() {
                   setDate(d);
                   setCustomDate(false);
                 }}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium ${
+                className="flex-1 py-2 rounded-lg text-sm font-medium"
+                style={
                   date === d && !customDate
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-white text-gray-600 border border-gray-200'
-                }`}
+                    ? { background: '#1890ff', color: '#fff' }
+                    : { background: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }
+                }
               >
                 {qd.label}
               </button>
@@ -103,11 +107,12 @@ export default function AdminHome() {
           })}
           <button
             onClick={() => setCustomDate(true)}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium ${
+            className="flex-1 py-2 rounded-lg text-sm font-medium"
+            style={
               customDate
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white text-gray-600 border border-gray-200'
-            }`}
+                ? { background: '#1890ff', color: '#fff' }
+                : { background: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }
+            }
           >
             自选
           </button>

@@ -56,7 +56,7 @@ export default function Login() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #1e6fff 0%, #1890ff 100%)' }}
     >
       {/* Mountain silhouette decoration */}
       <svg
@@ -85,7 +85,7 @@ export default function Login() {
               placeholder="请输入手机号"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
             <input
               type="password"
@@ -93,7 +93,7 @@ export default function Login() {
               placeholder="请输入密码"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
 
             {error && <p className="text-sm text-red-300">{error}</p>}
@@ -102,7 +102,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading || phone.length !== 11 || password.length === 0}
-              className="w-full py-3 rounded-lg bg-white text-indigo-700 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
+              className="w-full py-3 rounded-lg bg-white text-blue-600 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
             >
               {loading ? '登录中...' : '登录'}
             </button>
@@ -130,7 +130,7 @@ export default function Login() {
               placeholder="请输入手机号"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
             <input
               type="password"
@@ -138,7 +138,7 @@ export default function Login() {
               placeholder="原密码"
               value={oldPwd}
               onChange={(e) => setOldPwd(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
             <input
               type="password"
@@ -146,7 +146,7 @@ export default function Login() {
               placeholder="新密码（至少4位）"
               value={newPwd}
               onChange={(e) => setNewPwd(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
 
             {resetMsg && <p className="text-sm text-red-300">{resetMsg}</p>}
@@ -154,7 +154,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading || phone.length !== 11 || oldPwd.length === 0 || newPwd.length < 4}
-              className="w-full py-3 rounded-lg bg-white text-indigo-700 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
+              className="w-full py-3 rounded-lg bg-white text-blue-600 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
             >
               {loading ? '提交中...' : '确认修改'}
             </button>
