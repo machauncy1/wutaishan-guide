@@ -126,6 +126,7 @@ async function seedUsers(now: number): Promise<void> {
       name: g.name,
       role: 'guide',
       guideId: g._id,
+      password: g.phone.slice(-4),
       createdAt: now,
     });
     guideCount++;
@@ -136,6 +137,7 @@ async function seedUsers(now: number): Promise<void> {
   for (const admin of adminUsers) {
     await db.collection('users').add({
       ...admin,
+      password: admin.phone.slice(-4),
       createdAt: now,
     });
   }
