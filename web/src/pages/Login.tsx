@@ -74,7 +74,6 @@ export default function Login() {
       <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-white">新世纪导游调度系统</h1>
-          <p className="mt-2 text-sm text-white/60">五台山旅游服务</p>
         </div>
 
         {mode === 'login' ? (
