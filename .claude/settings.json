@@ -50,7 +50,8 @@
       "Bash(export PATH=/usr/local/bin:/opt/homebrew/bin:$PATH)",
       "Bash(pnpm web:build)",
       "WebFetch(domain:docs.cloudbase.net)",
-      "WebFetch(domain:developers.weixin.qq.com)"
+      "WebFetch(domain:developers.weixin.qq.com)",
+      "Bash(tcb hosting:*)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide",
