@@ -166,8 +166,8 @@
 </view>
 
 <bottom-contact-bar
-  wx:if="{{guide && guide.phone}}"
-  phone="{{guide.phone}}"
+  wx:if="{{guide && settings.contactPhone}}"
+  phone="{{settings.contactPhone}}"
   show-consult="{{guide.wechatServiceEnabled}}"
   show-booking="{{true}}"
   consult-label="咨询行程"

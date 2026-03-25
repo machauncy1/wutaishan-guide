@@ -66,7 +66,7 @@ type GuideListItem = Pick<
 > & { _id: string };
 
 /** 详情页查询子集 */
-type GuideDetail = Omit<Guide, 'sort' | 'tags'> & { _id: string };
+type GuideDetail = Omit<Guide, 'sort' | 'tags' | 'phone'> & { _id: string };
 
 // ===== 集合: settings =====
 
@@ -102,4 +102,39 @@ interface Booking {
 interface TrustPoint {
   label: string;
   value: string;
+}
+
+// ===== 可用性管理系统（H5）=====
+
+type UserRole = 'guide' | 'admin' | 'tourist';
+type AvailabilityStatus = 'available' | 'unavailable' | 'assigned';
+
+/** 用户账号（Identity Context，跨端通用） */
+interface User {
+  _id?: string;
+  phone: string;
+  name: string;
+  role: UserRole;
+  guideId?: string; // role=guide 时关联 guides._id
+  openid?: string; // 未来小程序用户关联
+  createdAt: number;
+}
+
+/** 导游日期可用状态（每导游每天一条） */
+interface GuideAvailability {
+  _id?: string;
+  guideId: string; // → guides._id
+  date: string; // "2026-03-25"
+  status: AvailabilityStatus;
+  updatedBy?: string; // → users._id
+  updatedAt: number;
+}
+
+/** 登录会话 */
+interface Session {
+  _id: string; // 即 token
+  userId: string;
+  role: UserRole;
+  expireAt: number;
+  isRevoked: boolean;
 }

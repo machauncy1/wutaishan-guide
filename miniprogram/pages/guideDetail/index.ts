@@ -30,7 +30,7 @@ interface DetailCustom {
   buildTrustPoints(guide: GuideDetail): TrustPoint[];
   buildServiceScope(): string[];
   buildFAQ(): Array<{ q: string; a: string }>;
-  buildBookingArrangement(guide: GuideDetail): string[];
+  buildBookingArrangement(): string[];
   buildReviews(rawReviews: Review[]): ProcessedReview[];
   calcReviewScore(reviews: ProcessedReview[]): string;
   onToggleReviews(): void;
@@ -86,7 +86,7 @@ Page<DetailData, DetailCustom>({
       trustPoints: this.buildTrustPoints(guide),
       serviceScope: this.buildServiceScope(),
       faq: this.buildFAQ(),
-      bookingArrangement: this.buildBookingArrangement(guide),
+      bookingArrangement: this.buildBookingArrangement(),
       heroSubtitle: this.buildHeroSubtitle(guide),
       reviewList: this.data.showAllReviews ? allReviews : allReviews.slice(0, 3),
       reviewTotal: allReviews.length,
@@ -158,13 +158,13 @@ Page<DetailData, DetailCustom>({
     ];
   },
 
-  buildBookingArrangement(guide: GuideDetail): string[] {
+  buildBookingArrangement(): string[] {
     const items = [
       '具体接待导游将根据出行日期、人数、路线和实际档期协调安排。',
       '节假日、初一十五和暑期客流较大，建议尽早确认出发时间与行程需求。',
       '如需接站、包车服务，请在咨询时一并说明，方便统一衔接安排。',
     ];
-    return guide.phone ? items.slice(0, 3) : items.slice(0, 2);
+    return items;
   },
 
   buildReviews(rawReviews: Review[]): ProcessedReview[] {
@@ -224,7 +224,7 @@ Page<DetailData, DetailCustom>({
   },
 
   onPhoneCall() {
-    const phone = this.data.guide && this.data.guide.phone;
+    const phone = this.data.settings.contactPhone;
     if (!phone) return;
     wx.makePhoneCall({ phoneNumber: phone });
   },

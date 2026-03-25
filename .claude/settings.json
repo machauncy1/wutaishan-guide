@@ -37,7 +37,18 @@
       "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide/cloud -name *.ts)",
       "Bash(mv ticket-guide:*)",
       "Bash(mv traffic-guide:*)",
-      "Bash(mv blessing-guide:*)"
+      "Bash(mv blessing-guide:*)",
+      "Bash(pnpm install:*)",
+      "Bash(unset -f pnpm node nvm)",
+      "Bash(export PATH=\"/usr/local/bin:/opt/homebrew/bin:$PATH\")",
+      "Read(//usr/local/bin/**)",
+      "Read(//usr/local/lib/node_modules/npm/bin/**)",
+      "Bash(/usr/local/bin/node --version)",
+      "Bash(/Users/chauncy/Project/machauncy1/wutaishan-guide/web/node_modules/.bin/tsc --noEmit --project /Users/chauncy/Project/machauncy1/wutaishan-guide/web/tsconfig.json)",
+      "Bash(/Users/chauncy/Project/machauncy1/wutaishan-guide/web/node_modules/.bin/vite build:*)",
+      "Bash(/Users/chauncy/Project/machauncy1/wutaishan-guide/node_modules/.bin/tsc --noEmit --project /Users/chauncy/Project/machauncy1/wutaishan-guide/web/tsconfig.json)",
+      "Bash(export PATH=/usr/local/bin:/opt/homebrew/bin:$PATH)",
+      "Bash(pnpm web:build)"
     ],
     "additionalDirectories": [
       "/Users/chauncy/Project/machauncy1/wutaishan-guide",

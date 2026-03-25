@@ -24,7 +24,6 @@ export function getGuideDetail(guideId: string): Promise<DB.IQuerySingleResult> 
       avatar: true,
       experienceYear: true,
       serviceCount: true,
-      phone: true,
       licenseText: true,
       wechatServiceEnabled: true,
       status: true,

@@ -3,7 +3,7 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ignores: ['**/node_modules/', '**/miniprogram_npm/', '**/cloudfunctions/'],
+    ignores: ['**/node_modules/', '**/miniprogram_npm/', '**/cloudfunctions/', 'web/dist/'],
   },
   // JS files (scripts/seed.js etc.)
   {
@@ -28,13 +28,14 @@ export default [
       'no-console': 'off',
     },
   },
-  // TS files (miniprogram)
+  // TS files (miniprogram + scripts + web)
   ...tseslint.configs.recommended.map((config) => ({
     ...config,
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
   })),
+  // miniprogram-specific globals
   {
-    files: ['**/*.ts'],
+    files: ['miniprogram/**/*.ts'],
     languageOptions: {
       globals: {
         wx: 'readonly',
@@ -46,6 +47,21 @@ export default [
         console: 'readonly',
       },
     },
+  },
+  // scripts-specific globals
+  {
+    files: ['scripts/**/*.ts'],
+    languageOptions: {
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+      },
+    },
+  },
+  // Shared TS rules
+  {
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',

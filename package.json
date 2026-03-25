@@ -8,6 +8,9 @@
     "lint:fix": "eslint . --fix",
     "seed": "tsx scripts/seed.ts",
     "seed:force": "tsx scripts/seed.ts --force",
+    "dev:api": "tsx scripts/dev-server.ts",
+    "web:dev": "pnpm --filter wutaishan-guide-web dev",
+    "web:build": "pnpm --filter wutaishan-guide-web build",
     "prepare": "husky"
   },
   "keywords": [],
@@ -33,7 +36,7 @@
     "dotenv": "^17.3.1"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
   }
