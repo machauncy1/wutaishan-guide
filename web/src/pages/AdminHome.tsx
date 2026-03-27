@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { getDailyGuides, updateGuideStatus } from '../services/availService';
+import { useMemo, useState } from 'react';
+import { useDailyGuides, useUpdateGuideStatus } from '../hooks/useAvailability';
 import { logout } from '../services/authService';
 import { todayBJ, offsetDateBJ, getLunarText, isLunarKeyDay } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
+import Loading from '../components/Loading';
 import type { GuideDay } from '../services/availService';
 
 const quickDates = [
@@ -30,39 +31,30 @@ const adminActions = [
 
 export default function AdminHome() {
   const [date, setDate] = useState(todayBJ);
-  const [guides, setGuides] = useState<GuideDay[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedGuide, setSelectedGuide] = useState<GuideDay | null>(null);
   const [customDate, setCustomDate] = useState(false);
   const name = localStorage.getItem('avail_name') || '管理员';
 
-  async function fetchData(d: string) {
-    setLoading(true);
-    try {
-      const res = await getDailyGuides(d);
-      if (res.success && res.data) {
-        const sorted = [...res.data].sort(
-          (a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99),
-        );
-        setGuides(sorted);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { data: rawGuides, isLoading } = useDailyGuides(date);
+  const updateMutation = useUpdateGuideStatus();
 
-  useEffect(() => {
-    fetchData(date);
-  }, [date]);
+  const guides = useMemo(() => {
+    if (!rawGuides) return [];
+    return [...rawGuides].sort(
+      (a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99),
+    );
+  }, [rawGuides]);
 
-  async function handleSelect(status: string) {
+  function handleSelect(status: string) {
     if (!selectedGuide) return;
-    await updateGuideStatus(selectedGuide.guideId, date, status as AvailabilityStatus);
+    updateMutation.mutate({
+      guideId: selectedGuide.guideId,
+      date,
+      status: status as AvailabilityStatus,
+    });
     setSelectedGuide(null);
-    fetchData(date);
   }
 
-  // Count stats
   const free = guides.filter((g) => g.status === 'free').length;
   const assigned = guides.filter((g) =>
     ['morning', 'afternoon', 'allday'].includes(g.status),
@@ -146,8 +138,8 @@ export default function AdminHome() {
 
       {/* Guide list */}
       <div className="px-4 pb-4">
-        {loading ? (
-          <p className="text-center text-gray-400 py-8">加载中...</p>
+        {isLoading ? (
+          <Loading />
         ) : guides.length === 0 ? (
           <p className="text-center text-gray-400 py-8">暂无导游数据</p>
         ) : (

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { getMyAvailability, setAvailability } from '../services/availService';
-import type { DayStatus } from '../services/availService';
+import { useState } from 'react';
+import { useMyAvailability, useSetAvailability } from '../hooks/useAvailability';
 import { logout } from '../services/authService';
 import { todayBJ, getLunarText, isLunarKeyDay } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
+import Loading from '../components/Loading';
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -25,41 +25,25 @@ const guideActions = [
 ];
 
 export default function GuideHome() {
-  const [days, setDays] = useState<DayStatus[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const name = localStorage.getItem('avail_name') || '导游';
   const today = todayBJ();
 
-  async function fetchData() {
-    setLoading(true);
-    try {
-      const res = await getMyAvailability();
-      if (res.success && res.data) {
-        setDays(res.data);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { data: days = [], isLoading } = useMyAvailability();
+  const setAvailMutation = useSetAvailability();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  async function handleSelect(status: string) {
+  function handleSelect(status: string) {
     if (!selectedDate) return;
-    await setAvailability(selectedDate, status as AvailabilityStatus);
+    setAvailMutation.mutate({
+      date: selectedDate,
+      status: status as AvailabilityStatus,
+    });
     setSelectedDate(null);
-    fetchData();
   }
 
-  // 前 7 天列表展示，其余通过日历设置
   const recentDays = days.slice(0, 7);
   const laterDays = days.slice(7);
-
-  // 日历中有非 free 状态的天数
   const laterSetCount = laterDays.filter((d) => d.status !== 'free').length;
 
   return (
@@ -78,8 +62,8 @@ export default function GuideHome() {
       {/* 近 7 天列表 */}
       <div className="p-4">
         <div className="text-xs font-medium text-gray-400 tracking-wide pb-2 px-1">近 7 天</div>
-        {loading ? (
-          <p className="text-center text-gray-400 py-8">加载中...</p>
+        {isLoading ? (
+          <Loading />
         ) : (
           <div className="space-y-2">
             {recentDays.map((day) => {

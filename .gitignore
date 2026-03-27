@@ -18,6 +18,11 @@ npm-debug.log*
 
 # 环境变量（密钥）
 .env
+.env.*
+
+# Claude Code 个人覆盖
+CLAUDE.local.md
+.claude/settings.local.json
 
 # TypeScript 编译产物
 *.tsbuildinfo
