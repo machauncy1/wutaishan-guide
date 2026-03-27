@@ -1,20 +1,10 @@
 import { useState } from 'react';
 import { useMyAvailability, useSetAvailability } from '../hooks/useAvailability';
 import { logout } from '../services/authService';
-import { todayBJ, getLunarText, isLunarKeyDay } from '../utils/date';
+import { todayBJ, getLunarText, isLunarKeyDay, getShortDate, getWeekday } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 import Loading from '../components/Loading';
-
-const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
-
-function formatDate(dateStr: string) {
-  const d = new Date(dateStr + 'T00:00:00+08:00');
-  const month = d.getMonth() + 1;
-  const day = d.getDate();
-  const weekday = WEEKDAYS[d.getDay()];
-  return { display: `${month}/${day}`, weekday: `周${weekday}` };
-}
 
 const guideActions = [
   { label: '未派', value: 'free' },
@@ -67,7 +57,8 @@ export default function GuideHome() {
         ) : (
           <div className="space-y-2">
             {recentDays.map((day) => {
-              const { display, weekday } = formatDate(day.date);
+              const display = getShortDate(day.date);
+              const weekday = getWeekday(day.date);
               const isToday = day.date === today;
               return (
                 <div
@@ -82,12 +73,12 @@ export default function GuideHome() {
                       {display}
                       {isToday && <span className="ml-1 text-blue-500 text-xs">今天</span>}
                     </span>
-                    <span className="ml-2 text-sm text-gray-400">{weekday}</span>
                     <span
                       className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
                     >
                       {getLunarText(day.date)}
                     </span>
+                    <span className="ml-2 text-sm text-gray-400">{weekday}</span>
                   </div>
                   <StatusTag status={day.status} />
                 </div>
@@ -113,7 +104,8 @@ export default function GuideHome() {
           {showCalendar && (
             <div className="mt-3 space-y-2">
               {laterDays.map((day) => {
-                const { display, weekday } = formatDate(day.date);
+                const display = getShortDate(day.date);
+                const weekday = getWeekday(day.date);
                 return (
                   <div
                     key={day.date}
@@ -122,12 +114,12 @@ export default function GuideHome() {
                   >
                     <div>
                       <span className="text-sm font-medium text-gray-700">{display}</span>
-                      <span className="ml-2 text-xs text-gray-400">{weekday}</span>
                       <span
                         className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
                       >
                         {getLunarText(day.date)}
                       </span>
+                      <span className="ml-2 text-xs text-gray-400">{weekday}</span>
                     </div>
                     <StatusTag status={day.status} />
                   </div>

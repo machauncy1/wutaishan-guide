@@ -38,7 +38,8 @@
       "Bash(pnpm web:deploy)",
       "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm install:*)",
       "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm ls:*)",
-      "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm uninstall:*)"
+      "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm uninstall:*)",
+      "Bash(pnpm lint:*)"
     ],
     "deny": [
       "Bash(rm -rf *)",

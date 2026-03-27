@@ -28,3 +28,17 @@ export function isLunarKeyDay(dateStr: string): boolean {
   const day = lunar.getDay();
   return day === 1 || day === 15;
 }
+
+const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
+
+/** 获取短日期文本，如 "3/27" */
+export function getShortDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00+08:00');
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+
+/** 获取星期文本，如 "周一" */
+export function getWeekday(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00+08:00');
+  return `周${WEEKDAYS[d.getDay()]}`;
+}

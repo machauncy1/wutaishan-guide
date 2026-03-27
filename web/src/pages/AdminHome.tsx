@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useDailyGuides, useUpdateGuideStatus } from '../hooks/useAvailability';
 import { logout } from '../services/authService';
-import { todayBJ, offsetDateBJ, getLunarText, isLunarKeyDay } from '../utils/date';
+import {
+  todayBJ,
+  offsetDateBJ,
+  getLunarText,
+  isLunarKeyDay,
+  getShortDate,
+  getWeekday,
+} from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 import Loading from '../components/Loading';
@@ -125,7 +132,7 @@ export default function AdminHome() {
         <span
           className={`text-sm ${isLunarKeyDay(date) ? 'text-red-500 font-medium' : 'text-gray-400'}`}
         >
-          {getLunarText(date)}
+          {getShortDate(date)} {getLunarText(date)} {getWeekday(date)}
           {isLunarKeyDay(date) && ' (佛教重要日)'}
         </span>
       </div>
