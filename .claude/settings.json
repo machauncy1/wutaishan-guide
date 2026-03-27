@@ -32,7 +32,13 @@
       "Bash(nvm install:*)",
       "Bash(export PATH=\"/Users/chauncy/.nvm/versions/node/v24.14.0/bin:$PATH\")",
       "Bash(unset -f node pnpm npx)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(pnpm web:deploy)",
+      "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm install:*)",
+      "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm ls:*)",
+      "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm uninstall:*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
