@@ -2,6 +2,59 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, resetPassword } from '../services/authService';
 
+const inputClass =
+  'w-full h-12 px-4 rounded-xl text-[15px] text-white placeholder-white/50 ' +
+  'outline-none transition-all duration-200 ' +
+  'bg-[rgba(0,0,0,0.2)] border border-white/15 ' +
+  'focus:border-blue-400/60 focus:bg-[rgba(0,0,0,0.25)]';
+
+function Spinner() {
+  return (
+    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+      />
+    </svg>
+  );
+}
+
+function SubmitButton({
+  disabled,
+  loading,
+  children,
+  loadingText,
+}: {
+  disabled: boolean;
+  loading: boolean;
+  children: string;
+  loadingText: string;
+}) {
+  return (
+    <button
+      type="submit"
+      disabled={disabled}
+      className="w-full h-12 rounded-xl text-[15px] font-semibold transition-all duration-200 disabled:cursor-not-allowed"
+      style={{
+        background: disabled ? 'rgba(255, 255, 255, 0.15)' : '#ffffff',
+        color: disabled ? 'rgba(255,255,255,0.35)' : '#1e40af',
+        boxShadow: disabled ? 'none' : '0 4px 20px -2px rgba(0, 0, 0, 0.25)',
+      }}
+    >
+      {loading ? (
+        <span className="inline-flex items-center gap-2">
+          <Spinner />
+          {loadingText}
+        </span>
+      ) : (
+        children
+      )}
+    </button>
+  );
+}
+
 export default function Login() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -53,128 +106,223 @@ export default function Login() {
     }
   }
 
+  const loginDisabled = loading || phone.length !== 11 || password.length === 0;
+  const resetDisabled = loading || phone.length !== 11 || oldPwd.length === 0 || newPwd.length < 4;
+
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #1e6fff 0%, #1890ff 100%)' }}
-    >
-      {/* Mountain silhouette decoration */}
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* 深蓝渐变背景 */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(135deg, #0a1628 0%, #0d2847 30%, #134e8a 60%, #1a6fc4 100%)',
+        }}
+      />
+
+      {/* 经纬线动画 */}
       <svg
-        className="absolute bottom-0 left-0 w-full"
-        viewBox="0 0 1440 320"
-        preserveAspectRatio="none"
-        style={{ height: '40vh', opacity: 0.1 }}
+        className="absolute inset-0 w-full h-full opacity-[0.06]"
+        viewBox="0 0 800 800"
+        preserveAspectRatio="xMidYMid slice"
       >
-        <path
-          fill="#fff"
-          d="M0,160L60,170.7C120,181,240,203,360,186.7C480,171,600,117,720,112C840,107,960,149,1080,165.3C1200,181,1320,171,1380,165.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-        />
+        <style>{`
+          @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          .orbit { animation: spin 60s linear infinite; transform-origin: 400px 400px; }
+          .orbit-rev { animation: spin 80s linear infinite reverse; transform-origin: 400px 400px; }
+        `}</style>
+        <g className="orbit">
+          <ellipse cx="400" cy="400" rx="350" ry="150" fill="none" stroke="#fff" strokeWidth="1" />
+          <ellipse
+            cx="400"
+            cy="400"
+            rx="300"
+            ry="200"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="0.8"
+          />
+          <ellipse
+            cx="400"
+            cy="400"
+            rx="250"
+            ry="300"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="0.6"
+          />
+        </g>
+        <g className="orbit-rev">
+          <ellipse
+            cx="400"
+            cy="400"
+            rx="380"
+            ry="180"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="0.5"
+            transform="rotate(60 400 400)"
+          />
+          <ellipse
+            cx="400"
+            cy="400"
+            rx="320"
+            ry="120"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="0.5"
+            transform="rotate(-30 400 400)"
+          />
+        </g>
+        <circle cx="400" cy="400" r="360" fill="none" stroke="#fff" strokeWidth="0.4" />
       </svg>
 
-      <div className="w-full max-w-sm relative z-10">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white">新世纪导游调度系统</h1>
+      {/* 光晕 */}
+      <div
+        className="absolute w-[500px] h-[500px] rounded-full opacity-20 blur-[120px]"
+        style={{
+          background: 'radial-gradient(circle, #3b82f6 0%, transparent 70%)',
+          top: '-10%',
+          right: '-10%',
+        }}
+      />
+      <div
+        className="absolute w-[400px] h-[400px] rounded-full opacity-15 blur-[100px]"
+        style={{
+          background: 'radial-gradient(circle, #60a5fa 0%, transparent 70%)',
+          bottom: '-5%',
+          left: '-5%',
+        }}
+      />
+
+      {/* 卡片区域 */}
+      <div className="relative z-10 w-full max-w-[380px] mx-4 pt-12">
+        {/* 悬浮 Logo */}
+        <div className="absolute left-1/2 -translate-x-1/2 -top-1 z-20">
+          <img
+            src="/logo.png"
+            alt="NCTS"
+            className="w-[80px] h-[80px] rounded-full"
+            style={{
+              border: '3px solid rgba(255, 255, 255, 0.6)',
+              boxShadow: '0 8px 24px -4px rgba(0, 0, 0, 0.4)',
+            }}
+          />
         </div>
 
-        {mode === 'login' ? (
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="tel"
-              inputMode="numeric"
-              maxLength={11}
-              placeholder="请输入手机号"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
-            <input
-              type="password"
-              maxLength={20}
-              placeholder="请输入密码"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
+        {/* 毛玻璃卡片 */}
+        <div
+          className="rounded-3xl px-8 pt-16 pb-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(40px)',
+            WebkitBackdropFilter: 'blur(40px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 32px 64px -16px rgba(0, 0, 0, 0.5)',
+          }}
+        >
+          <div className="text-center mb-8">
+            <h1 className="text-[22px] font-semibold tracking-wide text-white">新世纪导游调度</h1>
+            <p className="mt-1.5 text-xs tracking-widest text-white/40">NCTS DISPATCH SYSTEM</p>
+          </div>
 
-            {error && <p className="text-sm text-red-300">{error}</p>}
-            {resetMsg && <p className="text-sm text-green-300">{resetMsg}</p>}
+          {mode === 'login' ? (
+            <form onSubmit={handleLogin} className="space-y-3.5">
+              <div className="space-y-3">
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={11}
+                  placeholder="手机号"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className={inputClass}
+                />
+                <input
+                  type="password"
+                  maxLength={20}
+                  placeholder="密码"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading || phone.length !== 11 || password.length === 0}
-              className="w-full py-3 rounded-lg bg-white text-blue-600 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
-            >
-              {loading ? '登录中...' : '登录'}
-            </button>
+              {error && <p className="text-[13px] text-red-400 pl-1">{error}</p>}
+              {resetMsg && <p className="text-[13px] text-emerald-400 pl-1">{resetMsg}</p>}
 
-            <p className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('reset');
-                  setError('');
-                  setResetMsg('');
-                }}
-                className="text-sm text-white/70"
-              >
-                修改密码
-              </button>
-            </p>
-          </form>
-        ) : (
-          <form onSubmit={handleReset} className="space-y-4">
-            <input
-              type="tel"
-              inputMode="numeric"
-              maxLength={11}
-              placeholder="请输入手机号"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
-            <input
-              type="password"
-              maxLength={20}
-              placeholder="原密码"
-              value={oldPwd}
-              onChange={(e) => setOldPwd(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
-            <input
-              type="password"
-              maxLength={20}
-              placeholder="新密码（至少4位）"
-              value={newPwd}
-              onChange={(e) => setNewPwd(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
+              <SubmitButton disabled={loginDisabled} loading={loading} loadingText="登录中">
+                登录
+              </SubmitButton>
 
-            {resetMsg && <p className="text-sm text-red-300">{resetMsg}</p>}
+              <p className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('reset');
+                    setError('');
+                    setResetMsg('');
+                  }}
+                  className="text-[13px] text-white/35 hover:text-white/70 transition-colors duration-200"
+                >
+                  修改密码
+                </button>
+              </p>
+            </form>
+          ) : (
+            <form onSubmit={handleReset} className="space-y-3.5">
+              <div className="space-y-3">
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={11}
+                  placeholder="手机号"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className={inputClass}
+                />
+                <input
+                  type="password"
+                  maxLength={20}
+                  placeholder="原密码"
+                  value={oldPwd}
+                  onChange={(e) => setOldPwd(e.target.value)}
+                  className={inputClass}
+                />
+                <input
+                  type="password"
+                  maxLength={20}
+                  placeholder="新密码（至少4位）"
+                  value={newPwd}
+                  onChange={(e) => setNewPwd(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading || phone.length !== 11 || oldPwd.length === 0 || newPwd.length < 4}
-              className="w-full py-3 rounded-lg bg-white text-blue-600 text-base font-semibold disabled:opacity-50 active:bg-gray-100 shadow-md"
-            >
-              {loading ? '提交中...' : '确认修改'}
-            </button>
+              {resetMsg && <p className="text-[13px] text-red-400 pl-1">{resetMsg}</p>}
 
-            <p className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('login');
-                  setResetMsg('');
-                }}
-                className="text-sm text-white/70"
-              >
-                返回登录
-              </button>
-            </p>
-          </form>
-        )}
+              <SubmitButton disabled={resetDisabled} loading={loading} loadingText="提交中">
+                确认修改
+              </SubmitButton>
 
-        <p className="mt-6 text-center text-xs text-white/40">仅限内部人员使用</p>
+              <p className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('login');
+                    setResetMsg('');
+                  }}
+                  className="text-[13px] text-white/35 hover:text-white/70 transition-colors duration-200"
+                >
+                  返回登录
+                </button>
+              </p>
+            </form>
+          )}
+        </div>
+
+        <p className="mt-6 text-center text-[11px] tracking-wider text-white/20">
+          仅限内部人员使用
+        </p>
       </div>
     </div>
   );
