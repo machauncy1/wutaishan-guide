@@ -5,6 +5,7 @@ import { todayBJ, getLunarText, isLunarKeyDay, getShortDate, getWeekday } from '
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 import Loading from '../components/Loading';
+import { sourceActions, needsSource } from '../constants/availability';
 
 const guideActions = [
   { label: '未派', value: 'free' },
@@ -28,6 +29,17 @@ export default function GuideHome() {
     setAvailMutation.mutate({
       date: selectedDate,
       status: status as AvailabilityStatus,
+    });
+    setSelectedDate(null);
+  }
+
+  function handleSelectWithSource(status: string, source: string, sourceNote?: string) {
+    if (!selectedDate) return;
+    setAvailMutation.mutate({
+      date: selectedDate,
+      status: status as AvailabilityStatus,
+      source: source as BookingSource,
+      sourceNote,
     });
     setSelectedDate(null);
   }
@@ -79,7 +91,7 @@ export default function GuideHome() {
                     </span>
                     <span className="ml-2 text-sm text-gray-400">{weekday}</span>
                   </div>
-                  <StatusTag status={day.status} />
+                  <StatusTag status={day.status} source={day.source} sourceNote={day.sourceNote} />
                 </div>
               );
             })}
@@ -120,7 +132,11 @@ export default function GuideHome() {
                       </span>
                       <span className="ml-2 text-xs text-gray-400">{weekday}</span>
                     </div>
-                    <StatusTag status={day.status} />
+                    <StatusTag
+                      status={day.status}
+                      source={day.source}
+                      sourceNote={day.sourceNote}
+                    />
                   </div>
                 );
               })}
@@ -136,6 +152,9 @@ export default function GuideHome() {
         currentValue={days.find((d) => d.date === selectedDate)?.status}
         onSelect={handleSelect}
         onClose={() => setSelectedDate(null)}
+        sourceActions={sourceActions}
+        onSelectWithSource={handleSelectWithSource}
+        needsSource={needsSource}
       />
     </div>
   );

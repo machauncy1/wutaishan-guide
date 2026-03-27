@@ -66,7 +66,7 @@ const PasswordInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>
         onClick={() => setVisible(!visible)}
         className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
       >
-        {visible ? <EyeOffIcon /> : <EyeIcon />}
+        {!visible ? <EyeOffIcon /> : <EyeIcon />}
       </button>
     </div>
   );

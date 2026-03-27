@@ -108,6 +108,7 @@ interface TrustPoint {
 
 type UserRole = 'guide' | 'admin' | 'tourist';
 type AvailabilityStatus = 'free' | 'leave' | 'morning' | 'afternoon' | 'allday';
+type BookingSource = 'ctrip' | 'platform' | 'other';
 
 /** 用户账号（Identity Context，跨端通用） */
 interface User {
@@ -126,6 +127,8 @@ interface GuideAvailability {
   guideId: string; // → guides._id
   date: string; // "2026-03-25"
   status: AvailabilityStatus;
+  source?: BookingSource; // 派单平台，仅 morning/afternoon/allday 时有值
+  sourceNote?: string; // source='other' 时的自定义平台名称
   updatedBy?: string; // → users._id
   updatedAt: number;
 }

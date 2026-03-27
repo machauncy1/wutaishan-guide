@@ -18,8 +18,15 @@ async function findByDate(date) {
   return data;
 }
 
-async function upsert(guideId, date, status, updatedBy) {
+async function upsert(guideId, date, status, updatedBy, source, sourceNote) {
   const now = Date.now();
+  const record = {
+    status,
+    updatedBy,
+    updatedAt: now,
+    source: source || null,
+    sourceNote: sourceNote || null,
+  };
   const { data: existing } = await db
     .collection(COLLECTION)
     .where({ guideId, date })
@@ -27,12 +34,10 @@ async function upsert(guideId, date, status, updatedBy) {
     .get();
 
   if (existing.length > 0) {
-    await db.collection(COLLECTION).doc(existing[0]._id).update({
-      data: { status, updatedBy, updatedAt: now },
-    });
+    await db.collection(COLLECTION).doc(existing[0]._id).update({ data: record });
   } else {
     await db.collection(COLLECTION).add({
-      data: { guideId, date, status, updatedBy, updatedAt: now },
+      data: { guideId, date, ...record },
     });
   }
 }

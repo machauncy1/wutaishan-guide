@@ -30,8 +30,17 @@ export function useDailyGuides(date: string) {
 export function useSetAvailability() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ date, status }: { date: string; status: AvailabilityStatus }) =>
-      setAvailability(date, status),
+    mutationFn: ({
+      date,
+      status,
+      source,
+      sourceNote,
+    }: {
+      date: string;
+      status: AvailabilityStatus;
+      source?: BookingSource;
+      sourceNote?: string;
+    }) => setAvailability(date, status, source, sourceNote),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['my-availability'] });
     },
@@ -45,11 +54,15 @@ export function useUpdateGuideStatus() {
       guideId,
       date,
       status,
+      source,
+      sourceNote,
     }: {
       guideId: string;
       date: string;
       status: AvailabilityStatus;
-    }) => updateGuideStatus(guideId, date, status),
+      source?: BookingSource;
+      sourceNote?: string;
+    }) => updateGuideStatus(guideId, date, status, source, sourceNote),
     onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey: ['daily-guides', variables.date] });
     },

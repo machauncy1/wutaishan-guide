@@ -12,7 +12,7 @@ async function handleSetAvailability(user, body) {
   if (user.role !== 'guide') {
     return { success: false, errMsg: '仅导游可操作' };
   }
-  return availService.setAvailability(user, body.date, body.status);
+  return availService.setAvailability(user, body.date, body.status, body.source, body.sourceNote);
 }
 
 async function handleGetDailyGuides(user, query) {
@@ -26,7 +26,7 @@ async function handleUpdateGuideStatus(user, body) {
   if (user.role !== 'admin') {
     return { success: false, errMsg: '仅管理员可操作' };
   }
-  return availService.updateGuideStatus(user, body.guideId, body.date, body.status);
+  return availService.updateGuideStatus(user, body.guideId, body.date, body.status, body.source, body.sourceNote);
 }
 
 module.exports = {
