@@ -1,12 +1,30 @@
-import { useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { login, resetPassword } from '../services/authService';
+import { getSavedRole, isLoggedIn, login, resetPassword } from '../services/authService';
+
+// ── 类型定义 ──
+
+interface LoginForm {
+  phone: string;
+  password: string;
+}
+
+interface ResetForm {
+  phone: string;
+  oldPwd: string;
+  newPwd: string;
+}
+
+// ── 样式常量 ──
 
 const inputClass =
   'w-full h-12 px-4 rounded-xl text-[15px] text-white placeholder-white/50 ' +
   'outline-none transition-all duration-200 ' +
   'bg-[rgba(0,0,0,0.2)] border border-white/15 ' +
   'focus:border-blue-400/60 focus:bg-[rgba(0,0,0,0.25)]';
+
+// ── 子组件 ──
 
 function Spinner() {
   return (
@@ -20,6 +38,39 @@ function Spinner() {
     </svg>
   );
 }
+
+const EyeIcon = () => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+    <path d="M10.73 5.08A10 10 0 0 1 12 5c6.5 0 10 7 10 7a14 14 0 0 1-1.97 2.85" />
+    <path d="M6.61 6.61A14 14 0 0 0 2 12s3.5 7 10 7a10 10 0 0 0 4.42-1.03" />
+    <line x1="2" y1="2" x2="22" y2="22" />
+  </svg>
+);
+
+const PasswordInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>((props, ref) => {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="relative">
+      <input {...props} ref={ref} type={visible ? 'text' : 'password'} className={inputClass} />
+      <button
+        type="button"
+        tabIndex={-1}
+        onClick={() => setVisible(!visible)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+      >
+        {visible ? <EyeOffIcon /> : <EyeIcon />}
+      </button>
+    </div>
+  );
+});
 
 function SubmitButton({
   disabled,
@@ -35,8 +86,7 @@ function SubmitButton({
   return (
     <button
       type="submit"
-      disabled={disabled}
-      className="w-full h-12 rounded-xl text-[15px] font-semibold transition-all duration-200 disabled:cursor-not-allowed"
+      className="w-full h-12 rounded-xl text-[15px] font-semibold transition-all duration-200"
       style={{
         background: disabled ? 'rgba(255, 255, 255, 0.15)' : '#ffffff',
         color: disabled ? 'rgba(255,255,255,0.35)' : '#1e40af',
@@ -55,62 +105,9 @@ function SubmitButton({
   );
 }
 
-export default function Login() {
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [mode, setMode] = useState<'login' | 'reset'>('login');
-  const [oldPwd, setOldPwd] = useState('');
-  const [newPwd, setNewPwd] = useState('');
-  const [resetMsg, setResetMsg] = useState('');
-  const navigate = useNavigate();
-
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      const res = await login(phone, password);
-      if (res.success && res.data) {
-        navigate(res.data.role === 'admin' ? '/admin' : '/guide', { replace: true });
-      } else {
-        setError(res.errMsg || '登录失败');
-      }
-    } catch {
-      setError('网络错误，请重试');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleReset(e: React.FormEvent) {
-    e.preventDefault();
-    setResetMsg('');
-    setLoading(true);
-    try {
-      const res = await resetPassword(phone, oldPwd, newPwd);
-      if (res.success) {
-        setResetMsg('密码修改成功，请登录');
-        setMode('login');
-        setPassword('');
-        setOldPwd('');
-        setNewPwd('');
-      } else {
-        setResetMsg(res.errMsg || '修改失败');
-      }
-    } catch {
-      setResetMsg('网络错误，请重试');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const loginDisabled = loading || phone.length !== 11 || password.length === 0;
-  const resetDisabled = loading || phone.length !== 11 || oldPwd.length === 0 || newPwd.length < 4;
-
+function LoginBackground() {
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <>
       {/* 深蓝渐变背景 */}
       <div
         className="absolute inset-0"
@@ -126,11 +123,11 @@ export default function Login() {
         preserveAspectRatio="xMidYMid slice"
       >
         <style>{`
-          @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-          .orbit { animation: spin 60s linear infinite; transform-origin: 400px 400px; }
-          .orbit-rev { animation: spin 80s linear infinite reverse; transform-origin: 400px 400px; }
+          @keyframes login-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          .login-orbit { animation: login-spin 60s linear infinite; transform-origin: 400px 400px; }
+          .login-orbit-rev { animation: login-spin 80s linear infinite reverse; transform-origin: 400px 400px; }
         `}</style>
-        <g className="orbit">
+        <g className="login-orbit">
           <ellipse cx="400" cy="400" rx="350" ry="150" fill="none" stroke="#fff" strokeWidth="1" />
           <ellipse
             cx="400"
@@ -151,7 +148,7 @@ export default function Login() {
             strokeWidth="0.6"
           />
         </g>
-        <g className="orbit-rev">
+        <g className="login-orbit-rev">
           <ellipse
             cx="400"
             cy="400"
@@ -193,6 +190,69 @@ export default function Login() {
           left: '-5%',
         }}
       />
+    </>
+  );
+}
+
+// ── 主组件 ──
+
+export default function Login() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [mode, setMode] = useState<'login' | 'reset'>('login');
+  const [resetMsg, setResetMsg] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      const role = getSavedRole();
+      navigate(role === 'admin' ? '/admin' : '/guide', { replace: true });
+    }
+  }, [navigate]);
+
+  const loginForm = useForm<LoginForm>({ mode: 'onChange' });
+  const resetForm = useForm<ResetForm>({ mode: 'onChange' });
+
+  async function handleLogin(data: LoginForm) {
+    setError('');
+    setLoading(true);
+    try {
+      const res = await login(data.phone, data.password);
+      if (res.success && res.data) {
+        navigate(res.data.role === 'admin' ? '/admin' : '/guide', { replace: true });
+      } else {
+        setError(res.errMsg || '登录失败');
+      }
+    } catch {
+      setError('网络错误，请重试');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleReset(data: ResetForm) {
+    setResetMsg('');
+    setLoading(true);
+    try {
+      const res = await resetPassword(data.phone, data.oldPwd, data.newPwd);
+      if (res.success) {
+        setResetMsg('密码修改成功，请登录');
+        setMode('login');
+        loginForm.reset();
+        resetForm.reset();
+      } else {
+        setResetMsg(res.errMsg || '修改失败');
+      }
+    } catch {
+      setResetMsg('网络错误，请重试');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <LoginBackground />
 
       {/* 卡片区域 */}
       <div className="relative z-10 w-full max-w-[380px] mx-4 pt-12">
@@ -221,36 +281,53 @@ export default function Login() {
           }}
         >
           <div className="text-center mb-8">
-            <h1 className="text-[22px] font-semibold tracking-wide text-white">新世纪导游调度</h1>
+            <h1 className="text-[22px] font-semibold tracking-wide text-white">
+              新世纪导游调度系统
+            </h1>
             <p className="mt-1.5 text-xs tracking-widest text-white/40">NCTS DISPATCH SYSTEM</p>
           </div>
 
           {mode === 'login' ? (
-            <form onSubmit={handleLogin} className="space-y-3.5">
+            <form
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  loginForm.handleSubmit(handleLogin)();
+                }
+              }}
+              onSubmit={loginForm.handleSubmit(handleLogin)}
+              className="space-y-3.5"
+            >
               <div className="space-y-3">
                 <input
                   type="tel"
                   inputMode="numeric"
                   maxLength={11}
+                  autoComplete="tel"
                   placeholder="手机号"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  {...loginForm.register('phone', {
+                    required: true,
+                    minLength: 11,
+                    maxLength: 11,
+                  })}
                   className={inputClass}
                 />
-                <input
-                  type="password"
+                <PasswordInput
                   maxLength={20}
+                  autoComplete="current-password"
                   placeholder="密码"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={inputClass}
+                  {...loginForm.register('password', { required: true })}
                 />
               </div>
 
               {error && <p className="text-[13px] text-red-400 pl-1">{error}</p>}
               {resetMsg && <p className="text-[13px] text-emerald-400 pl-1">{resetMsg}</p>}
 
-              <SubmitButton disabled={loginDisabled} loading={loading} loadingText="登录中">
+              <SubmitButton
+                disabled={!loginForm.formState.isValid || loading}
+                loading={loading}
+                loadingText="登录中"
+              >
                 登录
               </SubmitButton>
 
@@ -269,38 +346,55 @@ export default function Login() {
               </p>
             </form>
           ) : (
-            <form onSubmit={handleReset} className="space-y-3.5">
+            <form
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  resetForm.handleSubmit(handleReset)();
+                }
+              }}
+              onSubmit={resetForm.handleSubmit(handleReset)}
+              className="space-y-3.5"
+            >
               <div className="space-y-3">
                 <input
                   type="tel"
                   inputMode="numeric"
                   maxLength={11}
+                  autoComplete="tel"
                   placeholder="手机号"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  {...resetForm.register('phone', {
+                    required: true,
+                    minLength: 11,
+                    maxLength: 11,
+                  })}
                   className={inputClass}
                 />
                 <input
                   type="password"
                   maxLength={20}
+                  autoComplete="current-password"
                   placeholder="原密码"
-                  value={oldPwd}
-                  onChange={(e) => setOldPwd(e.target.value)}
+                  {...resetForm.register('oldPwd', { required: true })}
                   className={inputClass}
                 />
                 <input
                   type="password"
                   maxLength={20}
+                  autoComplete="new-password"
                   placeholder="新密码（至少4位）"
-                  value={newPwd}
-                  onChange={(e) => setNewPwd(e.target.value)}
+                  {...resetForm.register('newPwd', { required: true, minLength: 4 })}
                   className={inputClass}
                 />
               </div>
 
               {resetMsg && <p className="text-[13px] text-red-400 pl-1">{resetMsg}</p>}
 
-              <SubmitButton disabled={resetDisabled} loading={loading} loadingText="提交中">
+              <SubmitButton
+                disabled={!resetForm.formState.isValid || loading}
+                loading={loading}
+                loadingText="提交中"
+              >
                 确认修改
               </SubmitButton>
 

@@ -69,23 +69,21 @@ export default function AdminHome() {
   const leave = guides.filter((g) => g.status === 'leave').length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div
-        className="text-white px-4 py-4 flex items-center justify-between"
-        style={{ background: '#1890ff' }}
-      >
-        <h1 className="text-lg font-semibold">导游可用总览</h1>
-        <button onClick={logout} className="text-sm text-blue-200 active:text-white">
-          {name} | 退出
-        </button>
-      </div>
+      <div className="text-white px-5 pt-5 pb-6" style={{ background: '#1a6fc4' }}>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-lg font-semibold tracking-wide">导游可用总览</h1>
+          <button onClick={logout} className="text-sm text-white/50 active:text-white/80">
+            {name} | 退出
+          </button>
+        </div>
 
-      {/* Date selector */}
-      <div className="px-4 pt-4 pb-2">
+        {/* 日期选择 */}
         <div className="flex gap-2">
           {quickDates.map((qd) => {
             const d = offsetDateBJ(qd.offset);
+            const active = date === d && !customDate;
             return (
               <button
                 key={qd.offset}
@@ -93,12 +91,9 @@ export default function AdminHome() {
                   setDate(d);
                   setCustomDate(false);
                 }}
-                className="flex-1 py-2 rounded-lg text-sm font-medium"
-                style={
-                  date === d && !customDate
-                    ? { background: '#1890ff', color: '#fff' }
-                    : { background: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }
-                }
+                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  active ? 'bg-white text-blue-900' : 'bg-white/10 text-white/70 active:bg-white/20'
+                }`}
               >
                 {qd.label}
               </button>
@@ -106,12 +101,9 @@ export default function AdminHome() {
           })}
           <button
             onClick={() => setCustomDate(true)}
-            className="flex-1 py-2 rounded-lg text-sm font-medium"
-            style={
-              customDate
-                ? { background: '#1890ff', color: '#fff' }
-                : { background: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }
-            }
+            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+              customDate ? 'bg-white text-blue-900' : 'bg-white/10 text-white/70 active:bg-white/20'
+            }`}
           >
             自选
           </button>
@@ -122,13 +114,13 @@ export default function AdminHome() {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="mt-2 w-full px-3 py-2 rounded-lg border border-gray-300 text-sm"
+            className="mt-3 w-full px-3 py-2 rounded-lg bg-white/10 text-white text-sm border border-white/15 outline-none"
           />
         )}
       </div>
 
-      {/* Lunar + Stats */}
-      <div className="px-4 pt-2 pb-1">
+      {/* 农历 + 统计 */}
+      <div className="px-5 pt-4 pb-1">
         <span
           className={`text-sm ${isLunarKeyDay(date) ? 'text-red-500 font-medium' : 'text-gray-400'}`}
         >
@@ -136,25 +128,25 @@ export default function AdminHome() {
           {isLunarKeyDay(date) && ' (佛教重要日)'}
         </span>
       </div>
-      <div className="px-4 py-1 flex gap-4 text-sm text-gray-500">
+      <div className="px-5 py-1 flex gap-4 text-sm text-gray-500">
         <span>共 {guides.length} 人</span>
         <span className="text-green-600">未派 {free}</span>
         <span className="text-blue-600">已派 {assigned}</span>
         <span className="text-gray-400">请假 {leave}</span>
       </div>
 
-      {/* Guide list */}
-      <div className="px-4 pb-4">
+      {/* 导游列表 */}
+      <div className="px-4 py-3">
         {isLoading ? (
           <Loading />
         ) : guides.length === 0 ? (
           <p className="text-center text-gray-400 py-8">暂无导游数据</p>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {guides.map((guide) => (
               <div
                 key={guide.guideId}
-                className="flex items-center justify-between bg-white rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50"
+                className="flex items-center justify-between bg-white rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50 border border-gray-100"
                 onClick={() => setSelectedGuide(guide)}
               >
                 <div>

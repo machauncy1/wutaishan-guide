@@ -41,7 +41,12 @@
       "Bash(/Users/chauncy/.nvm/versions/node/v20.19.4/bin/npm uninstall:*)",
       "Bash(pnpm lint:*)",
       "Bash(ls -d /Users/macheng/Projects/machauncy1/wutaishan-guide/*/package.json)",
-      "Bash(python3 -c \"from PIL import Image; print\\(''pillow ok''\\)\")"
+      "Bash(python3 -c \"from PIL import Image; print\\(''pillow ok''\\)\")",
+      "Bash(xxd)",
+      "Bash(printf '\\\\n')",
+      "Bash(pnpm --filter wutaishan-guide-web add react-hook-form)",
+      "Bash(export PATH=/Users/chauncy/.nvm/versions/node/v24.14.0/bin:$PATH)",
+      "Bash(pnpm lint:fix -- --no-warn-ignored)"
     ],
     "deny": [
       "Bash(rm -rf *)",
