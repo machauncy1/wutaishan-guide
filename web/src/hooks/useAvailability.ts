@@ -4,7 +4,9 @@ import {
   setAvailability,
   getDailyGuides,
   updateGuideStatus,
+  getSourceOptions,
 } from '../services/availService';
+
 export function useMyAvailability() {
   return useQuery({
     queryKey: ['my-availability'],
@@ -27,6 +29,18 @@ export function useDailyGuides(date: string) {
   });
 }
 
+export function useSourceOptions() {
+  return useQuery({
+    queryKey: ['source-options'],
+    queryFn: async () => {
+      const res = await getSourceOptions();
+      if (res.success && res.data) return res.data;
+      throw new Error(res.errMsg || '获取失败');
+    },
+    staleTime: 5 * 60 * 1000, // 5 分钟内不重新请求
+  });
+}
+
 export function useSetAvailability() {
   const qc = useQueryClient();
   return useMutation({
@@ -34,13 +48,11 @@ export function useSetAvailability() {
       date,
       status,
       source,
-      sourceNote,
     }: {
       date: string;
       status: AvailabilityStatus;
-      source?: BookingSource;
-      sourceNote?: string;
-    }) => setAvailability(date, status, source, sourceNote),
+      source?: string;
+    }) => setAvailability(date, status, source),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['my-availability'] });
     },
@@ -55,14 +67,12 @@ export function useUpdateGuideStatus() {
       date,
       status,
       source,
-      sourceNote,
     }: {
       guideId: string;
       date: string;
       status: AvailabilityStatus;
-      source?: BookingSource;
-      sourceNote?: string;
-    }) => updateGuideStatus(guideId, date, status, source, sourceNote),
+      source?: string;
+    }) => updateGuideStatus(guideId, date, status, source),
     onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey: ['daily-guides', variables.date] });
     },

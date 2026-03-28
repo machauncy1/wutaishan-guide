@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useDailyGuides, useUpdateGuideStatus } from '../hooks/useAvailability';
+import { useDailyGuides, useUpdateGuideStatus, useSourceOptions } from '../hooks/useAvailability';
 import { logout } from '../services/authService';
 import {
   todayBJ,
@@ -13,7 +13,7 @@ import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 import Loading from '../components/Loading';
 import type { GuideDay } from '../services/availService';
-import { sourceActions, needsSource } from '../constants/availability';
+import { needsSource } from '../constants/availability';
 
 const quickDates = [
   { label: '今天', offset: 0 },
@@ -44,6 +44,7 @@ export default function AdminHome() {
   const name = localStorage.getItem('avail_name') || '管理员';
 
   const { data: rawGuides, isLoading } = useDailyGuides(date);
+  const { data: sourceOptions = [] } = useSourceOptions();
   const updateMutation = useUpdateGuideStatus();
 
   const guides = useMemo(() => {
@@ -63,14 +64,13 @@ export default function AdminHome() {
     setSelectedGuide(null);
   }
 
-  function handleSelectWithSource(status: string, source: string, sourceNote?: string) {
+  function handleSelectWithSource(status: string, source: string) {
     if (!selectedGuide) return;
     updateMutation.mutate({
       guideId: selectedGuide.guideId,
       date,
       status: status as AvailabilityStatus,
-      source: source as BookingSource,
-      sourceNote,
+      source,
     });
     setSelectedGuide(null);
   }
@@ -166,11 +166,7 @@ export default function AdminHome() {
                   <span className="text-base font-medium text-gray-800">{guide.name}</span>
                   <span className="ml-2 text-xs text-gray-400">{guide.phone}</span>
                 </div>
-                <StatusTag
-                  status={guide.status}
-                  source={guide.source}
-                  sourceNote={guide.sourceNote}
-                />
+                <StatusTag status={guide.status} source={guide.source} />
               </div>
             ))}
           </div>
@@ -184,7 +180,7 @@ export default function AdminHome() {
         currentValue={selectedGuide?.status}
         onSelect={handleSelect}
         onClose={() => setSelectedGuide(null)}
-        sourceActions={sourceActions}
+        sourceOptions={sourceOptions}
         onSelectWithSource={handleSelectWithSource}
         needsSource={needsSource}
       />

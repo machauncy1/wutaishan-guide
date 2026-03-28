@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useMyAvailability, useSetAvailability } from '../hooks/useAvailability';
+import { useMyAvailability, useSetAvailability, useSourceOptions } from '../hooks/useAvailability';
 import { logout } from '../services/authService';
 import { todayBJ, getLunarText, isLunarKeyDay, getShortDate, getWeekday } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
 import Loading from '../components/Loading';
-import { sourceActions, needsSource } from '../constants/availability';
+import { needsSource } from '../constants/availability';
 
 const guideActions = [
   { label: '未派', value: 'free' },
@@ -22,24 +22,21 @@ export default function GuideHome() {
   const today = todayBJ();
 
   const { data: days = [], isLoading } = useMyAvailability();
+  const { data: sourceOptions = [] } = useSourceOptions();
   const setAvailMutation = useSetAvailability();
 
   function handleSelect(status: string) {
     if (!selectedDate) return;
-    setAvailMutation.mutate({
-      date: selectedDate,
-      status: status as AvailabilityStatus,
-    });
+    setAvailMutation.mutate({ date: selectedDate, status: status as AvailabilityStatus });
     setSelectedDate(null);
   }
 
-  function handleSelectWithSource(status: string, source: string, sourceNote?: string) {
+  function handleSelectWithSource(status: string, source: string) {
     if (!selectedDate) return;
     setAvailMutation.mutate({
       date: selectedDate,
       status: status as AvailabilityStatus,
-      source: source as BookingSource,
-      sourceNote,
+      source,
     });
     setSelectedDate(null);
   }
@@ -91,7 +88,7 @@ export default function GuideHome() {
                     </span>
                     <span className="ml-2 text-sm text-gray-400">{weekday}</span>
                   </div>
-                  <StatusTag status={day.status} source={day.source} sourceNote={day.sourceNote} />
+                  <StatusTag status={day.status} source={day.source} />
                 </div>
               );
             })}
@@ -132,11 +129,7 @@ export default function GuideHome() {
                       </span>
                       <span className="ml-2 text-xs text-gray-400">{weekday}</span>
                     </div>
-                    <StatusTag
-                      status={day.status}
-                      source={day.source}
-                      sourceNote={day.sourceNote}
-                    />
+                    <StatusTag status={day.status} source={day.source} />
                   </div>
                 );
               })}
@@ -152,7 +145,7 @@ export default function GuideHome() {
         currentValue={days.find((d) => d.date === selectedDate)?.status}
         onSelect={handleSelect}
         onClose={() => setSelectedDate(null)}
-        sourceActions={sourceActions}
+        sourceOptions={sourceOptions}
         onSelectWithSource={handleSelectWithSource}
         needsSource={needsSource}
       />

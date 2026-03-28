@@ -18,15 +18,9 @@ async function findByDate(date) {
   return data;
 }
 
-async function upsert(guideId, date, status, updatedBy, source, sourceNote) {
+async function upsert(guideId, date, status, updatedBy, source) {
   const now = Date.now();
-  const record = {
-    status,
-    updatedBy,
-    updatedAt: now,
-    source: source || null,
-    sourceNote: sourceNote || null,
-  };
+  const record = { status, updatedBy, updatedAt: now, source: source || null };
   const { data: existing } = await db
     .collection(COLLECTION)
     .where({ guideId, date })

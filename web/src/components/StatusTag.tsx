@@ -6,26 +6,18 @@ const statusConfig: Record<AvailabilityStatus, { label: string; className: strin
   allday: { label: '全天已派', className: 'bg-orange-100 text-orange-700' },
 };
 
-const sourceLabels: Partial<Record<BookingSource, string>> = {
-  ctrip: '携程',
-  platform: '平台',
-};
-
 export default function StatusTag({
   status,
   source,
-  sourceNote,
 }: {
   status: AvailabilityStatus;
-  source?: BookingSource | null;
-  sourceNote?: string | null;
+  source?: string | null;
 }) {
   const config = statusConfig[status] || statusConfig.free;
-  const sourceLabel = source === 'other' ? sourceNote : source ? sourceLabels[source] : null;
   return (
     <span className={`inline-block rounded-full px-3 py-1 text-sm font-medium ${config.className}`}>
       {config.label}
-      {sourceLabel && <span className="opacity-60 font-normal"> · {sourceLabel}</span>}
+      {source && <span className="opacity-60 font-normal"> · {source}</span>}
     </span>
   );
 }

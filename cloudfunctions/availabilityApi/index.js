@@ -5,6 +5,7 @@ const {
   handleSetAvailability,
   handleGetDailyGuides,
   handleUpdateGuideStatus,
+  handleGetSourceOptions,
 } = require('./handlers/availability');
 
 // Route definitions: [method, path, handler, requiresAuth]
@@ -16,6 +17,7 @@ const routes = [
   ['POST', '/set-availability', handleSetAvailability, true],
   ['GET', '/daily-guides', handleGetDailyGuides, true],
   ['POST', '/update-status', handleUpdateGuideStatus, true],
+  ['GET', '/source-options', handleGetSourceOptions, true],
 ];
 
 function parseBody(event) {

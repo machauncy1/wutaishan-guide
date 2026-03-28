@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 export interface Action {
   label: string;
   value: string;
-  disabled?: boolean;
 }
 
 interface ActionSheetProps {
@@ -14,8 +13,8 @@ interface ActionSheetProps {
   onSelect: (value: string) => void;
   onClose: () => void;
   // 两步选择：选择已派状态后，继续选择平台
-  sourceActions?: Action[];
-  onSelectWithSource?: (status: string, source: string, sourceNote?: string) => void;
+  sourceOptions?: string[];
+  onSelectWithSource?: (status: string, source: string) => void;
   needsSource?: (value: string) => boolean;
 }
 
@@ -26,7 +25,7 @@ export default function ActionSheet({
   currentValue,
   onSelect,
   onClose,
-  sourceActions,
+  sourceOptions,
   onSelectWithSource,
   needsSource,
 }: ActionSheetProps) {
@@ -51,10 +50,10 @@ export default function ActionSheet({
 
   if (!visible) return null;
 
-  const showingSource = pendingStatus !== null && sourceActions;
+  const showingSource = pendingStatus !== null && sourceOptions;
 
   function handleStatusClick(value: string) {
-    if (sourceActions && needsSource?.(value)) {
+    if (sourceOptions && needsSource?.(value)) {
       setPendingStatus(value);
     } else {
       onSelect(value);
@@ -63,16 +62,12 @@ export default function ActionSheet({
 
   function handleSourceClick(source: string) {
     if (!pendingStatus || !onSelectWithSource) return;
-    if (source === 'other') {
-      setShowOtherInput(true);
-      return;
-    }
     onSelectWithSource(pendingStatus, source);
   }
 
   function handleOtherConfirm() {
     if (!pendingStatus || !onSelectWithSource || !otherText.trim()) return;
-    onSelectWithSource(pendingStatus, 'other', otherText.trim());
+    onSelectWithSource(pendingStatus, otherText.trim());
   }
 
   function handleBack() {
@@ -120,18 +115,23 @@ export default function ActionSheet({
             </button>
           </div>
         ) : showingSource ? (
-          sourceActions.map((action) => (
+          <>
+            {sourceOptions.map((label) => (
+              <button
+                key={label}
+                className="w-full px-4 py-3.5 text-center text-base border-b border-gray-100 last:border-b-0 active:bg-gray-50"
+                onClick={() => handleSourceClick(label)}
+              >
+                {label}
+              </button>
+            ))}
             <button
-              key={action.value}
-              disabled={action.disabled}
-              className={`w-full px-4 py-3.5 text-center text-base border-b border-gray-100 last:border-b-0 ${
-                action.disabled ? 'text-gray-300' : 'active:bg-gray-50'
-              }`}
-              onClick={() => handleSourceClick(action.value)}
+              className="w-full px-4 py-3.5 text-center text-base border-b border-gray-100 active:bg-gray-50"
+              onClick={() => setShowOtherInput(true)}
             >
-              {action.label}
+              其他
             </button>
-          ))
+          </>
         ) : (
           actions.map((action) => {
             const isCurrent = action.value === currentValue;
