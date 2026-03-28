@@ -46,7 +46,8 @@
       "Bash(printf '\\\\n')",
       "Bash(pnpm --filter wutaishan-guide-web add react-hook-form)",
       "Bash(export PATH=/Users/chauncy/.nvm/versions/node/v24.14.0/bin:$PATH)",
-      "Bash(pnpm lint:fix -- --no-warn-ignored)"
+      "Bash(pnpm lint:fix -- --no-warn-ignored)",
+      "Bash(pnpm web:build)"
     ],
     "deny": [
       "Bash(rm -rf *)",
