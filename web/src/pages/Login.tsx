@@ -118,26 +118,36 @@ function LoginBackground() {
 
       {/* 经纬线动画 */}
       <svg
-        className="absolute inset-0 w-full h-full opacity-[0.06]"
+        className="absolute inset-0 w-full h-full opacity-[0.12]"
         viewBox="0 0 800 800"
         preserveAspectRatio="xMidYMid slice"
       >
         <style>{`
           @keyframes login-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-          .login-orbit { animation: login-spin 60s linear infinite; transform-origin: 400px 400px; }
-          .login-orbit-rev { animation: login-spin 80s linear infinite reverse; transform-origin: 400px 400px; }
+          .login-orbit { animation: login-spin 45s linear infinite; transform-origin: 400px 400px; }
+          .login-orbit-rev { animation: login-spin 60s linear infinite reverse; transform-origin: 400px 400px; }
+          @keyframes login-drift-a {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -20px); }
+          }
+          @keyframes login-drift-b {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-25px, 15px); }
+          }
+          .login-glow-a { animation: login-drift-a 12s ease-in-out infinite; }
+          .login-glow-b { animation: login-drift-b 15s ease-in-out infinite; }
         `}</style>
         <g className="login-orbit">
-          <ellipse cx="400" cy="400" rx="350" ry="150" fill="none" stroke="#fff" strokeWidth="1" />
           <ellipse
             cx="400"
             cy="400"
-            rx="300"
-            ry="200"
+            rx="350"
+            ry="150"
             fill="none"
             stroke="#fff"
-            strokeWidth="0.8"
+            strokeWidth="1.2"
           />
+          <ellipse cx="400" cy="400" rx="300" ry="200" fill="none" stroke="#fff" strokeWidth="1" />
           <ellipse
             cx="400"
             cy="400"
@@ -145,7 +155,7 @@ function LoginBackground() {
             ry="300"
             fill="none"
             stroke="#fff"
-            strokeWidth="0.6"
+            strokeWidth="0.8"
           />
         </g>
         <g className="login-orbit-rev">
@@ -156,7 +166,7 @@ function LoginBackground() {
             ry="180"
             fill="none"
             stroke="#fff"
-            strokeWidth="0.5"
+            strokeWidth="0.6"
             transform="rotate(60 400 400)"
           />
           <ellipse
@@ -166,27 +176,27 @@ function LoginBackground() {
             ry="120"
             fill="none"
             stroke="#fff"
-            strokeWidth="0.5"
+            strokeWidth="0.6"
             transform="rotate(-30 400 400)"
           />
         </g>
-        <circle cx="400" cy="400" r="360" fill="none" stroke="#fff" strokeWidth="0.4" />
+        <circle cx="400" cy="400" r="360" fill="none" stroke="#fff" strokeWidth="0.5" />
       </svg>
 
-      {/* 光晕 */}
+      {/* 光晕 - 缓慢漂移 */}
       <div
-        className="absolute w-[500px] h-[500px] rounded-full opacity-20 blur-[120px]"
+        className="absolute w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] rounded-full opacity-25 blur-[100px] login-glow-a"
         style={{
           background: 'radial-gradient(circle, #3b82f6 0%, transparent 70%)',
-          top: '-10%',
-          right: '-10%',
+          top: '5%',
+          right: '-5%',
         }}
       />
       <div
-        className="absolute w-[400px] h-[400px] rounded-full opacity-15 blur-[100px]"
+        className="absolute w-[50vw] h-[50vw] max-w-[400px] max-h-[400px] rounded-full opacity-20 blur-[80px] login-glow-b"
         style={{
           background: 'radial-gradient(circle, #60a5fa 0%, transparent 70%)',
-          bottom: '-5%',
+          bottom: '10%',
           left: '-5%',
         }}
       />
