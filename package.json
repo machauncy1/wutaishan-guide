@@ -11,7 +11,7 @@
     "dev:api": "tsx scripts/dev-server.ts",
     "web:dev": "pnpm --filter wutaishan-guide-web dev",
     "web:build": "pnpm --filter wutaishan-guide-web build",
-    "web:deploy": "pnpm web:build && cp web/dist/index.html web/dist/404.html && wrangler pages deploy web/dist --project-name=wutaishan-guide",
+    "web:deploy": "pnpm web:build && cp web/dist/index.html web/dist/404.html && wrangler pages deploy web/dist --project-name=ncts-dispatch --commit-dirty=true",
     "prepare": "husky"
   },
   "keywords": [],

@@ -49,7 +49,8 @@
       "Bash(pnpm lint:fix -- --no-warn-ignored)",
       "Bash(pnpm web:build)",
       "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide -type f -name *.env* -o -name deploy* -o -name *deploy*)",
-      "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide -maxdepth 4 ! -path */node_modules/* -type f -name Makefile -o -name docker* -o -name *.sh)"
+      "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide -maxdepth 4 ! -path */node_modules/* -type f -name Makefile -o -name docker* -o -name *.sh)",
+      "Bash(wrangler pages:*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
