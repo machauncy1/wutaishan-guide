@@ -47,7 +47,9 @@
       "Bash(pnpm --filter wutaishan-guide-web add react-hook-form)",
       "Bash(export PATH=/Users/chauncy/.nvm/versions/node/v24.14.0/bin:$PATH)",
       "Bash(pnpm lint:fix -- --no-warn-ignored)",
-      "Bash(pnpm web:build)"
+      "Bash(pnpm web:build)",
+      "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide -type f -name *.env* -o -name deploy* -o -name *deploy*)",
+      "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide -maxdepth 4 ! -path */node_modules/* -type f -name Makefile -o -name docker* -o -name *.sh)"
     ],
     "deny": [
       "Bash(rm -rf *)",
