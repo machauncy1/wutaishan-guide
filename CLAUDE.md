@@ -14,7 +14,7 @@ pnpm seed:force           # 强制重置数据库
 pnpm dev:api              # 本地 API 服务器 (localhost:3000)
 pnpm web:dev              # Vite 开发服务器 (localhost:5173)
 pnpm web:build            # 生产构建
-pnpm web:deploy           # 构建并部署到腾讯云托管
+pnpm web:deploy           # 构建并部署到 Cloudflare Pages
 ```
 
 ## Architecture
