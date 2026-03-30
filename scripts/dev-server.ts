@@ -21,7 +21,11 @@ const db = app.database();
 const _ = db.command;
 
 const SESSION_TTL_MS = 90 * 24 * 60 * 60 * 1000;
-const VALID_STATUSES = ['free', 'leave', 'morning', 'afternoon', 'allday'];
+const VALID_DAY_STATUSES = ['free', 'leave'];
+const VALID_PERIOD_STATUSES = ['free', 'dispatched'];
+const MAX_SOURCE_LEN = 20;
+
+const FREE_PERIOD = { status: 'free' };
 
 function json(res: ServerResponse, code: number, data: unknown) {
   res.writeHead(code, {
@@ -70,6 +74,81 @@ function dateRange(days: number): string[] {
   return r;
 }
 
+/** 将旧格式记录转换为新格式（兼容已有数据） */
+function normalizeRecord(r: any) {
+  if (r.dayStatus !== undefined) {
+    return {
+      dayStatus: r.dayStatus,
+      morning: r.morning || FREE_PERIOD,
+      afternoon: r.afternoon || FREE_PERIOD,
+    };
+  }
+  const source = r.source || undefined;
+  switch (r.status) {
+    case 'leave':
+      return { dayStatus: 'leave', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
+    case 'morning':
+      return {
+        dayStatus: 'free',
+        morning: { status: 'dispatched', source },
+        afternoon: FREE_PERIOD,
+      };
+    case 'afternoon':
+      return {
+        dayStatus: 'free',
+        morning: FREE_PERIOD,
+        afternoon: { status: 'dispatched', source },
+      };
+    case 'allday':
+      return {
+        dayStatus: 'free',
+        morning: { status: 'dispatched', source },
+        afternoon: { status: 'dispatched', source },
+      };
+    default:
+      return { dayStatus: 'free', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
+  }
+}
+
+/** 根据新格式计算冗余旧字段（回滚兼容） */
+function toLegacyFields(
+  dayStatus: string,
+  morning: { status: string; source?: string },
+  afternoon: { status: string; source?: string },
+) {
+  if (dayStatus === 'leave') return { status: 'leave', source: null };
+  const mDisp = morning.status === 'dispatched';
+  const aDisp = afternoon.status === 'dispatched';
+  if (mDisp && aDisp) {
+    const src =
+      morning.source === afternoon.source
+        ? morning.source
+        : `${morning.source}/${afternoon.source}`;
+    return { status: 'allday', source: src };
+  }
+  if (mDisp) return { status: 'morning', source: morning.source || null };
+  if (aDisp) return { status: 'afternoon', source: afternoon.source || null };
+  return { status: 'free', source: null };
+}
+
+/** 校验时段 */
+function validatePeriod(period: any): string | null {
+  if (!period) return null;
+  if (!VALID_PERIOD_STATUSES.includes(period.status)) return '无效时段状态';
+  if (period.status === 'dispatched') {
+    const src = typeof period.source === 'string' ? period.source.trim() : '';
+    if (!src) return '请选择派单平台';
+    if (src.length > MAX_SOURCE_LEN) return `平台名称不超过${MAX_SOURCE_LEN}字`;
+  }
+  return null;
+}
+
+function normalizePeriod(period: any) {
+  if (!period) return undefined;
+  if (period.status === 'free') return { status: 'free' };
+  return { status: 'dispatched', source: period.source.trim() };
+}
+
 async function auth(t: string) {
   if (!t) return null;
   try {
@@ -81,6 +160,21 @@ async function auth(t: string) {
     return u || null;
   } catch {
     return null;
+  }
+}
+
+async function upsertAvailability(guideId: string, date: string, fields: any, updatedBy: string) {
+  const now = Date.now();
+  const record = { ...fields, updatedBy, updatedAt: now };
+  const { data: ex } = await db
+    .collection('guide_availability')
+    .where({ guideId, date })
+    .limit(1)
+    .get();
+  if (ex.length > 0) {
+    await db.collection('guide_availability').doc(ex[0]._id).update(record);
+  } else {
+    await db.collection('guide_availability').add({ guideId, date, ...record });
   }
 }
 
@@ -185,13 +279,17 @@ const server = createServer(async (req, res) => {
       const dates = dateRange(30);
       const { data: records } = await db
         .collection('guide_availability')
-        .where({ guideId: user.guideId, date: _.gte(dates[0]).and(_.lte(dates[6])) })
+        .where({ guideId: user.guideId, date: _.gte(dates[0]).and(_.lte(dates[dates.length - 1])) })
         .get();
-      const m: Record<string, string> = {};
-      for (const r of records) m[r.date] = r.status;
+      const recordMap: Record<string, any> = {};
+      for (const r of records) recordMap[r.date] = normalizeRecord(r);
       json(res, 200, {
         success: true,
-        data: dates.map((d) => ({ date: d, status: m[d] || 'free' })),
+        data: dates.map((d) => {
+          const entry = recordMap[d];
+          if (entry) return { date: d, ...entry };
+          return { date: d, dayStatus: 'free', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
+        }),
       });
       return;
     }
@@ -202,30 +300,46 @@ const server = createServer(async (req, res) => {
         json(res, 400, { success: false, errMsg: '仅导游可操作' });
         return;
       }
-      const { date, status } = await readBody(req);
+      const body = await readBody(req);
+      const { date, dayStatus, morning, afternoon } = body;
       if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
         json(res, 400, { success: false, errMsg: '无效日期' });
         return;
       }
-      if (!VALID_STATUSES.includes(status)) {
-        json(res, 400, { success: false, errMsg: '无效状态' });
+      if (dayStatus !== undefined && !VALID_DAY_STATUSES.includes(dayStatus)) {
+        json(res, 400, { success: false, errMsg: '无效日状态' });
         return;
       }
-      const { data: ex } = await db
-        .collection('guide_availability')
-        .where({ guideId: user.guideId, date })
-        .limit(1)
-        .get();
-      const now = Date.now();
-      if (ex.length > 0)
-        await db
-          .collection('guide_availability')
-          .doc(ex[0]._id)
-          .update({ status, updatedBy: user._id, updatedAt: now });
-      else
-        await db
-          .collection('guide_availability')
-          .add({ guideId: user.guideId, date, status, updatedBy: user._id, updatedAt: now });
+      for (const [label, period] of [
+        ['上午', morning],
+        ['下午', afternoon],
+      ] as const) {
+        const err = validatePeriod(period);
+        if (err) {
+          json(res, 400, { success: false, errMsg: `${label}: ${err}` });
+          return;
+        }
+      }
+
+      const finalDayStatus = dayStatus || 'free';
+      const finalMorning =
+        finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(morning) || FREE_PERIOD;
+      const finalAfternoon =
+        finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(afternoon) || FREE_PERIOD;
+      const legacy = toLegacyFields(finalDayStatus, finalMorning, finalAfternoon);
+
+      await upsertAvailability(
+        user.guideId,
+        date,
+        {
+          dayStatus: finalDayStatus,
+          morning: finalMorning,
+          afternoon: finalAfternoon,
+          status: legacy.status,
+          source: legacy.source,
+        },
+        user._id,
+      );
       json(res, 200, { success: true });
       return;
     }
@@ -248,17 +362,22 @@ const server = createServer(async (req, res) => {
         .limit(100)
         .get();
       const { data: records } = await db.collection('guide_availability').where({ date }).get();
-      const m: Record<string, string> = {};
-      for (const r of records) m[r.guideId] = r.status;
+      const recordMap: Record<string, any> = {};
+      for (const r of records) recordMap[r.guideId] = normalizeRecord(r);
       json(res, 200, {
         success: true,
-        data: guides.map((u: any) => ({
-          userId: u._id,
-          guideId: u.guideId,
-          name: u.name,
-          phone: u.phone,
-          status: m[u.guideId] || 'free',
-        })),
+        data: guides.map((u: any) => {
+          const entry = recordMap[u.guideId];
+          return {
+            userId: u._id,
+            guideId: u.guideId,
+            name: u.name,
+            phone: u.phone,
+            dayStatus: entry ? entry.dayStatus : 'free',
+            morning: entry ? entry.morning : FREE_PERIOD,
+            afternoon: entry ? entry.afternoon : FREE_PERIOD,
+          };
+        }),
       });
       return;
     }
@@ -269,31 +388,59 @@ const server = createServer(async (req, res) => {
         json(res, 400, { success: false, errMsg: '仅管理员可操作' });
         return;
       }
-      const { guideId, date, status } = await readBody(req);
+      const body = await readBody(req);
+      const { guideId, date, dayStatus, morning, afternoon } = body;
       if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
         json(res, 400, { success: false, errMsg: '无效日期' });
         return;
       }
-      if (!VALID_STATUSES.includes(status)) {
-        json(res, 400, { success: false, errMsg: '无效状态' });
+      if (dayStatus !== undefined && !VALID_DAY_STATUSES.includes(dayStatus)) {
+        json(res, 400, { success: false, errMsg: '无效日状态' });
         return;
       }
-      const { data: ex } = await db
-        .collection('guide_availability')
-        .where({ guideId, date })
-        .limit(1)
-        .get();
-      const now = Date.now();
-      if (ex.length > 0)
-        await db
-          .collection('guide_availability')
-          .doc(ex[0]._id)
-          .update({ status, updatedBy: user._id, updatedAt: now });
-      else
-        await db
-          .collection('guide_availability')
-          .add({ guideId, date, status, updatedBy: user._id, updatedAt: now });
+      for (const [label, period] of [
+        ['上午', morning],
+        ['下午', afternoon],
+      ] as const) {
+        const err = validatePeriod(period);
+        if (err) {
+          json(res, 400, { success: false, errMsg: `${label}: ${err}` });
+          return;
+        }
+      }
+
+      const finalDayStatus = dayStatus || 'free';
+      const finalMorning =
+        finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(morning) || FREE_PERIOD;
+      const finalAfternoon =
+        finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(afternoon) || FREE_PERIOD;
+      const legacy = toLegacyFields(finalDayStatus, finalMorning, finalAfternoon);
+
+      await upsertAvailability(
+        guideId,
+        date,
+        {
+          dayStatus: finalDayStatus,
+          morning: finalMorning,
+          afternoon: finalAfternoon,
+          status: legacy.status,
+          source: legacy.source,
+        },
+        user._id,
+      );
       json(res, 200, { success: true });
+      return;
+    }
+
+    // GET /source-options
+    if (method === 'GET' && path === '/source-options') {
+      const { data } = await db
+        .collection('settings')
+        .doc('global')
+        .field({ sourceOptions: true })
+        .get();
+      const settings = Array.isArray(data) ? data[0] : data;
+      json(res, 200, { success: true, data: settings?.sourceOptions || [] });
       return;
     }
 
@@ -307,6 +454,6 @@ const server = createServer(async (req, res) => {
 server.listen(3000, () => {
   console.log('API running at http://localhost:3000');
   console.log(
-    'Routes: POST /api/login, GET /api/me, GET /api/my-availability, POST /api/set-availability, GET /api/daily-guides?date=, POST /api/update-status',
+    'Routes: POST /api/login, GET /api/me, GET /api/my-availability, POST /api/set-availability, GET /api/daily-guides?date=, POST /api/update-status, GET /api/source-options',
   );
 });

@@ -256,5 +256,18 @@
       { "nickname": "D**n", "rating": 5, "tripType": "许愿祈福", "date": "2024-10-05" },
       { "nickname": "静**好", "rating": 5, "tripType": "家庭出行", "date": "2024-08-20" }
     ]
+  },
+  {
+    "name": "测试导游",
+    "avatar": "",
+    "experienceYear": 1,
+    "serviceCount": 0,
+    "tags": ["测试"],
+    "phone": "18335103226",
+    "licenseText": "测试账号",
+    "wechatServiceEnabled": false,
+    "status": false,
+    "sort": 99,
+    "reviews": []
   }
 ]

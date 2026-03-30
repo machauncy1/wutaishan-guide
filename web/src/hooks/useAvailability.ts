@@ -6,6 +6,7 @@ import {
   updateGuideStatus,
   getSourceOptions,
 } from '../services/availService';
+import type { SetAvailabilityParams, UpdateGuideStatusParams } from '../services/availService';
 
 export function useMyAvailability() {
   return useQuery({
@@ -44,15 +45,7 @@ export function useSourceOptions() {
 export function useSetAvailability() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      date,
-      status,
-      source,
-    }: {
-      date: string;
-      status: AvailabilityStatus;
-      source?: string;
-    }) => setAvailability(date, status, source),
+    mutationFn: (params: SetAvailabilityParams) => setAvailability(params),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['my-availability'] });
     },
@@ -62,17 +55,7 @@ export function useSetAvailability() {
 export function useUpdateGuideStatus() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      guideId,
-      date,
-      status,
-      source,
-    }: {
-      guideId: string;
-      date: string;
-      status: AvailabilityStatus;
-      source?: string;
-    }) => updateGuideStatus(guideId, date, status, source),
+    mutationFn: (params: UpdateGuideStatusParams) => updateGuideStatus(params),
     onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey: ['daily-guides', variables.date] });
     },

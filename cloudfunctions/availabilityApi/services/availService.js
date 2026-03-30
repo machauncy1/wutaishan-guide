@@ -1,23 +1,86 @@
 const availRepo = require('../repositories/availRepo');
 const { db } = require('../shared/cloud');
 
-const VALID_STATUSES = ['free', 'leave', 'morning', 'afternoon', 'allday'];
-const DISPATCHED_STATUSES = ['morning', 'afternoon', 'allday'];
+const VALID_DAY_STATUSES = ['free', 'leave'];
+const VALID_PERIOD_STATUSES = ['free', 'dispatched'];
 const MAX_SOURCE_LEN = 20;
 
-/** 校验并规范化 source，返回 { source } 或 { errMsg } */
-function normalizeSource(status, source) {
-  if (!DISPATCHED_STATUSES.includes(status)) {
-    return { source: null };
+const FREE_PERIOD = { status: 'free' };
+
+/** 根据新格式字段计算冗余的旧格式 status/source（回滚兼容） */
+function toLegacyFields(dayStatus, morning, afternoon) {
+  if (dayStatus === 'leave') return { status: 'leave', source: null };
+  const mDisp = morning && morning.status === 'dispatched';
+  const aDisp = afternoon && afternoon.status === 'dispatched';
+  if (mDisp && aDisp) {
+    const src =
+      morning.source === afternoon.source
+        ? morning.source
+        : `${morning.source}/${afternoon.source}`;
+    return { status: 'allday', source: src };
   }
-  const trimmed = typeof source === 'string' ? source.trim() : '';
-  if (!trimmed) {
-    return { errMsg: '请选择派单平台' };
+  if (mDisp) return { status: 'morning', source: morning.source || null };
+  if (aDisp) return { status: 'afternoon', source: afternoon.source || null };
+  return { status: 'free', source: null };
+}
+
+/** 将旧格式记录转换为新格式（兼容已有数据） */
+function normalizeRecord(r) {
+  // 新格式：已有 dayStatus 字段
+  if (r.dayStatus !== undefined) {
+    return {
+      dayStatus: r.dayStatus,
+      morning: r.morning || FREE_PERIOD,
+      afternoon: r.afternoon || FREE_PERIOD,
+    };
   }
-  if (trimmed.length > MAX_SOURCE_LEN) {
-    return { errMsg: `平台名称不超过${MAX_SOURCE_LEN}字` };
+  // 旧格式：status 字段
+  const source = r.source || undefined;
+  switch (r.status) {
+    case 'leave':
+      return { dayStatus: 'leave', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
+    case 'morning':
+      return {
+        dayStatus: 'free',
+        morning: { status: 'dispatched', source },
+        afternoon: FREE_PERIOD,
+      };
+    case 'afternoon':
+      return {
+        dayStatus: 'free',
+        morning: FREE_PERIOD,
+        afternoon: { status: 'dispatched', source },
+      };
+    case 'allday':
+      return {
+        dayStatus: 'free',
+        morning: { status: 'dispatched', source },
+        afternoon: { status: 'dispatched', source },
+      };
+    default:
+      return { dayStatus: 'free', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
   }
-  return { source: trimmed };
+}
+
+/** 校验单个时段 */
+function validatePeriod(period) {
+  if (!period) return null;
+  if (!VALID_PERIOD_STATUSES.includes(period.status)) {
+    return '无效时段状态';
+  }
+  if (period.status === 'dispatched') {
+    const src = typeof period.source === 'string' ? period.source.trim() : '';
+    if (!src) return '请选择派单平台';
+    if (src.length > MAX_SOURCE_LEN) return `平台名称不超过${MAX_SOURCE_LEN}字`;
+  }
+  return null;
+}
+
+/** 规范化时段数据 */
+function normalizePeriod(period) {
+  if (!period) return undefined;
+  if (period.status === 'free') return { status: 'free' };
+  return { status: 'dispatched', source: period.source.trim() };
 }
 
 function getDateRange(days) {
@@ -38,32 +101,52 @@ async function getMyAvailability(user) {
     dates[dates.length - 1],
   );
 
-  const statusMap = {};
+  const recordMap = {};
   for (const r of records) {
-    statusMap[r.date] = { status: r.status, source: r.source || null };
+    recordMap[r.date] = normalizeRecord(r);
   }
 
   return dates.map((date) => {
-    const entry = statusMap[date];
-    return {
-      date,
-      status: entry ? entry.status : 'free',
-      source: entry ? entry.source : null,
-    };
+    const entry = recordMap[date];
+    if (entry) {
+      return { date, dayStatus: entry.dayStatus, morning: entry.morning, afternoon: entry.afternoon };
+    }
+    return { date, dayStatus: 'free', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
   });
 }
 
-async function setAvailability(user, date, status, source) {
+async function setAvailability(user, date, body) {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return { success: false, errMsg: '无效日期' };
   }
-  if (!VALID_STATUSES.includes(status)) {
-    return { success: false, errMsg: '无效状态' };
-  }
-  const src = normalizeSource(status, source);
-  if (src.errMsg) return { success: false, errMsg: src.errMsg };
 
-  await availRepo.upsert(user.guideId, date, status, user._id, src.source);
+  const { dayStatus, morning, afternoon } = body;
+
+  if (dayStatus !== undefined && !VALID_DAY_STATUSES.includes(dayStatus)) {
+    return { success: false, errMsg: '无效日状态' };
+  }
+
+  // 校验时段
+  for (const [label, period] of [['上午', morning], ['下午', afternoon]]) {
+    const err = validatePeriod(period);
+    if (err) return { success: false, errMsg: `${label}: ${err}` };
+  }
+
+  const finalDayStatus = dayStatus !== undefined ? dayStatus : 'free';
+  const finalMorning = finalDayStatus === 'leave' ? FREE_PERIOD : (normalizePeriod(morning) || FREE_PERIOD);
+  const finalAfternoon = finalDayStatus === 'leave' ? FREE_PERIOD : (normalizePeriod(afternoon) || FREE_PERIOD);
+  const legacy = toLegacyFields(finalDayStatus, finalMorning, finalAfternoon);
+
+  const fields = {
+    dayStatus: finalDayStatus,
+    morning: finalMorning,
+    afternoon: finalAfternoon,
+    // 冗余旧字段，确保回滚旧代码时可读
+    status: legacy.status,
+    source: legacy.source,
+  };
+
+  await availRepo.upsert(user.guideId, date, fields, user._id);
   return { success: true };
 }
 
@@ -80,37 +163,57 @@ async function getDailyGuides(date) {
     .get();
 
   const records = await availRepo.findByDate(date);
-  const statusMap = {};
+  const recordMap = {};
   for (const r of records) {
-    statusMap[r.guideId] = { status: r.status, source: r.source || null };
+    recordMap[r.guideId] = normalizeRecord(r);
   }
 
   const list = guideUsers.map((u) => {
-    const entry = statusMap[u.guideId];
+    const entry = recordMap[u.guideId];
     return {
       userId: u._id,
       guideId: u.guideId,
       name: u.name,
       phone: u.phone,
-      status: entry ? entry.status : 'free',
-      source: entry ? entry.source : null,
+      dayStatus: entry ? entry.dayStatus : 'free',
+      morning: entry ? entry.morning : FREE_PERIOD,
+      afternoon: entry ? entry.afternoon : FREE_PERIOD,
     };
   });
 
   return { success: true, data: list };
 }
 
-async function updateGuideStatus(operator, guideId, date, status, source) {
+async function updateGuideStatus(operator, guideId, date, body) {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return { success: false, errMsg: '无效日期' };
   }
-  if (!VALID_STATUSES.includes(status)) {
-    return { success: false, errMsg: '无效状态' };
-  }
-  const src = normalizeSource(status, source);
-  if (src.errMsg) return { success: false, errMsg: src.errMsg };
 
-  await availRepo.upsert(guideId, date, status, operator._id, src.source);
+  const { dayStatus, morning, afternoon } = body;
+
+  if (dayStatus !== undefined && !VALID_DAY_STATUSES.includes(dayStatus)) {
+    return { success: false, errMsg: '无效日状态' };
+  }
+
+  for (const [label, period] of [['上午', morning], ['下午', afternoon]]) {
+    const err = validatePeriod(period);
+    if (err) return { success: false, errMsg: `${label}: ${err}` };
+  }
+
+  const finalDayStatus = dayStatus !== undefined ? dayStatus : 'free';
+  const finalMorning = finalDayStatus === 'leave' ? FREE_PERIOD : (normalizePeriod(morning) || FREE_PERIOD);
+  const finalAfternoon = finalDayStatus === 'leave' ? FREE_PERIOD : (normalizePeriod(afternoon) || FREE_PERIOD);
+  const legacy = toLegacyFields(finalDayStatus, finalMorning, finalAfternoon);
+
+  const fields = {
+    dayStatus: finalDayStatus,
+    morning: finalMorning,
+    afternoon: finalAfternoon,
+    status: legacy.status,
+    source: legacy.source,
+  };
+
+  await availRepo.upsert(guideId, date, fields, operator._id);
   return { success: true };
 }
 

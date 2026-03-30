@@ -108,7 +108,13 @@ interface TrustPoint {
 // ===== 可用性管理系统（H5）=====
 
 type UserRole = 'guide' | 'admin' | 'tourist';
-type AvailabilityStatus = 'free' | 'leave' | 'morning' | 'afternoon' | 'allday';
+type DayStatus = 'free' | 'leave';
+type PeriodStatus = 'free' | 'dispatched';
+
+interface PeriodInfo {
+  status: PeriodStatus;
+  source?: string; // 仅 dispatched 时有值
+}
 
 /** 用户账号（Identity Context，跨端通用） */
 interface User {
@@ -121,13 +127,14 @@ interface User {
   createdAt: number;
 }
 
-/** 导游日期可用状态（每导游每天一条） */
+/** 导游日期可用状态（每导游每天一条，上下午独立时段） */
 interface GuideAvailability {
   _id?: string;
   guideId: string; // → guides._id
   date: string; // "2026-03-25"
-  status: AvailabilityStatus;
-  source?: string; // 派单平台名称，仅 morning/afternoon/allday 时有值
+  dayStatus: DayStatus; // 'free' | 'leave'
+  morning: PeriodInfo; // 上午时段
+  afternoon: PeriodInfo; // 下午时段
   updatedBy?: string; // → users._id
   updatedAt: number;
 }

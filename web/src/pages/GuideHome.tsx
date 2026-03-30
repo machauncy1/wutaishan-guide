@@ -4,19 +4,13 @@ import { logout } from '../services/authService';
 import { todayBJ, getLunarText, isLunarKeyDay, getShortDate, getWeekday } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
+import type { ActionSheetResult } from '../components/ActionSheet';
 import Loading from '../components/Loading';
-import { needsSource } from '../constants/availability';
-
-const guideActions = [
-  { label: '未派', value: 'free' },
-  { label: '请假', value: 'leave' },
-  { label: '上午已派', value: 'morning' },
-  { label: '下午已派', value: 'afternoon' },
-  { label: '全天已派', value: 'allday' },
-];
+import { FREE_PERIOD } from '../constants/availability';
+import type { DayAvailability } from '../services/availService';
 
 export default function GuideHome() {
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedDay, setSelectedDay] = useState<DayAvailability | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const name = localStorage.getItem('avail_name') || '导游';
   const today = todayBJ();
@@ -25,25 +19,58 @@ export default function GuideHome() {
   const { data: sourceOptions = [] } = useSourceOptions();
   const setAvailMutation = useSetAvailability();
 
-  function handleSelect(status: string) {
-    if (!selectedDate) return;
-    setAvailMutation.mutate({ date: selectedDate, status: status as AvailabilityStatus });
-    setSelectedDate(null);
-  }
-
-  function handleSelectWithSource(status: string, source: string) {
-    if (!selectedDate) return;
+  function handleConfirm(result: ActionSheetResult) {
+    if (!selectedDay) return;
     setAvailMutation.mutate({
-      date: selectedDate,
-      status: status as AvailabilityStatus,
-      source,
+      date: selectedDay.date,
+      dayStatus: result.dayStatus,
+      morning: result.morning,
+      afternoon: result.afternoon,
     });
-    setSelectedDate(null);
+    setSelectedDay(null);
   }
 
   const recentDays = days.slice(0, 7);
   const laterDays = days.slice(7);
-  const laterSetCount = laterDays.filter((d) => d.status !== 'free').length;
+  const laterSetCount = laterDays.filter(
+    (d) =>
+      d.dayStatus === 'leave' ||
+      d.morning?.status === 'dispatched' ||
+      d.afternoon?.status === 'dispatched',
+  ).length;
+
+  function renderDayRow(day: DayAvailability, compact = false) {
+    const display = getShortDate(day.date);
+    const weekday = getWeekday(day.date);
+    const isToday = day.date === today;
+    return (
+      <div
+        key={day.date}
+        className={`flex items-center justify-between rounded-xl px-4 shadow-sm active:bg-gray-50 border ${
+          compact
+            ? 'bg-white border-gray-100 py-3'
+            : isToday
+              ? 'bg-blue-50 border-blue-200 py-3.5'
+              : 'bg-white border-gray-100 py-3.5'
+        }`}
+        onClick={() => setSelectedDay(day)}
+      >
+        <div>
+          <span className={`${compact ? 'text-sm' : 'text-base'} font-medium text-gray-800`}>
+            {display}
+            {isToday && !compact && <span className="ml-1 text-blue-600 text-xs">今天</span>}
+          </span>
+          <span
+            className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
+          >
+            {getLunarText(day.date)}
+          </span>
+          <span className={`ml-2 ${compact ? 'text-xs' : 'text-sm'} text-gray-400`}>{weekday}</span>
+        </div>
+        <StatusTag dayStatus={day.dayStatus} morning={day.morning} afternoon={day.afternoon} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -63,36 +90,7 @@ export default function GuideHome() {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="space-y-2.5">
-            {recentDays.map((day) => {
-              const display = getShortDate(day.date);
-              const weekday = getWeekday(day.date);
-              const isToday = day.date === today;
-              return (
-                <div
-                  key={day.date}
-                  className={`flex items-center justify-between rounded-xl px-4 py-3.5 shadow-sm active:bg-gray-50 border ${
-                    isToday ? 'bg-blue-50 border-blue-200' : 'bg-white border-gray-100'
-                  }`}
-                  onClick={() => setSelectedDate(day.date)}
-                >
-                  <div>
-                    <span className="text-base font-medium text-gray-800">
-                      {display}
-                      {isToday && <span className="ml-1 text-blue-600 text-xs">今天</span>}
-                    </span>
-                    <span
-                      className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
-                    >
-                      {getLunarText(day.date)}
-                    </span>
-                    <span className="ml-2 text-sm text-gray-400">{weekday}</span>
-                  </div>
-                  <StatusTag status={day.status} source={day.source} />
-                </div>
-              );
-            })}
-          </div>
+          <div className="space-y-2.5">{recentDays.map((day) => renderDayRow(day))}</div>
         )}
       </div>
 
@@ -111,43 +109,21 @@ export default function GuideHome() {
 
           {showCalendar && (
             <div className="mt-3 space-y-2.5">
-              {laterDays.map((day) => {
-                const display = getShortDate(day.date);
-                const weekday = getWeekday(day.date);
-                return (
-                  <div
-                    key={day.date}
-                    className="flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-100 active:bg-gray-50"
-                    onClick={() => setSelectedDate(day.date)}
-                  >
-                    <div>
-                      <span className="text-sm font-medium text-gray-700">{display}</span>
-                      <span
-                        className={`ml-2 text-xs ${isLunarKeyDay(day.date) ? 'text-red-500 font-medium' : 'text-gray-300'}`}
-                      >
-                        {getLunarText(day.date)}
-                      </span>
-                      <span className="ml-2 text-xs text-gray-400">{weekday}</span>
-                    </div>
-                    <StatusTag status={day.status} source={day.source} />
-                  </div>
-                );
-              })}
+              {laterDays.map((day) => renderDayRow(day, true))}
             </div>
           )}
         </div>
       )}
 
       <ActionSheet
-        visible={!!selectedDate}
-        title={selectedDate ? `设置 ${selectedDate} 状态` : ''}
-        actions={guideActions}
-        currentValue={days.find((d) => d.date === selectedDate)?.status}
-        onSelect={handleSelect}
-        onClose={() => setSelectedDate(null)}
+        visible={!!selectedDay}
+        title={selectedDay ? `设置 ${selectedDay.date} 状态` : ''}
+        currentDayStatus={selectedDay?.dayStatus ?? 'free'}
+        currentMorning={selectedDay?.morning ?? FREE_PERIOD}
+        currentAfternoon={selectedDay?.afternoon ?? FREE_PERIOD}
         sourceOptions={sourceOptions}
-        onSelectWithSource={handleSelectWithSource}
-        needsSource={needsSource}
+        onConfirm={handleConfirm}
+        onClose={() => setSelectedDay(null)}
       />
     </div>
   );

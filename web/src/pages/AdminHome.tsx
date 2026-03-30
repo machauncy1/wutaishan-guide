@@ -11,9 +11,10 @@ import {
 } from '../utils/date';
 import StatusTag from '../components/StatusTag';
 import ActionSheet from '../components/ActionSheet';
+import type { ActionSheetResult } from '../components/ActionSheet';
 import Loading from '../components/Loading';
 import type { GuideDay } from '../services/availService';
-import { needsSource } from '../constants/availability';
+import { FREE_PERIOD } from '../constants/availability';
 
 const quickDates = [
   { label: '今天', offset: 0 },
@@ -21,21 +22,14 @@ const quickDates = [
   { label: '后天', offset: 2 },
 ];
 
-const STATUS_ORDER: Record<string, number> = {
-  free: 0,
-  morning: 0,
-  afternoon: 0,
-  allday: 1,
-  leave: 2,
-};
-
-const adminActions = [
-  { label: '未派', value: 'free' },
-  { label: '请假', value: 'leave' },
-  { label: '上午已派', value: 'morning' },
-  { label: '下午已派', value: 'afternoon' },
-  { label: '全天已派', value: 'allday' },
-];
+/** 排序权重：可调度(全天可用+半天可用) < 全天已派 < 请假 */
+function getSortOrder(g: GuideDay): number {
+  if (g.dayStatus === 'leave') return 2;
+  const mDisp = g.morning?.status === 'dispatched';
+  const aDisp = g.afternoon?.status === 'dispatched';
+  if (mDisp && aDisp) return 1; // 全天已派，无空闲时段
+  return 0; // 全天可用 或 半天可用，仍可调度
+}
 
 export default function AdminHome() {
   const [date, setDate] = useState(todayBJ);
@@ -49,37 +43,34 @@ export default function AdminHome() {
 
   const guides = useMemo(() => {
     if (!rawGuides) return [];
-    return [...rawGuides].sort(
-      (a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99),
-    );
+    return [...rawGuides].sort((a, b) => getSortOrder(a) - getSortOrder(b));
   }, [rawGuides]);
 
-  function handleSelect(status: string) {
+  function handleConfirm(result: ActionSheetResult) {
     if (!selectedGuide) return;
     updateMutation.mutate({
       guideId: selectedGuide.guideId,
       date,
-      status: status as AvailabilityStatus,
+      dayStatus: result.dayStatus,
+      morning: result.morning,
+      afternoon: result.afternoon,
     });
     setSelectedGuide(null);
   }
 
-  function handleSelectWithSource(status: string, source: string) {
-    if (!selectedGuide) return;
-    updateMutation.mutate({
-      guideId: selectedGuide.guideId,
-      date,
-      status: status as AvailabilityStatus,
-      source,
-    });
-    setSelectedGuide(null);
-  }
-
-  const free = guides.filter((g) => g.status === 'free').length;
-  const assigned = guides.filter((g) =>
-    ['morning', 'afternoon', 'allday'].includes(g.status),
+  // 统计
+  const fullFree = guides.filter(
+    (g) =>
+      g.dayStatus !== 'leave' &&
+      g.morning?.status !== 'dispatched' &&
+      g.afternoon?.status !== 'dispatched',
   ).length;
-  const leave = guides.filter((g) => g.status === 'leave').length;
+  const halfFree = guides.filter(
+    (g) =>
+      g.dayStatus !== 'leave' &&
+      (g.morning?.status === 'dispatched') !== (g.afternoon?.status === 'dispatched'),
+  ).length;
+  const unavailable = guides.length - fullFree - halfFree;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -143,9 +134,9 @@ export default function AdminHome() {
       </div>
       <div className="px-5 py-1 flex gap-4 text-sm text-gray-500">
         <span>共 {guides.length} 人</span>
-        <span className="text-green-600">未派 {free}</span>
-        <span className="text-blue-600">已派 {assigned}</span>
-        <span className="text-gray-400">请假 {leave}</span>
+        <span className="text-green-600">全天可用 {fullFree}</span>
+        <span className="text-blue-600">半天可用 {halfFree}</span>
+        <span className="text-gray-400">不可用 {unavailable}</span>
       </div>
 
       {/* 导游列表 */}
@@ -166,7 +157,11 @@ export default function AdminHome() {
                   <span className="text-base font-medium text-gray-800">{guide.name}</span>
                   <span className="ml-2 text-xs text-gray-400">{guide.phone}</span>
                 </div>
-                <StatusTag status={guide.status} source={guide.source} />
+                <StatusTag
+                  dayStatus={guide.dayStatus}
+                  morning={guide.morning}
+                  afternoon={guide.afternoon}
+                />
               </div>
             ))}
           </div>
@@ -176,13 +171,12 @@ export default function AdminHome() {
       <ActionSheet
         visible={!!selectedGuide}
         title={selectedGuide ? `${selectedGuide.name} - ${date}` : ''}
-        actions={adminActions}
-        currentValue={selectedGuide?.status}
-        onSelect={handleSelect}
-        onClose={() => setSelectedGuide(null)}
+        currentDayStatus={selectedGuide?.dayStatus ?? 'free'}
+        currentMorning={selectedGuide?.morning ?? FREE_PERIOD}
+        currentAfternoon={selectedGuide?.afternoon ?? FREE_PERIOD}
         sourceOptions={sourceOptions}
-        onSelectWithSource={handleSelectWithSource}
-        needsSource={needsSource}
+        onConfirm={handleConfirm}
+        onClose={() => setSelectedGuide(null)}
       />
     </div>
   );
