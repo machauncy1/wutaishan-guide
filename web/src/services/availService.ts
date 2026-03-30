@@ -1,37 +1,4 @@
 import { request } from '../api/client';
-import { FREE_PERIOD } from '../constants/availability';
-
-/** 兼容旧后端返回的数据格式（后端未更新时） */
-
-function normalizeDayData<T>(raw: T): T {
-  const r = raw as any;
-  if (r.dayStatus !== undefined) {
-    r.morning = r.morning || FREE_PERIOD;
-    r.afternoon = r.afternoon || FREE_PERIOD;
-    return r;
-  }
-  // 旧格式兼容
-  const source = r.source || undefined;
-  r.dayStatus = 'free';
-  r.morning = FREE_PERIOD;
-  r.afternoon = FREE_PERIOD;
-  switch (r.status) {
-    case 'leave':
-      r.dayStatus = 'leave';
-      break;
-    case 'morning':
-      r.morning = { status: 'dispatched', source };
-      break;
-    case 'afternoon':
-      r.afternoon = { status: 'dispatched', source };
-      break;
-    case 'allday':
-      r.morning = { status: 'dispatched', source };
-      r.afternoon = { status: 'dispatched', source };
-      break;
-  }
-  return r;
-}
 
 export interface DayAvailability {
   date: string;
@@ -62,11 +29,7 @@ export interface UpdateGuideStatusParams extends SetAvailabilityParams {
 }
 
 export async function getMyAvailability() {
-  const res = await request<DayAvailability[]>('GET', '/my-availability');
-  if (res.success && res.data) {
-    res.data = res.data.map(normalizeDayData);
-  }
-  return res;
+  return request<DayAvailability[]>('GET', '/my-availability');
 }
 
 export async function setAvailability(params: SetAvailabilityParams) {
@@ -74,11 +37,7 @@ export async function setAvailability(params: SetAvailabilityParams) {
 }
 
 export async function getDailyGuides(date: string) {
-  const res = await request<GuideDay[]>('GET', '/daily-guides', { date });
-  if (res.success && res.data) {
-    res.data = res.data.map(normalizeDayData);
-  }
-  return res;
+  return request<GuideDay[]>('GET', '/daily-guides', { date });
 }
 
 export async function updateGuideStatus(params: UpdateGuideStatusParams) {

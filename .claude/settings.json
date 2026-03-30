@@ -52,7 +52,8 @@
       "Bash(find /Users/macheng/Projects/machauncy1/wutaishan-guide -maxdepth 4 ! -path */node_modules/* -type f -name Makefile -o -name docker* -o -name *.sh)",
       "Bash(wrangler pages:*)",
       "Bash(pnpm tsx -e \":*)",
-      "Bash(npx wrangler:*)"
+      "Bash(npx wrangler:*)",
+      "Bash(pnpm tsx:*)"
     ],
     "deny": [
       "Bash(rm -rf *)",

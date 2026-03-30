@@ -31,5 +31,8 @@ CLAUDE.local.md
 .tmp/
 .cache/
 
+# 数据库备份
+scripts/data/*_backup.json
+
 # H5 构建产物
 web/dist/

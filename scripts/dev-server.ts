@@ -74,63 +74,6 @@ function dateRange(days: number): string[] {
   return r;
 }
 
-/** 将旧格式记录转换为新格式（兼容已有数据） */
-function normalizeRecord(r: any) {
-  if (r.dayStatus !== undefined) {
-    return {
-      dayStatus: r.dayStatus,
-      morning: r.morning || FREE_PERIOD,
-      afternoon: r.afternoon || FREE_PERIOD,
-    };
-  }
-  const source = r.source || undefined;
-  switch (r.status) {
-    case 'leave':
-      return { dayStatus: 'leave', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
-    case 'morning':
-      return {
-        dayStatus: 'free',
-        morning: { status: 'dispatched', source },
-        afternoon: FREE_PERIOD,
-      };
-    case 'afternoon':
-      return {
-        dayStatus: 'free',
-        morning: FREE_PERIOD,
-        afternoon: { status: 'dispatched', source },
-      };
-    case 'allday':
-      return {
-        dayStatus: 'free',
-        morning: { status: 'dispatched', source },
-        afternoon: { status: 'dispatched', source },
-      };
-    default:
-      return { dayStatus: 'free', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
-  }
-}
-
-/** 根据新格式计算冗余旧字段（回滚兼容） */
-function toLegacyFields(
-  dayStatus: string,
-  morning: { status: string; source?: string },
-  afternoon: { status: string; source?: string },
-) {
-  if (dayStatus === 'leave') return { status: 'leave', source: null };
-  const mDisp = morning.status === 'dispatched';
-  const aDisp = afternoon.status === 'dispatched';
-  if (mDisp && aDisp) {
-    const src =
-      morning.source === afternoon.source
-        ? morning.source
-        : `${morning.source}/${afternoon.source}`;
-    return { status: 'allday', source: src };
-  }
-  if (mDisp) return { status: 'morning', source: morning.source || null };
-  if (aDisp) return { status: 'afternoon', source: afternoon.source || null };
-  return { status: 'free', source: null };
-}
-
 /** 校验时段 */
 function validatePeriod(period: any): string | null {
   if (!period) return null;
@@ -172,7 +115,7 @@ async function upsertAvailability(guideId: string, date: string, fields: any, up
     .limit(1)
     .get();
   if (ex.length > 0) {
-    await db.collection('guide_availability').doc(ex[0]._id).update(record);
+    await db.collection('guide_availability').doc(ex[0]._id).update({ data: record });
   } else {
     await db.collection('guide_availability').add({ guideId, date, ...record });
   }
@@ -282,13 +225,17 @@ const server = createServer(async (req, res) => {
         .where({ guideId: user.guideId, date: _.gte(dates[0]).and(_.lte(dates[dates.length - 1])) })
         .get();
       const recordMap: Record<string, any> = {};
-      for (const r of records) recordMap[r.date] = normalizeRecord(r);
+      for (const r of records) recordMap[r.date] = r;
       json(res, 200, {
         success: true,
         data: dates.map((d) => {
-          const entry = recordMap[d];
-          if (entry) return { date: d, ...entry };
-          return { date: d, dayStatus: 'free', morning: FREE_PERIOD, afternoon: FREE_PERIOD };
+          const r = recordMap[d];
+          return {
+            date: d,
+            dayStatus: r?.dayStatus || 'free',
+            morning: r?.morning || FREE_PERIOD,
+            afternoon: r?.afternoon || FREE_PERIOD,
+          };
         }),
       });
       return;
@@ -326,18 +273,11 @@ const server = createServer(async (req, res) => {
         finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(morning) || FREE_PERIOD;
       const finalAfternoon =
         finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(afternoon) || FREE_PERIOD;
-      const legacy = toLegacyFields(finalDayStatus, finalMorning, finalAfternoon);
 
       await upsertAvailability(
         user.guideId,
         date,
-        {
-          dayStatus: finalDayStatus,
-          morning: finalMorning,
-          afternoon: finalAfternoon,
-          status: legacy.status,
-          source: legacy.source,
-        },
+        { dayStatus: finalDayStatus, morning: finalMorning, afternoon: finalAfternoon },
         user._id,
       );
       json(res, 200, { success: true });
@@ -363,19 +303,19 @@ const server = createServer(async (req, res) => {
         .get();
       const { data: records } = await db.collection('guide_availability').where({ date }).get();
       const recordMap: Record<string, any> = {};
-      for (const r of records) recordMap[r.guideId] = normalizeRecord(r);
+      for (const r of records) recordMap[r.guideId] = r;
       json(res, 200, {
         success: true,
         data: guides.map((u: any) => {
-          const entry = recordMap[u.guideId];
+          const r = recordMap[u.guideId];
           return {
             userId: u._id,
             guideId: u.guideId,
             name: u.name,
             phone: u.phone,
-            dayStatus: entry ? entry.dayStatus : 'free',
-            morning: entry ? entry.morning : FREE_PERIOD,
-            afternoon: entry ? entry.afternoon : FREE_PERIOD,
+            dayStatus: r?.dayStatus || 'free',
+            morning: r?.morning || FREE_PERIOD,
+            afternoon: r?.afternoon || FREE_PERIOD,
           };
         }),
       });
@@ -414,18 +354,11 @@ const server = createServer(async (req, res) => {
         finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(morning) || FREE_PERIOD;
       const finalAfternoon =
         finalDayStatus === 'leave' ? FREE_PERIOD : normalizePeriod(afternoon) || FREE_PERIOD;
-      const legacy = toLegacyFields(finalDayStatus, finalMorning, finalAfternoon);
 
       await upsertAvailability(
         guideId,
         date,
-        {
-          dayStatus: finalDayStatus,
-          morning: finalMorning,
-          afternoon: finalAfternoon,
-          status: legacy.status,
-          source: legacy.source,
-        },
+        { dayStatus: finalDayStatus, morning: finalMorning, afternoon: finalAfternoon },
         user._id,
       );
       json(res, 200, { success: true });
