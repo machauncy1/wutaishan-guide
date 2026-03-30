@@ -8,11 +8,11 @@ import { resolve } from 'path';
 
 import guidesJson from './data/guides.json';
 import settingsJson from './data/settings.json';
-import usersJson from './data/users.json';
+import adminsJson from './data/admins.json';
 
 const guides = guidesJson as Guide[];
 const defaultSettings = settingsJson as Settings;
-const adminUsers = usersJson as Pick<User, 'phone' | 'name' | 'role'>[];
+const adminUsers = adminsJson as Pick<User, 'phone' | 'name' | 'role'>[];
 
 config({ path: resolve(__dirname, '..', '.env') });
 
