@@ -163,7 +163,7 @@
       hover-class="submit-btn-hover"
     >
       <text wx:if="{{submitting}}">提交中...</text>
-      <text wx:else>提交需求（无需付款）</text>
+      <text wx:else>预约导游（无需付款）</text>
     </button>
   </view>
 
