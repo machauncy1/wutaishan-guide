@@ -76,6 +76,10 @@
     <!-- 导游列表 -->
     <view class="section-header">
       <text class="section-title">本地持证导游</text>
+      <view class="section-cert-badge">
+        <image class="section-cert-icon" src="/images/icons/gov-blue.svg" />
+        <text class="section-cert-text">五台山官方平台认证可查</text>
+      </view>
     </view>
     <view class="guide-section">
       <view class="list-wrap">

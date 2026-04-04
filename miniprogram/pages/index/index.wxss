@@ -204,6 +204,29 @@ page {
   color: #1A1A1A;
 }
 
+.section-cert-badge {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 4rpx 14rpx 4rpx 8rpx;
+  background: #EEF4FF;
+  border: 1rpx solid #C7DEFF;
+  border-radius: 100rpx;
+}
+
+.section-cert-icon {
+  width: 28rpx;
+  height: 28rpx;
+  flex-shrink: 0;
+}
+
+.section-cert-text {
+  font-size: 20rpx;
+  color: #2577E3;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 /* ===== 导游列表 ===== */
 .list-wrap {
   padding: 0;
