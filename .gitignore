@@ -23,6 +23,7 @@ npm-debug.log*
 # Claude Code 个人覆盖
 CLAUDE.local.md
 .claude/settings.local.json
+.claude/settings.json
 
 # TypeScript 编译产物
 *.tsbuildinfo
