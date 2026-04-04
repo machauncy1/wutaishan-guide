@@ -5,7 +5,7 @@ export function getNavBarInfo(): { statusBarHeight: number; navBarHeight: number
   try {
     const { statusBarHeight } = wx.getWindowInfo();
     const menuButton = wx.getMenuButtonBoundingClientRect();
-    const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
+    const navBarHeight = Math.ceil((menuButton.top - statusBarHeight) * 2 + menuButton.height);
     return { statusBarHeight, navBarHeight };
   } catch (_e) {
     return { statusBarHeight: 20, navBarHeight: 44 };

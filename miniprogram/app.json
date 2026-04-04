@@ -7,6 +7,7 @@
     "pages/ticketGuide/index",
     "pages/trafficGuide/index",
     "pages/blessingGuide/index",
+    "pages/myBookings/index",
     "pages/privacy/index",
     "pages/agreement/index"
   ],

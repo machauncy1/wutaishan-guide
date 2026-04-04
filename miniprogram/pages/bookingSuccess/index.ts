@@ -12,6 +12,7 @@ interface SuccessCustom {
   onPhoneCall(): void;
   onBackDetail(): void;
   onBackHome(): void;
+  onMyBookings(): void;
 }
 
 Page<SuccessData, SuccessCustom>({
@@ -56,5 +57,9 @@ Page<SuccessData, SuccessCustom>({
 
   onBackHome() {
     wx.reLaunch({ url: '/pages/index/index' });
+  },
+
+  onMyBookings() {
+    wx.redirectTo({ url: '/pages/myBookings/index' });
   },
 });

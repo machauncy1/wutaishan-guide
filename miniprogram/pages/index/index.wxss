@@ -138,7 +138,6 @@ page {
   padding: 0 24rpx;
 }
 
-/* 右侧渐变遮罩，暗示可滑动 */
 .entry-scroll-fade {
   position: absolute;
   top: 0;
@@ -149,7 +148,6 @@ page {
   pointer-events: none;
 }
 
-
 .entry-chip {
   display: inline-flex;
   align-items: center;
@@ -158,11 +156,10 @@ page {
   border-radius: 100rpx;
   padding: 16rpx 24rpx 16rpx 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  transition: transform 0.15s ease;
 }
 
 .entry-chip:active {
-  transform: scale(0.96);
+  opacity: 0.8;
 }
 
 .entry-chip-icon {
@@ -188,10 +185,31 @@ page {
 
 /* ===== 导游区块 ===== */
 .section-header {
-  padding: 32rpx 24rpx 12rpx;
+  padding: 28rpx 24rpx 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-header-left {
   display: flex;
   align-items: center;
   gap: 12rpx;
+}
+
+/* 我的预约文字链接 */
+.my-bookings-link {
+  padding: 10rpx 0 10rpx 16rpx;
+}
+
+.my-bookings-link:active {
+  opacity: 0.6;
+}
+
+.my-bookings-link-text {
+  font-size: 26rpx;
+  color: #2577E3;
+  font-weight: 500;
 }
 
 .guide-section {

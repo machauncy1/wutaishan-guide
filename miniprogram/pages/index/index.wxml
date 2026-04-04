@@ -75,10 +75,15 @@
 
     <!-- 导游列表 -->
     <view class="section-header">
-      <text class="section-title">本地持证导游</text>
-      <view class="section-cert-badge">
-        <image class="section-cert-icon" src="/images/icons/gov-blue.svg" />
-        <text class="section-cert-text">五台山官方平台认证可查</text>
+      <view class="section-header-left">
+        <text class="section-title">本地持证导游</text>
+        <view class="section-cert-badge">
+          <image class="section-cert-icon" src="/images/icons/gov-blue.svg" />
+          <text class="section-cert-text">五台山官方平台认证可查</text>
+        </view>
+      </view>
+      <view class="my-bookings-link" bindtap="onEntryTap" data-path="/pages/myBookings/index">
+        <text class="my-bookings-link-text">我的预约 ›</text>
       </view>
     </view>
     <view class="guide-section">

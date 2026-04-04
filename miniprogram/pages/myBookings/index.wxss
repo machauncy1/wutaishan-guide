@@ -1,0 +1,254 @@
+/* pages/myBookings/index.wxss */
+
+page {
+  background: #F2F4F7;
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===== 导航栏 ===== */
+
+.nav-bar {
+  background: linear-gradient(90deg, #6B5A7A 0%, #8B6A5C 100%);
+}
+
+.nav-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+}
+
+.nav-back,
+.nav-placeholder {
+  width: 88rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-back {
+  justify-content: flex-start;
+}
+
+.nav-placeholder {
+  justify-content: flex-end;
+}
+
+.nav-back-icon {
+  font-size: 56rpx;
+  color: #fff;
+  line-height: 1;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== 内容区 ===== */
+
+.content {
+  padding: 24rpx 24rpx calc(env(safe-area-inset-bottom) + 40rpx);
+  box-sizing: border-box;
+}
+
+/* ===== 骨架屏 ===== */
+
+.skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.skeleton-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.sk-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sk-badge {
+  width: 100rpx;
+  height: 36rpx;
+  border-radius: 100rpx;
+  background: #E8EAED;
+  animation: pulse 1.4s ease infinite;
+}
+
+.sk-line {
+  height: 24rpx;
+  border-radius: 4rpx;
+  background: #E8EAED;
+  animation: pulse 1.4s ease infinite;
+}
+
+.sk-short { width: 35%; }
+.sk-mid   { width: 55%; }
+.sk-long  { width: 80%; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+/* ===== 空态 ===== */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0 60rpx;
+  gap: 16rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.empty-desc {
+  font-size: 24rpx;
+  color: #A3AAB5;
+}
+
+.empty-btn {
+  margin-top: 16rpx;
+  padding: 20rpx 48rpx;
+  background: #6B5A7A;
+  border-radius: 100rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ===== 预约列表 ===== */
+
+.booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.booking-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 卡片头 */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.guide-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.header-date {
+  font-size: 26rpx;
+  color: #A3AAB5;
+  font-weight: 400;
+}
+
+/* 分割线 */
+.card-divider {
+  height: 1rpx;
+  background: #F0F1F3;
+  margin: 20rpx 0 16rpx;
+}
+
+/* 信息行 */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info-row-remark {
+  align-items: flex-start;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: #A3AAB5;
+  flex-shrink: 0;
+  width: 120rpx;
+}
+
+.info-value {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #1A1A1A;
+  text-align: right;
+}
+
+.info-remark {
+  flex: 1;
+  text-align: right;
+  word-break: break-all;
+  color: #666;
+  font-weight: 400;
+  font-size: 24rpx;
+}
+
+/* 卡片底部 */
+.card-footer {
+  margin-top: 20rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #F0F1F3;
+}
+
+.submit-time {
+  font-size: 22rpx;
+  color: #C0C4CC;
+}
+
+/* ===== 底部提示 ===== */
+
+.bottom-tip {
+  margin-top: 32rpx;
+  padding: 20rpx 24rpx;
+  background: #FFF8EE;
+  border-radius: 12rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #D4930A;
+  font-weight: 500;
+}

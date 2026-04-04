@@ -1,0 +1,84 @@
+<!--pages/myBookings/index.wxml-->
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px">
+    <view class="nav-bar-inner" style="height: {{navBarHeight}}px">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <view class="nav-title">我的预约</view>
+      <view class="nav-placeholder" />
+    </view>
+  </view>
+
+  <!-- 内容区 -->
+  <view class="content">
+
+    <!-- 骨架屏 -->
+    <view wx:if="{{loading}}" class="skeleton-list">
+      <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="sk-top">
+          <view class="sk-line sk-mid"></view>
+          <view class="sk-badge"></view>
+        </view>
+        <view class="sk-line sk-long"></view>
+        <view class="sk-line sk-short"></view>
+      </view>
+    </view>
+
+    <!-- 空态 -->
+    <view wx:elif="{{!bookings.length}}" class="empty">
+      <text class="empty-icon">📋</text>
+      <text class="empty-title">暂无预约记录</text>
+      <text class="empty-desc">还没有提交过预约，去找一位导游吧</text>
+      <view class="empty-btn" bindtap="onGoHome">浏览导游</view>
+    </view>
+
+    <!-- 预约列表 -->
+    <view wx:else class="booking-list">
+      <view
+        class="booking-card"
+        wx:for="{{bookings}}"
+        wx:key="_id"
+      >
+        <!-- 卡片头：导游名 + 出行日期 -->
+        <view class="card-header">
+          <text class="guide-name">{{item.guideName}}</text>
+          <text class="header-date">{{item.date}} {{item.timePeriod}}</text>
+        </view>
+
+        <!-- 分割线 -->
+        <view class="card-divider"></view>
+
+        <!-- 预约信息 -->
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-label">出行人数</text>
+            <text class="info-value">{{item.groupSize}}人</text>
+          </view>
+          <view wx:if="{{item.touristName}}" class="info-row">
+            <text class="info-label">游客姓名</text>
+            <text class="info-value">{{item.touristName}}</text>
+          </view>
+          <view wx:if="{{item.remark}}" class="info-row info-row-remark">
+            <text class="info-label">备注</text>
+            <text class="info-value info-remark">{{item.remark}}</text>
+          </view>
+        </view>
+
+        <!-- 提交时间 -->
+        <view class="card-footer">
+          <text class="submit-time">提交于 {{item.createdAtDisplay}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部提示 -->
+    <view wx:if="{{!loading && bookings.length}}" class="bottom-tip">
+      <text>客服将根据预约信息主动联系您，请注意接听</text>
+    </view>
+
+  </view>
+
+</view>
